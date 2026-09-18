@@ -1,0 +1,41 @@
+Ninja L2 mode:
+0x13370097000
+0x13370887000
+0x133710b7000
+0x133718a7000
+0x133720d7000
+0x133728c7000
+0x13370097008
+0x133710b7008
+0x13370887008
+0x133730f7000
+0x133718a7008
+0x13370097010
+0x133710b7010
+0x133738e7000
+0x133720d7008
+0x13370887010
+0x13370097018
+0x13374097000
+0x133730f7008
+
+Recv'd 33554432 bits in 2243256 us (rate: 14957914 / sec ~= 15.0 M / sec)
+Recv'd 33554432 bits in 2239245 us (rate: 14984707 / sec ~= 15.0 M / sec)
+Recv'd 33554432 bits in 2237731 us (rate: 14994846 / sec ~= 15.0 M / sec)
+Recv'd 33554432 bits in 2249171 us (rate: 14918577 / sec ~= 14.9 M / sec)
+Recv'd 33554432 bits in 2247136 us (rate: 14932087 / sec ~= 14.9 M / sec)
+Recv'd 33554432 bits in 2226332 us (rate: 15071620 / sec ~= 15.1 M / sec)
+Recv'd 33554432 bits in 2239888 us (rate: 14980406 / sec ~= 15.0 M / sec)
+Recv'd 33554432 bits in 2240713 us (rate: 14974890 / sec ~= 15.0 M / sec)
+Recv'd 33554432 bits in 2228070 us (rate: 15059864 / sec ~= 15.1 M / sec)
+Recv'd 33554432 bits in 2249362 us (rate: 14917310 / sec ~= 14.9 M / sec)
+Recv'd 33554432 bits in 2253852 us (rate: 14887593 / sec ~= 14.9 M / sec)
+Recv'd 33554432 bits in 2239502 us (rate: 14982988 / sec ~= 15.0 M / sec)
+Recv'd 33554432 bits in 2215056 us (rate: 15148344 / sec ~= 15.1 M / sec)
+Recv'd 33554432 bits in 2254229 us (rate: 14885103 / sec ~= 14.9 M / sec)
+Recv'd 33554432 bits in 2240873 us (rate: 14973821 / sec ~= 15.0 M / sec)
+Recv'd 33554432 bits in 2238272 us (rate: 14991221 / sec ~= 15.0 M / sec)
+Recv'd 33554432 bits in 2255858 us (rate: 14874354 / sec ~= 14.9 M / sec)
+Recv'd 33554432 bits in 2255993 us (rate: 14873464 / sec ~= 14.9 M / sec)
+Recv'd 33554432 bits in 2608180 us (rate: 12865075 / sec ~= 12.9 M / sec)
+Recv'd 33554432 bits in 1716232 us (rate: 19551221 / sec ~= 19.6 M / sec)

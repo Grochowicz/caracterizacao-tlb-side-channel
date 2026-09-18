@@ -1,0 +1,8 @@
+elapsed time = 436 ms, measured latency =  66.51ns (~359.1 cycles)
+elapsed time = 867 ms, measured latency =  65.70ns (~354.8 cycles)
+elapsed time = 1299 ms, measured latency =  66.14ns (~357.1 cycles)
+elapsed time = 1731 ms, measured latency =  65.65ns (~354.5 cycles)
+elapsed time = 2175 ms, measured latency =  68.79ns (~371.4 cycles)
+elapsed time = 2638 ms, measured latency =  65.94ns (~356.1 cycles)
+elapsed time = 3068 ms, measured latency =  65.92ns (~356.0 cycles)
+elapsed time = 3497 ms, measured latency =  67.28ns (~363.3 cycles)

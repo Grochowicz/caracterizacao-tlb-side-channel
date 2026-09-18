@@ -1,0 +1,159 @@
+#!/usr/bin/env python3
+
+import sys
+import csv
+
+
+if len(sys.argv) != 3:
+    print(
+        f"Usage: {sys.argv[0]} <perf_file> <output_csv>"
+    )
+    sys.exit(1)
+
+
+filename = sys.argv[1]
+output = sys.argv[2]
+
+
+# ------------------------------------------------------------
+# Events to analyze.
+# ------------------------------------------------------------
+
+EVENTS = [
+    "cpu-clock",
+    "task-clock",
+    "context-switches",
+    "cpu-migrations",
+    "page-faults",
+    "cycles",
+    "instructions",
+    "branches",
+    "branch-misses",
+    "r2012",
+    "r2011",
+    "r0e12",
+]
+
+
+# ------------------------------------------------------------
+# Data accumulated across perf samples.
+# ------------------------------------------------------------
+
+data = {
+    event: {
+        "sum": 0.0,
+        "max": 0.0,
+        "stddev": 0.0,
+        "samples": 0,
+        "values": [],
+    }
+    for event in EVENTS
+}
+
+
+# ------------------------------------------------------------
+# Parse perf output.
+#
+# Expected format from:
+#
+# perf stat -C CPU -I 100 -e EVENTS
+#
+# Example:
+#
+#  100.123456      1234.56      cpu-clock
+#  100.123456      5678.90      cycles
+#
+# Some events are printed with:
+#
+#  100.123456      1.23 msec      cpu-clock
+#
+# ------------------------------------------------------------
+
+with open(filename) as f:
+    for line in f:
+        parts = line.split()
+
+        if len(parts) < 3:
+            continue
+
+        try:
+            timestamp = float(parts[0])
+        except ValueError:
+            continue
+
+        # ----------------------------------------------------
+        # Find the event name.
+        #
+        # Normal:
+        #   time count event
+        #
+        # With unit:
+        #   time count unit event
+        # ----------------------------------------------------
+
+        event = None
+        count = None
+
+        try:
+            count = float(parts[1])
+        except ValueError:
+            continue
+
+        if parts[2] in EVENTS:
+            event = parts[2]
+
+        elif len(parts) >= 4 and parts[3] in EVENTS:
+            event = parts[3]
+
+        if event is None:
+            continue
+
+        # ----------------------------------------------------
+        # Accumulate.
+        # ----------------------------------------------------
+
+        data[event]["sum"] += count
+        data[event]["max"] = max(
+            data[event]["max"],
+            count,
+        )
+        data[event]["samples"] += 1
+        data[event]["values"].append(count)
+
+# ------------------------------------------------------------
+# Write CSV.
+# ------------------------------------------------------------
+
+with open(output, "w", newline="") as f:
+    writer = csv.writer(f)
+
+    writer.writerow([
+        "event",
+        "samples",
+        "average",
+        "stddev",
+        "max",
+    ])
+
+    for event in EVENTS:
+        d = data[event]
+
+        if d["samples"]:
+            average = d["sum"] / d["samples"]
+            variance = sum((x - average) ** 2 for x in d["values"]) / d["samples"]
+            d["stddev"] = variance ** 0.5
+        else:
+            print(f"Warning: No samples for event '{event}' (analyze_perf.py)")
+            average = 0.0
+            d["stddev"] = 0.0
+
+        writer.writerow([
+            event,
+            d["samples"],
+            f"{average:.2f}",
+            f"{d['stddev']:.2f}",
+            f"{d['max']:.2f}",
+        ])
+
+
+print(f"CSV: {output}")

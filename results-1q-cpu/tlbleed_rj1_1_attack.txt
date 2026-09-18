@@ -1,0 +1,35 @@
+Ninja L1 mode:
+0x13370007000
+0x13370017000
+0x13370027000
+0x13370037000
+0x13370027008
+0x13370037008
+0x13370007008
+0x13370037010
+0x13370007010
+0x13370017008
+0x13370007018
+0x13370017010
+0x13370027010
+
+Recv'd 33554432 bits in 1854002 us (rate: 18098379 / sec ~= 18.1 M / sec)
+Recv'd 33554432 bits in 1871197 us (rate: 17932068 / sec ~= 17.9 M / sec)
+Recv'd 33554432 bits in 1857240 us (rate: 18066826 / sec ~= 18.1 M / sec)
+Recv'd 33554432 bits in 1834868 us (rate: 18287109 / sec ~= 18.3 M / sec)
+Recv'd 33554432 bits in 1886154 us (rate: 17789868 / sec ~= 17.8 M / sec)
+Recv'd 33554432 bits in 1849119 us (rate: 18146172 / sec ~= 18.1 M / sec)
+Recv'd 33554432 bits in 1867557 us (rate: 17967018 / sec ~= 18.0 M / sec)
+Recv'd 33554432 bits in 1843888 us (rate: 18197651 / sec ~= 18.2 M / sec)
+Recv'd 33554432 bits in 1871206 us (rate: 17931981 / sec ~= 17.9 M / sec)
+Recv'd 33554432 bits in 1841305 us (rate: 18223179 / sec ~= 18.2 M / sec)
+Recv'd 33554432 bits in 1870794 us (rate: 17935930 / sec ~= 17.9 M / sec)
+Recv'd 33554432 bits in 1862095 us (rate: 18019720 / sec ~= 18.0 M / sec)
+Recv'd 33554432 bits in 1859706 us (rate: 18042869 / sec ~= 18.0 M / sec)
+Recv'd 33554432 bits in 1840792 us (rate: 18228258 / sec ~= 18.2 M / sec)
+Recv'd 33554432 bits in 1849813 us (rate: 18139364 / sec ~= 18.1 M / sec)
+Recv'd 33554432 bits in 1872339 us (rate: 17921130 / sec ~= 17.9 M / sec)
+Recv'd 33554432 bits in 1865933 us (rate: 17982656 / sec ~= 18.0 M / sec)
+Recv'd 33554432 bits in 1858235 us (rate: 18057152 / sec ~= 18.1 M / sec)
+Recv'd 33554432 bits in 1862798 us (rate: 18012920 / sec ~= 18.0 M / sec)
+Recv'd 33554432 bits in 1848704 us (rate: 18150245 / sec ~= 18.2 M / sec)

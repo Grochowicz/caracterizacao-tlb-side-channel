@@ -1,0 +1,75 @@
+[*] start
+[*] MemTotal: 67645734912B
+[*] make queues
+[*] warmup and other alloc msg_msg structs
+[*] reserve mmappings
+[*] load 1st half of kernel modules
+[*] load 2nd half of kernel modules
+[*] dpm_base: ffff8e57c0000000
+[*] ffff8e58d1fe3000 ffff8e58dfcfe000 ffff8e58c5c6d000
+[*] target ffff8e58c5c6d000 is 4kB page
+[*] addr ffff8e5800000000
+[*] addr ffff8e5840000000
+[*] addr ffff8e5880000000
+[*] addr ffff8e58c0000000
+[+] found addr ffff8e58c5c6d000
+[*] addr ffff8e5900000000
+[*] addr ffff8e5940000000
+[*] addr ffff8e5980000000
+[*] addr ffff8e59c0000000
+[*] addr ffff8e5a00000000
+[*] addr ffff8e5a40000000
+[*] addr ffff8e5a80000000
+[*] addr ffff8e5ac0000000
+[*] addr ffff8e5b00000000
+[*] addr ffff8e5b40000000
+[*] addr ffff8e5b80000000
+[*] addr ffff8e5bc0000000
+[*] addr ffff8e5c00000000
+[*] addr ffff8e5c40000000
+[*] addr ffff8e5c80000000
+[*] addr ffff8e5cc0000000
+[*] addr ffff8e5d00000000
+[*] addr ffff8e5d40000000
+[*] addr ffff8e5d80000000
+[*] addr ffff8e5dc0000000
+[*] addr ffff8e5e00000000
+[*] addr ffff8e5e40000000
+[*] addr ffff8e5e80000000
+[*] addr ffff8e5ec0000000
+[*] addr ffff8e5f00000000
+[*] addr ffff8e5f40000000
+[*] addr ffff8e5f80000000
+[*] addr ffff8e5fc0000000
+[*] addr ffff8e6000000000
+[*] addr ffff8e6040000000
+[*] addr ffff8e6080000000
+[*] addr ffff8e60c0000000
+[*] addr ffff8e6100000000
+[*] addr ffff8e6140000000
+[*] addr ffff8e6180000000
+[*] addr ffff8e61c0000000
+[*] addr ffff8e6200000000
+[*] addr ffff8e6240000000
+[*] addr ffff8e6280000000
+[*] addr ffff8e62c0000000
+[*] addr ffff8e6300000000
+[*] addr ffff8e6340000000
+[*] addr ffff8e6380000000
+[*] addr ffff8e63c0000000
+[*] addr ffff8e6400000000
+[*] addr ffff8e6440000000
+[*] addr ffff8e6480000000
+[*] addr ffff8e64c0000000
+[*] addr ffff8e6500000000
+[*] addr ffff8e6540000000
+[*] addr ffff8e6580000000
+[*] addr ffff8e65c0000000
+[*] addr ffff8e6600000000
+[*] addr ffff8e6640000000
+[*] addr ffff8e6680000000
+[*] addr ffff8e66c0000000
+[*] addr ffff8e6700000000
+[*] addr ffff8e6740000000
+[*] cleanup
+[+] success

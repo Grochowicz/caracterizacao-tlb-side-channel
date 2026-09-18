@@ -1,0 +1,4 @@
+attack_1,label_1,attack_2,label_2,cosine_similarity,pearson_correlation,euclidean_distance,comparisons
+pt_leak,page-table,vmemmap_leak,generic,0.946886495279211,0.945362436762306,348692780.28663015,1
+msg_msg_leak,heap,vmemmap_leak,generic,-0.5181989361877739,-0.4911139520243209,925448235.6657474,1
+msg_msg_leak,heap,pt_leak,page-table,-0.7603638261793512,-0.7425856326135349,694941223.2869502,1
