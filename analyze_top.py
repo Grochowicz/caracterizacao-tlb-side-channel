@@ -16,6 +16,9 @@ filename = sys.argv[1]
 output = sys.argv[2]
 pids = sys.argv[3:]
 
+# filter with function that checks if the string is not empty
+pids = filter(lambda x: x.strip() != "", pids)
+
 if not pids:
     n = int(input("Number of monitored processes: "))
 
@@ -45,6 +48,18 @@ data = {
         "samples": 0,
         "time": 0.0,
     }
+    for pid in pids
+}
+
+
+# ------------------------------------------------------------
+# Time-series data.
+#
+# One entry per PID per TOP snapshot.
+# ------------------------------------------------------------
+
+timeseries = {
+    pid: []
     for pid in pids
 }
 
@@ -81,6 +96,7 @@ def finish_snapshot(snapshot):
     if not in_snapshot:
         return
 
+    sample = total_samples
     total_samples += 1
 
     for pid in pids:
@@ -116,6 +132,17 @@ def finish_snapshot(snapshot):
             result["time"],
             d["time"],
         )
+
+        # ----------------------------------------------------
+        # Preserve the values from this snapshot.
+        # ----------------------------------------------------
+
+        timeseries[pid].append({
+            "sample": sample,
+            "cpu": d["cpu"],
+            "mem": d["mem"],
+            "time": d["time"],
+        })
 
 
 # ------------------------------------------------------------
@@ -201,6 +228,7 @@ with open(filename) as f:
         try:
             if ":" in time_str:
                 minutes, seconds = time_str.split(":", 1)
+
                 cpu_time = (
                     float(minutes) * 60
                     + float(seconds)
@@ -229,7 +257,9 @@ if in_snapshot:
 
 
 # ------------------------------------------------------------
-# Write CSV.
+# Write aggregated CSV.
+#
+# This is the original output and remains unchanged.
 # ------------------------------------------------------------
 
 with open(output, "w", newline="") as f:
@@ -299,4 +329,35 @@ with open(output, "w", newline="") as f:
         ])
 
 
+# ------------------------------------------------------------
+# Write time-series CSV.
+#
+# One row = one PID at one TOP snapshot.
+# ------------------------------------------------------------
+
+timeseries_output = output.rsplit(".", 1)[0] + "_timeseries.csv"
+
+with open(timeseries_output, "w", newline="") as f:
+    writer = csv.writer(f)
+
+    writer.writerow([
+        "pid",
+        "sample",
+        "cpu",
+        "mem",
+        "time",
+    ])
+
+    for pid in pids:
+        for point in timeseries[pid]:
+            writer.writerow([
+                pid,
+                point["sample"],
+                f"{point['cpu']:.2f}",
+                f"{point['mem']:.2f}",
+                f"{point['time']:.2f}",
+            ])
+
+
 print(f"CSV: {output}")
+print(f"Time-series CSV: {timeseries_output}")

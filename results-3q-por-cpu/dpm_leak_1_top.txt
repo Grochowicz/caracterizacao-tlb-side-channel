@@ -1,0 +1,77 @@
+===== SAMPLE 1789766787.225708383 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3751913 g076430+  20   0  791688 264948    700 R  93.8   0.4   0:00.20 dpm_leak.elf
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.28 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.10 ksoftirqd/0
+     14 root      20   0       0      0      0 I   0.0   0.0   2:35.43 rcu_sched
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3751913 3751913   0 28.0 dpm_leak.elf
+
+===== SAMPLE 1789766788.227264331 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3751954 g076430+  20   0   11392   4160   3292 R   6.7   0.0   0:00.01 top
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.28 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.10 ksoftirqd/0
+     14 root      20   0       0      0      0 I   0.0   0.0   2:35.43 rcu_sched
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+
+===== SAMPLE 1789766789.167740090 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.28 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.10 ksoftirqd/0
+     14 root      20   0       0      0      0 I   0.0   0.0   2:35.43 rcu_sched
+     15 root      rt   0       0      0      0 S   0.0   0.0   0:04.38 migration/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+
+===== SAMPLE 1789766789.735792956 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3567313 root      20   0       0      0      0 I   6.2   0.0   0:00.97 kworker/u48:4-ext4-rsv-conversion
+3751914 g076430+  20   0   25080  10740   7728 S   6.2   0.0   0:00.02 perf
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.28 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.10 ksoftirqd/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+

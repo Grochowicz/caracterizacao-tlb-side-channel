@@ -89,6 +89,14 @@ python3 analyze_perf.py \
     "$perf_output" \
     "$OUT/baseline_perf_analysis.csv"
 
+#save pids
+echo "Victim PID: $victim_pid" \
+	> "$OUT/baseline_pids.txt"
+echo "Perf PID: $perf_pid" \
+	>> "$OUT/baseline_pids.txt"
+echo "Top PID: $top_pid" \
+	>> "$OUT/baseline_pids.txt"
+
 
 # ============================================================
 # LOCATION DISCLOSURE ATTACKS

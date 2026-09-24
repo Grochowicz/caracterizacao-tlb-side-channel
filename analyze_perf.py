@@ -52,6 +52,15 @@ data = {
 
 
 # ------------------------------------------------------------
+# Time-series data.
+#
+# One entry per perf sample and event.
+# ------------------------------------------------------------
+
+timeseries = []
+
+
+# ------------------------------------------------------------
 # Parse perf output.
 #
 # Expected format from:
@@ -120,8 +129,21 @@ with open(filename) as f:
         data[event]["samples"] += 1
         data[event]["values"].append(count)
 
+        # ----------------------------------------------------
+        # Preserve the original time-series sample.
+        # ----------------------------------------------------
+
+        timeseries.append({
+            "timestamp": timestamp,
+            "event": event,
+            "count": count,
+        })
+
+
 # ------------------------------------------------------------
-# Write CSV.
+# Write aggregated CSV.
+#
+# This is the original output and remains unchanged.
 # ------------------------------------------------------------
 
 with open(output, "w", newline="") as f:
@@ -139,11 +161,23 @@ with open(output, "w", newline="") as f:
         d = data[event]
 
         if d["samples"]:
-            average = d["sum"] / d["samples"]
-            variance = sum((x - average) ** 2 for x in d["values"]) / d["samples"]
+            average = (
+                d["sum"] / d["samples"]
+            )
+
+            variance = sum(
+                (x - average) ** 2
+                for x in d["values"]
+            ) / d["samples"]
+
             d["stddev"] = variance ** 0.5
+
         else:
-            print(f"Warning: No samples for event '{event}' (analyze_perf.py)")
+            print(
+                f"Warning: No samples for event "
+                f"'{event}' (analyze_perf.py)"
+            )
+
             average = 0.0
             d["stddev"] = 0.0
 
@@ -156,4 +190,33 @@ with open(output, "w", newline="") as f:
         ])
 
 
+# ------------------------------------------------------------
+# Write time-series CSV.
+#
+# One row = one event at one perf timestamp.
+# ------------------------------------------------------------
+
+timeseries_output = (
+    output.rsplit(".", 1)[0]
+    + "_timeseries.csv"
+)
+
+with open(timeseries_output, "w", newline="") as f:
+    writer = csv.writer(f)
+
+    writer.writerow([
+        "timestamp",
+        "event",
+        "count",
+    ])
+
+    for point in timeseries:
+        writer.writerow([
+            f"{point['timestamp']:.6f}",
+            point["event"],
+            f"{point['count']:.2f}",
+        ])
+
+
 print(f"CSV: {output}")
+print(f"Time-series CSV: {timeseries_output}")

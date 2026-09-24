@@ -43,7 +43,7 @@ PERF_EVENTS = [
     "branch-misses",
     "r2012",
     "r2011",
-#    "r0e12", era para ser algo do tlb mas nao ta disponivel parece
+#    "r0e12",
 ]
 
 
@@ -431,12 +431,14 @@ def make_row(filename, results_dir):
 
     victim_pid, attack_pid = read_pids(pid_file)
 
+    victim_present = True
+
     if victim_pid is None:
+        victim_present = False
         print(
             f"Warning: victim PID nao encontrado em {pid_file}",
             file=sys.stderr,
         )
-        return None
 
     if attack_pid is None:
         print(
@@ -449,15 +451,29 @@ def make_row(filename, results_dir):
     # Find the corresponding rows by PID.
     # --------------------------------------------------------
 
-    victim = data.get(victim_pid)
-    attack_data = data.get(attack_pid)
+    if victim_present:
+        victim = data.get(victim_pid)
 
-    if victim is None:
-        print(
-            f"Warning: PID {victim_pid} nao encontrado em {filename}",
-            file=sys.stderr,
-        )
-        return None
+        if victim is None:
+            print(
+                f"Warning: PID {victim_pid} nao encontrado em {filename}",
+                file=sys.stderr,
+            )
+            return None
+    else:
+        victim = {
+            "avg_cpu": 0.0,
+            "stddev_cpu": 0.0,
+            "max_cpu": 0.0,
+
+            "avg_mem": 0.0,
+            "stddev_mem": 0.0,
+            "max_mem": 0.0,
+
+            "time": 0.0,
+        }
+
+    attack_data = data.get(attack_pid)
 
     if attack_data is None:
         print(
@@ -467,9 +483,7 @@ def make_row(filename, results_dir):
         return None
 
     # --------------------------------------------------------
-    # Corresponding perf analysis:
-    #
-    # dpm_leak_1_perf_analysis.csv
+    # Corresponding perf analysis.
     # --------------------------------------------------------
 
     perf_file = (
@@ -594,6 +608,323 @@ def select_attempts(results_dir, analysis_files):
 
 
 # ============================================================
+# TIME SERIES
+# ============================================================
+
+def read_top_timeseries(filename):
+    """
+    Read the time series produced by analyze_top.py.
+
+    Expected format:
+
+        pid,sample,cpu,mem,time
+    """
+
+    if not filename.exists():
+        return []
+
+    series = []
+
+    with open(filename, newline="") as f:
+        reader = csv.DictReader(f)
+
+        for row in reader:
+            try:
+                series.append({
+                    "pid": row["pid"],
+                    "sample": int(row["sample"]),
+                    "cpu": float(row["cpu"]),
+                    "mem": float(row["mem"]),
+                    "time": float(row["time"]),
+                })
+            except (KeyError, ValueError):
+                continue
+
+    return series
+
+
+def read_perf_timeseries(filename):
+    """
+    Read the time series produced by analyze_perf.py.
+
+    Expected format:
+
+        timestamp,event,count
+    """
+
+    if not filename.exists():
+        return []
+
+    series = []
+
+    with open(filename, newline="") as f:
+        reader = csv.DictReader(f)
+
+        for row in reader:
+            event = row.get("event")
+
+            if event not in PERF_EVENTS:
+                continue
+
+            try:
+                series.append({
+                    "timestamp": float(row["timestamp"]),
+                    "event": event,
+                    "count": float(row["count"]),
+                })
+            except (KeyError, ValueError):
+                continue
+
+    return series
+
+
+def read_latency_timeseries(filename):
+    """
+    Read victim latency measurements.
+
+    The latency file does not contain an explicit timestamp,
+    so the measurement number is used as the time index.
+
+    Expected lines contain:
+
+        measured latency = 123.45ns
+    """
+
+    if not filename.exists():
+        return []
+
+    pattern = re.compile(
+        r"measured latency\s*=\s*([0-9.]+)ns"
+    )
+
+    series = []
+    sample = 0
+
+    with open(filename) as f:
+        for line in f:
+            match = pattern.search(line)
+
+            if not match:
+                continue
+
+            try:
+                value = float(match.group(1))
+            except ValueError:
+                continue
+
+            series.append({
+                "sample": sample,
+                "value": value,
+            })
+
+            sample += 1
+
+    return series
+
+
+def create_timeseries(rows, results_dir, output):
+    """
+    Create one CSV containing ALL selected time series.
+
+    TOP, PERF and victim latency remain separate series.
+    They are only stored in the same file.
+
+    Format:
+
+        attack,attempt,status,source,metric,series_id,time,value
+
+    Examples:
+
+        baseline,0,baseline,top,victim_cpu,victim,0,12.3
+        baseline,0,baseline,perf,cycles,perf,0.1,4567
+        baseline,0,baseline,victim_latency,latency,victim,0,103.2
+    """
+
+    fields = [
+        "attack",
+        "attempt",
+        "status",
+        "source",
+        "metric",
+        "series_id",
+        "time",
+        "value",
+    ]
+
+    with open(output, "w", newline="") as f:
+        writer = csv.DictWriter(
+            f,
+            fieldnames=fields,
+        )
+
+        writer.writeheader()
+
+        for row in rows:
+            attack = row["attack"]
+            attempt = row["attempt"]
+            status = row["status"]
+
+            # ------------------------------------------------
+            # Find the corresponding filenames.
+            # ------------------------------------------------
+
+            if attack == "baseline":
+                analysis_file = (
+                    results_dir /
+                    "baseline_analysis.csv"
+                )
+
+                top_timeseries_file = (
+                    results_dir /
+                    "baseline_analysis_timeseries.csv"
+                )
+
+                perf_timeseries_file = (
+                    results_dir /
+                    "baseline_perf_analysis_timeseries.csv"
+                )
+
+                latency_file = (
+                    results_dir /
+                    "baseline_victim.txt"
+                )
+
+                victim_pid = None
+                attack_pid = None
+
+                data = read_analysis(analysis_file)
+
+                if data:
+                    victim_pid = next(iter(data))
+
+            else:
+                analysis_file = (
+                    results_dir /
+                    f"{attack}_{attempt}_analysis.csv"
+                )
+
+                top_timeseries_file = (
+                    results_dir /
+                    f"{attack}_{attempt}_analysis_timeseries.csv"
+                )
+
+                perf_timeseries_file = (
+                    results_dir /
+                    f"{attack}_{attempt}_perf_analysis_timeseries.csv"
+                )
+
+                latency_file = (
+                    results_dir /
+                    f"{attack}_{attempt}_victim.txt"
+                )
+
+                pid_file = (
+                    results_dir /
+                    f"{attack}_{attempt}_pids.txt"
+                )
+
+                victim_pid, attack_pid = read_pids(pid_file)
+
+            # ------------------------------------------------
+            # TOP
+            # ------------------------------------------------
+
+            top_series = read_top_timeseries(
+                top_timeseries_file
+            )
+
+            for point in top_series:
+                pid = point["pid"]
+
+                if pid == victim_pid:
+                    series_id = "victim"
+                elif pid == attack_pid:
+                    series_id = "attack"
+                else:
+                    print(
+                        f"Warning: PID {pid} nao identificado em "
+                        f"{top_timeseries_file}",
+                        file=sys.stderr,
+                    )
+                    continue
+
+                writer.writerow({
+                    "attack": attack,
+                    "attempt": attempt,
+                    "status": status,
+                    "source": "top",
+                    "metric": "cpu",
+                    "series_id": series_id,
+                    "time": point["sample"],
+                    "value": point["cpu"],
+                })
+
+                writer.writerow({
+                    "attack": attack,
+                    "attempt": attempt,
+                    "status": status,
+                    "source": "top",
+                    "metric": "mem",
+                    "series_id": series_id,
+                    "time": point["sample"],
+                    "value": point["mem"],
+                })
+
+                writer.writerow({
+                    "attack": attack,
+                    "attempt": attempt,
+                    "status": status,
+                    "source": "top",
+                    "metric": "time",
+                    "series_id": series_id,
+                    "time": point["sample"],
+                    "value": point["time"],
+                })
+
+            # ------------------------------------------------
+            # PERF
+            # ------------------------------------------------
+
+            perf_series = read_perf_timeseries(
+                perf_timeseries_file
+            )
+
+            for point in perf_series:
+                writer.writerow({
+                    "attack": attack,
+                    "attempt": attempt,
+                    "status": status,
+                    "source": "perf",
+                    "metric": point["event"],
+                    "series_id": "perf",
+                    "time": point["timestamp"],
+                    "value": point["count"],
+                })
+
+            # ------------------------------------------------
+            # VICTIM LATENCY
+            # ------------------------------------------------
+
+            latency_series = read_latency_timeseries(
+                latency_file
+            )
+
+            for point in latency_series:
+                writer.writerow({
+                    "attack": attack,
+                    "attempt": attempt,
+                    "status": status,
+                    "source": "victim_latency",
+                    "metric": "latency",
+                    "series_id": "victim",
+                    "time": point["sample"],
+                    "value": point["value"],
+                })
+
+    print("Time series CSV:", output)
+
+
+# ============================================================
 # CREATE CSV
 # ============================================================
 
@@ -620,6 +951,7 @@ def create_csv(rows, output):
             #
             # This includes stddev values, which are written
             # to the CSV but are not heatmap cells.
+
             for metric in METRICS + STDDEV_METRICS:
                 if metric not in row:
                     row[metric] = 0.0
@@ -719,6 +1051,10 @@ def main():
         )
         sys.exit(1)
 
+    # --------------------------------------------------------
+    # Aggregated statistics CSV
+    # --------------------------------------------------------
+
     csv_output = (
         output_dir /
         "attack_statistics.csv"
@@ -727,6 +1063,21 @@ def main():
     create_csv(
         rows,
         csv_output,
+    )
+
+    # --------------------------------------------------------
+    # Time series CSV
+    # --------------------------------------------------------
+
+    timeseries_output = (
+        output_dir /
+        "attack_timeseries.csv"
+    )
+
+    create_timeseries(
+        rows,
+        results_dir,
+        timeseries_output,
     )
 
 

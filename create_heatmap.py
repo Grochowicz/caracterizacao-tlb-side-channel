@@ -141,7 +141,8 @@ def create_heatmap(rows, output):
 
         column = matrix[:, j]
 
-        baseline_value = column[0]
+        # baseline only present if the name of row 0 is "baseline"
+        baseline_value = column[0] if labels[0] == "baseline" else 0.0
 
         difference = column - baseline_value
 

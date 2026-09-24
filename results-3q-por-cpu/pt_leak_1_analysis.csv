@@ -1,0 +1,2 @@
+pid,total_samples,samples,avg_cpu,stddev_cpu,max_cpu,avg_mem,stddev_mem,max_mem,time
+3761460,24,22,96.38,12.50,100.00,0.40,0.00,0.40,15.18

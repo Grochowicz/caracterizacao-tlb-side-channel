@@ -1,0 +1,27 @@
+Naive L1 (TLBleed-like) mode:
+0x13370007000
+0x13370017000
+0x13370027000
+0x13370037000
+0x13370007000
+
+Recv'd 33554432 bits in 635748 us (rate: 52779453 / sec ~= 52.8 M / sec)
+Recv'd 33554432 bits in 635942 us (rate: 52763352 / sec ~= 52.8 M / sec)
+Recv'd 33554432 bits in 635837 us (rate: 52772065 / sec ~= 52.8 M / sec)
+Recv'd 33554432 bits in 635830 us (rate: 52772646 / sec ~= 52.8 M / sec)
+Recv'd 33554432 bits in 640480 us (rate: 52389507 / sec ~= 52.4 M / sec)
+Recv'd 33554432 bits in 635949 us (rate: 52762771 / sec ~= 52.8 M / sec)
+Recv'd 33554432 bits in 635830 us (rate: 52772646 / sec ~= 52.8 M / sec)
+Recv'd 33554432 bits in 635493 us (rate: 52800631 / sec ~= 52.8 M / sec)
+Recv'd 33554432 bits in 635721 us (rate: 52781695 / sec ~= 52.8 M / sec)
+Recv'd 33554432 bits in 635665 us (rate: 52786345 / sec ~= 52.8 M / sec)
+Recv'd 33554432 bits in 635946 us (rate: 52763020 / sec ~= 52.8 M / sec)
+Recv'd 33554432 bits in 635371 us (rate: 52810770 / sec ~= 52.8 M / sec)
+Recv'd 33554432 bits in 635612 us (rate: 52790746 / sec ~= 52.8 M / sec)
+Recv'd 33554432 bits in 635772 us (rate: 52777461 / sec ~= 52.8 M / sec)
+Recv'd 33554432 bits in 635760 us (rate: 52778457 / sec ~= 52.8 M / sec)
+Recv'd 33554432 bits in 635908 us (rate: 52766173 / sec ~= 52.8 M / sec)
+Recv'd 33554432 bits in 635858 us (rate: 52770322 / sec ~= 52.8 M / sec)
+Recv'd 33554432 bits in 637267 us (rate: 52653647 / sec ~= 52.7 M / sec)
+Recv'd 33554432 bits in 635601 us (rate: 52791660 / sec ~= 52.8 M / sec)
+Recv'd 33554432 bits in 635666 us (rate: 52786261 / sec ~= 52.8 M / sec)

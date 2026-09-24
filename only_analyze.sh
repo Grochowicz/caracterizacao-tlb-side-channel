@@ -3,6 +3,7 @@
 AP=./test-tlb/test-tlb
 ATTACKS=./TLBSideChannel
 OUT=./results-1q-cpu
+MADTLB=./tlbdr/case-studies/tlbleed/madtlb
 
 CPU=0
 
@@ -15,47 +16,17 @@ MONITOR_INTERVAL=0.1
 
 mkdir -p "$OUT"
 
-monitor_top() {
-    local output="$1"
-    local victim_pid="$2"
-    local attack_pid="$3"
-
-    while true; do
-        {
-            echo "===== SAMPLE $(date +%s.%N) ====="
-
-            echo "--- TOP ---"
-            top -b -n 2 -d 0.2 | head -n 20 | tail -n +7
-
-            echo "--- PS ---"
-
-            if [[ -n "$attack_pid" ]]; then
-                ps -L -p "$victim_pid,$attack_pid" \
-                    -o pid,tid,psr,pcpu,comm
-            else
-                ps -L -p "$victim_pid" \
-                    -o pid,tid,psr,pcpu,comm
-            fi
-
-            echo
-        } >> "$output"
-
-        sleep "$MONITOR_INTERVAL"
-    done
-}
-
-
 # ============================================================
 # BASELINE
 # ============================================================
-
-echo "baseline"
 
 top_output="$OUT/baseline_top.txt"
 perf_output="$OUT/baseline_perf.txt"
 analysis_output="$OUT/baseline_analysis.csv"
 
 victim_pid=$(grep "Victim PID" "$OUT/baseline_pids.txt" | awk '{print $3}')
+perf_pid=$(grep "Perf PID" "$OUT/baseline_pids.txt" | awk '{print $3}')
+top_pid=$(grep "Top PID" "$OUT/baseline_pids.txt" | awk '{print $3}')
 
 python3 analyze_top.py \
     "$top_output" \
@@ -68,7 +39,7 @@ python3 analyze_perf.py \
 
 
 # ============================================================
-# ATTACKS
+# LOCATION DISCLOSURE ATTACKS
 # ============================================================
 
 for attack in \
@@ -93,12 +64,11 @@ do
         top_output="$OUT/${name}_${attempt}_top.txt"
         perf_output="$OUT/${name}_${attempt}_perf.txt"
         analysis_output="$OUT/${name}_${attempt}_analysis.csv"
-
-		# read pids from files for analysis
-		victim_pid=$(grep "Victim PID" "$OUT/${name}_${attempt}_pids.txt" | awk '{print $3}')
+		
 		attack_pid=$(grep "Attack PID" "$OUT/${name}_${attempt}_pids.txt" | awk '{print $3}')
-
-        echo "$attack (attempt $attempt)"
+		victim_pid=$(grep "Victim PID" "$OUT/${name}_${attempt}_pids.txt" | awk '{print $3}')
+		perf_pid=$(grep "Perf PID" "$OUT/${name}_${attempt}_pids.txt" | awk '{print $3}')
+		top_pid=$(grep "Top PID" "$OUT/${name}_${attempt}_pids.txt" | awk '{print $3}')
 
         # ----------------------------------------------------
         # Analysis
@@ -133,12 +103,11 @@ for attack in rn1 rn2 rj1 rj2; do
     perf_output="$OUT/${name}_${attempt}_perf.txt"
     analysis_output="$OUT/${name}_${attempt}_analysis.csv"
 
-	# read pids from files for analysis
-	victim_pid=$(grep "Victim PID" "$OUT/${name}_${attempt}_pids.txt" | awk '{print $3}')
-	attack_pid=$(grep "Attack PID" "$OUT/${name}_${attempt}_pids.txt" | awk '{print $3}')
 
-    echo "$attack (attempt $attempt)"
-       >> "$OUT/${name}_${attempt}_pids.txt"
+	attack_pid=$(grep "Attack PID" "$OUT/${name}_${attempt}_pids.txt" | awk '{print $3}')
+	victim_pid=$(grep "Victim PID" "$OUT/${name}_${attempt}_pids.txt" | awk '{print $3}')
+	perf_pid=$(grep "Perf PID" "$OUT/${name}_${attempt}_pids.txt" | awk '{print $3}')
+	top_pid=$(grep "Top PID" "$OUT/${name}_${attempt}_pids.txt" | awk '{print $3}')
 
     # --------------------------------------------------------
     # Analysis
@@ -155,3 +124,4 @@ for attack in rn1 rn2 rj1 rj2; do
         "$OUT/${name}_${attempt}_perf_analysis.csv"
 
 done
+

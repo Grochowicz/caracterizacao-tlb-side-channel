@@ -2,9 +2,20 @@
 
 import pandas as pd
 import matplotlib.pyplot as plt
+import sys
+import os
 
+if len(sys.argv) < 2:
+    print("Usage: python3 pearson.py <input_csv>")
+    sys.exit(1)
 
-INPUT = "attack_statistics.csv"
+INPUT = sys.argv[1]
+
+if not INPUT.endswith(".csv"):
+    raise ValueError("Input file must be a CSV file")
+if not os.path.exists(INPUT):
+    raise FileNotFoundError(f"Input file {INPUT} does not exist")
+
 PLOT_OUTPUT = "pearson_correlation.png"
 REPORT_OUTPUT = "high_correlation_pairs.csv"
 
