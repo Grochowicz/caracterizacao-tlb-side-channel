@@ -1,2 +1,7 @@
 # vim undofile
 .*.un~
+# python venv
+.venv
+# old files
+OLD
+remote.sh

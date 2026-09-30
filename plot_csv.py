@@ -202,67 +202,50 @@ def read_perf(filename):
 
     return data
 
-
 # ============================================================
 # VICTIM LATENCY
 # ============================================================
 
 def read_victim_latency(filename):
-    latencies = []
+    """
+    Read the CSV produced by the victim latency analysis.
 
-    if not filename.exists():
-        print(
-            f"Warning: arquivo de latencia do victim nao encontrado: {filename}",
-            file=sys.stderr,
-        )
+    Expected format:
 
-        return {
-            "victim_avg_latency": 0.0,
-            "victim_stddev_latency": 0.0,
-            "victim_max_latency": 0.0,
-        }
-
-    pattern = re.compile(
-        r"measured latency\s*=\s*([0-9.]+)ns"
-    )
-
-    with open(filename) as f:
-        for line in f:
-            match = pattern.search(line)
-
-            if match:
-                latencies.append(
-                    float(match.group(1))
-                )
-
-    if not latencies:
-        print(
-            f"Warning: nenhuma latencia medida encontrada em {filename}",
-            file=sys.stderr,
-        )
-
-        return {
-            "victim_avg_latency": 0.0,
-            "victim_stddev_latency": 0.0,
-            "victim_max_latency": 0.0,
-        }
+        victim_avg_latency,victim_stddev_latency,victim_max_latency
+        77.69,23.71,133.84
+    """
 
     data = {
-        "victim_avg_latency": (
-            sum(latencies) / len(latencies)
-        ),
-
-        "victim_stddev_latency": (
-            np.std(latencies)
-        ),
-
-        "victim_max_latency": (
-            max(latencies)
-        ),
+        "victim_avg_latency": 0.0,
+        "victim_stddev_latency": 0.0,
+        "victim_max_latency": 0.0,
     }
 
-    return data
+    if not filename.exists():
+        return data
 
+    with open(filename, newline="") as f:
+        reader = csv.DictReader(f)
+
+        row = next(reader, None)
+
+        if row is None:
+            return data
+
+        data["victim_avg_latency"] = float(
+            row["victim_avg_latency"]
+        )
+
+        data["victim_stddev_latency"] = float(
+            row["victim_stddev_latency"]
+        )
+
+        data["victim_max_latency"] = float(
+            row["victim_max_latency"]
+        )
+
+    return data
 
 # ============================================================
 # ATTACK SUCCESS
@@ -368,7 +351,7 @@ def make_row(filename, results_dir):
         perf_data = read_perf(perf_file)
 
         victim_data = read_victim_latency(
-            results_dir / "baseline_victim.txt"
+            results_dir / "baseline_victim_analysis.txt"
         )
 
         row = {

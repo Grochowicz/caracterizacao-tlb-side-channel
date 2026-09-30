@@ -2,82 +2,82 @@
 [*] MemTotal: 67645734912B
 [*] load 1st half of kernel modules
 [*] load 2nd half of kernel modules
-[*] pipe_buffer 0 ffff8e58c90fd420
-[*] pipe_buffer 1 ffff8e58c90fd120
-[*] pipe_buffer 2 ffff8e58c90fd720
-[*] pipe_buffer 3 ffff8e58c90fdf60
-[*] pipe_buffer 4 ffff8e58c90fdea0
-[*] pipe_buffer 21 ffff8e58c90fdde0
-[*] pipe_buffer 40 ffff8e58c90fd060
-[*] pipe_buffer 42 ffff8e58db2bef60
-[*] pipe_buffer 84 ffff8e58c5f86960
-[*] pipe_buffer 126 ffff8e58cf453960
-[*] pipe_buffer 168 ffff8e58cc7c7720
-[*] pipe_buffer 210 ffff8e58c64aad80
-[*] ffff8e58c90fd420 is 4kB page
-[*] dpm_base: ffff8e57c0000000
-[*] addr ffff8e57c0000000
-[*] addr ffff8e5800000000
-[*] addr ffff8e5840000000
-[*] addr ffff8e5880000000
-[*] addr ffff8e58c0000000
-[+] found addr ffff8e58c90fd000
-[*] addr ffff8e5900000000
-[*] addr ffff8e5940000000
-[*] addr ffff8e5980000000
-[*] addr ffff8e59c0000000
-[*] addr ffff8e5a00000000
-[*] addr ffff8e5a40000000
-[*] addr ffff8e5a80000000
-[*] addr ffff8e5ac0000000
-[*] addr ffff8e5b00000000
-[*] addr ffff8e5b40000000
-[*] addr ffff8e5b80000000
-[*] addr ffff8e5bc0000000
-[*] addr ffff8e5c00000000
-[*] addr ffff8e5c40000000
-[*] addr ffff8e5c80000000
-[*] addr ffff8e5cc0000000
-[*] addr ffff8e5d00000000
-[*] addr ffff8e5d40000000
-[*] addr ffff8e5d80000000
-[*] addr ffff8e5dc0000000
-[*] addr ffff8e5e00000000
-[*] addr ffff8e5e40000000
-[*] addr ffff8e5e80000000
-[*] addr ffff8e5ec0000000
-[*] addr ffff8e5f00000000
-[*] addr ffff8e5f40000000
-[*] addr ffff8e5f80000000
-[*] addr ffff8e5fc0000000
-[*] addr ffff8e6000000000
-[*] addr ffff8e6040000000
-[*] addr ffff8e6080000000
-[*] addr ffff8e60c0000000
-[*] addr ffff8e6100000000
-[*] addr ffff8e6140000000
-[*] addr ffff8e6180000000
-[*] addr ffff8e61c0000000
-[*] addr ffff8e6200000000
-[*] addr ffff8e6240000000
-[*] addr ffff8e6280000000
-[*] addr ffff8e62c0000000
-[*] addr ffff8e6300000000
-[*] addr ffff8e6340000000
-[*] addr ffff8e6380000000
-[*] addr ffff8e63c0000000
-[*] addr ffff8e6400000000
-[*] addr ffff8e6440000000
-[*] addr ffff8e6480000000
-[*] addr ffff8e64c0000000
-[*] addr ffff8e6500000000
-[*] addr ffff8e6540000000
-[*] addr ffff8e6580000000
-[*] addr ffff8e65c0000000
-[*] addr ffff8e6600000000
-[*] addr ffff8e6640000000
-[*] addr ffff8e6680000000
-[*] addr ffff8e66c0000000
-[*] addr ffff8e6700000000
-[*] addr ffff8e6740000000
+[*] pipe_buffer 0 ffff8de3f56b26c0
+[*] pipe_buffer 1 ffff8de3f56b2de0
+[*] pipe_buffer 2 ffff8de3f56b2f60
+[*] pipe_buffer 3 ffff8de3f56b2480
+[*] pipe_buffer 4 ffff8de3f56b20c0
+[*] pipe_buffer 21 ffff8de3f56b2540
+[*] pipe_buffer 40 ffff8de3f56b2180
+[*] pipe_buffer 42 ffff8dd793dbe480
+[*] pipe_buffer 84 ffff8ddabd4c2900
+[*] pipe_buffer 126 ffff8ddfed0de060
+[*] pipe_buffer 168 ffff8de3f57da8a0
+[*] pipe_buffer 210 ffff8de03d5d61e0
+[*] ffff8de3f56b26c0 is 4kB page
+[*] dpm_base: ffff8dd680000000
+[*] addr ffff8dd680000000
+[*] addr ffff8dd6c0000000
+[*] addr ffff8dd700000000
+[*] addr ffff8dd740000000
+[*] addr ffff8dd780000000
+[*] addr ffff8dd7c0000000
+[*] addr ffff8dd800000000
+[*] addr ffff8dd840000000
+[*] addr ffff8dd880000000
+[*] addr ffff8dd8c0000000
+[*] addr ffff8dd900000000
+[*] addr ffff8dd940000000
+[*] addr ffff8dd980000000
+[*] addr ffff8dd9c0000000
+[*] addr ffff8dda00000000
+[*] addr ffff8dda40000000
+[*] addr ffff8dda80000000
+[*] addr ffff8ddac0000000
+[*] addr ffff8ddb00000000
+[*] addr ffff8ddb40000000
+[*] addr ffff8ddb80000000
+[*] addr ffff8ddbc0000000
+[*] addr ffff8ddc00000000
+[*] addr ffff8ddc40000000
+[*] addr ffff8ddc80000000
+[*] addr ffff8ddcc0000000
+[*] addr ffff8ddd00000000
+[*] addr ffff8ddd40000000
+[*] addr ffff8ddd80000000
+[*] addr ffff8dddc0000000
+[*] addr ffff8dde00000000
+[*] addr ffff8dde40000000
+[*] addr ffff8dde80000000
+[*] addr ffff8ddec0000000
+[*] addr ffff8ddf00000000
+[*] addr ffff8ddf40000000
+[*] addr ffff8ddf80000000
+[*] addr ffff8ddfc0000000
+[*] addr ffff8de000000000
+[*] addr ffff8de040000000
+[*] addr ffff8de080000000
+[*] addr ffff8de0c0000000
+[*] addr ffff8de100000000
+[*] addr ffff8de140000000
+[*] addr ffff8de180000000
+[*] addr ffff8de1c0000000
+[*] addr ffff8de200000000
+[*] addr ffff8de240000000
+[*] addr ffff8de280000000
+[*] addr ffff8de2c0000000
+[*] addr ffff8de300000000
+[*] addr ffff8de340000000
+[*] addr ffff8de380000000
+[*] addr ffff8de3c0000000
+[+] found addr ffff8de3f56b2000
+[*] addr ffff8de400000000
+[*] addr ffff8de440000000
+[*] addr ffff8de480000000
+[*] addr ffff8de4c0000000
+[*] addr ffff8de500000000
+[*] addr ffff8de540000000
+[*] addr ffff8de580000000
+[*] addr ffff8de5c0000000
+[*] addr ffff8de600000000
 [+] success

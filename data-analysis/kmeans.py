@@ -7,11 +7,7 @@ import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
-
-
-INPUT_FILE = "attack_statistics.csv"
-OUTPUT_FILE = "_means_attack_clusters.csv"
-PLOT_FILE = "_means_attack_clusters.png"
+from pathlib import Path
 
 
 # Attack -> directory/category
@@ -32,11 +28,20 @@ ATTACK_LABELS = {
 
 
 def main():
-    if len(sys.argv) != 2:
-        print(f"Usage: {sys.argv[0]} <number_of_clusters>")
+    if len(sys.argv) != 4:
+        print(f"Usage: {sys.argv[0]} <number_of_clusters> <input_file> <output_file>")
         sys.exit(1)
 
     k = int(sys.argv[1])
+
+    # read INPUT_FILE path from argv[2]
+    if not Path(sys.argv[2]).exists():
+        print(f"Error: file {sys.argv[1]} does not exist.")
+        sys.exit(1)
+
+    INPUT_FILE = sys.argv[2]
+
+    OUTPUT_FILE = sys.argv[3]
 
     df = pd.read_csv(INPUT_FILE)
 
@@ -92,17 +97,20 @@ def main():
 
     df["cluster"] = kmeans.fit_predict(X_scaled)
 
+    # make sure out/ directory exists
+    Path("out").mkdir(parents=True, exist_ok=True)
+
     # Save attack/label/attempt information plus cluster.
     df[
         ["attack", "label", "attempt", "status", "cluster"]
     ].sort_values(
         ["cluster", "label", "attack", "attempt"]
     ).to_csv(
-        "out/" + str(k) + OUTPUT_FILE,
+        "out/" + str(k) + OUTPUT_FILE + ".csv",
         index=False
     )
 
-    print(f"\nClusters written to {'out/' + str(k) + OUTPUT_FILE}\n")
+    print(f"\nClusters written to {'out/' + str(k) + OUTPUT_FILE + '.csv'}\n")
 
     # Print clusters.
     for cluster in sorted(df["cluster"].unique()):
@@ -158,13 +166,13 @@ def main():
     plt.grid(True, alpha=0.3)
     plt.tight_layout()
     plt.savefig(
-        "out/" + str(k) + PLOT_FILE,
+        "out/" + str(k) + OUTPUT_FILE + ".png",
         dpi=300,
         bbox_inches="tight"
     )
     plt.close()
 
-    print(f"Plot written to {'out/' + str(k) + PLOT_FILE}")
+    print(f"Plot written to {'out/' + str(k) + OUTPUT_FILE + '.png'}")
 
 
 if __name__ == "__main__":

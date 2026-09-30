@@ -5,19 +5,25 @@ import matplotlib.pyplot as plt
 import sys
 import os
 
-if len(sys.argv) < 2:
-    print("Usage: python3 pearson.py <input_csv>")
+if len(sys.argv) < 3:
+    print("Usage: python3 pearson.py <input_csv> <output_directory>")
     sys.exit(1)
 
 INPUT = sys.argv[1]
+OUTPUT_DIR = sys.argv[2]
 
 if not INPUT.endswith(".csv"):
     raise ValueError("Input file must be a CSV file")
 if not os.path.exists(INPUT):
     raise FileNotFoundError(f"Input file {INPUT} does not exist")
+if not os.path.isfile(INPUT):
+    raise ValueError(f"Input file {INPUT} is not a file")
+if not os.path.exists(OUTPUT_DIR):
+    os.makedirs(OUTPUT_DIR)
 
-PLOT_OUTPUT = "pearson_correlation.png"
-REPORT_OUTPUT = "high_correlation_pairs.csv"
+
+PLOT_OUTPUT = os.path.join(OUTPUT_DIR, "pearson_correlation.png")
+REPORT_OUTPUT = os.path.join(OUTPUT_DIR, "high_correlation_pairs.csv")
 
 # Threshold for strong correlation
 THRESHOLD = 0.9

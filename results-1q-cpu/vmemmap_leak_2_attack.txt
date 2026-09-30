@@ -1,2 +1,2 @@
-fffff99100000000
-[!] fail
+fffff6f780000000
+[+] success

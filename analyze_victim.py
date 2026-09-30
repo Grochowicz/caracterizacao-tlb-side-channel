@@ -1,0 +1,195 @@
+import csv
+import re
+import sys
+from pathlib import Path
+
+import numpy as np
+
+
+def read_victim_latency(filename):
+    latencies = []
+
+    if not filename.exists():
+        print(
+            f"Warning: arquivo de latencia do victim nao encontrado: {filename}",
+            file=sys.stderr,
+        )
+
+        return {
+            "victim_avg_latency": 0.0,
+            "victim_stddev_latency": 0.0,
+            "victim_max_latency": 0.0,
+        }
+
+    pattern = re.compile(
+        r"measured latency\s*=\s*([0-9.]+)ns"
+    )
+
+    with open(filename) as f:
+        for line in f:
+            match = pattern.search(line)
+
+            if match:
+                latencies.append(
+                    float(match.group(1))
+                )
+
+    if not latencies:
+        print(
+            f"Warning: nenhuma latencia medida encontrada em {filename}",
+            file=sys.stderr,
+        )
+
+        return {
+            "victim_avg_latency": 0.0,
+            "victim_stddev_latency": 0.0,
+            "victim_max_latency": 0.0,
+        }
+
+    return {
+        "victim_avg_latency": sum(latencies) / len(latencies),
+        "victim_stddev_latency": np.std(latencies),
+        "victim_max_latency": max(latencies),
+    }
+
+
+def read_victim_latency_timeseries(filename):
+    measurements = []
+
+    if not filename.exists():
+        print(
+            f"Warning: arquivo de latencia do victim nao encontrado: {filename}",
+            file=sys.stderr,
+        )
+        return measurements
+
+    pattern = re.compile(
+        r"elapsed time\s*=\s*([0-9.]+)\s*ms,\s*"
+        r"measured latency\s*=\s*([0-9.]+)ns"
+    )
+
+    with open(filename) as f:
+        for line in f:
+            match = pattern.search(line)
+
+            if match:
+                elapsed_ms = float(match.group(1))
+                latency_ns = float(match.group(2))
+
+                measurements.append(
+                    (elapsed_ms, latency_ns)
+                )
+
+    return measurements
+
+
+def write_victim_latency_timeseries(
+    filename,
+    output_filename,
+):
+    measurements = read_victim_latency_timeseries(filename)
+
+    if not measurements:
+        print(
+            f"Warning: nenhuma latencia medida encontrada em {filename}",
+            file=sys.stderr,
+        )
+        return
+
+    measurements.sort(key=lambda x: x[0])
+
+    interval_ms = 100.0
+
+    # Round the end up to the next 100 ms interval.
+    final_time_ms = (
+        np.ceil(measurements[-1][0] / interval_ms)
+        * interval_ms
+    )
+
+    measurement_index = 0
+    current_latency = measurements[0][1]
+
+    with open(output_filename, "w", newline="") as f:
+        writer = csv.writer(f)
+
+        writer.writerow([
+            "timestamp",
+            "event",
+            "count",
+        ])
+
+        timestamp_ms = interval_ms
+
+        while timestamp_ms <= final_time_ms:
+            while (
+                measurement_index + 1 < len(measurements)
+                and measurements[measurement_index + 1][0]
+                <= timestamp_ms
+            ):
+                measurement_index += 1
+                current_latency = measurements[measurement_index][1]
+
+            writer.writerow([
+                f"{timestamp_ms / 1000:.6f}",
+                "victim-latency",
+                f"{current_latency:.2f}",
+            ])
+
+            timestamp_ms += interval_ms
+
+
+def write_victim_latency_summary(
+    filename,
+    output_filename,
+):
+    data = read_victim_latency(filename)
+
+    with open(output_filename, "w", newline="") as f:
+        writer = csv.writer(f)
+
+        writer.writerow([
+            "victim_avg_latency",
+            "victim_stddev_latency",
+            "victim_max_latency",
+        ])
+
+        writer.writerow([
+            f"{data['victim_avg_latency']:.2f}",
+            f"{data['victim_stddev_latency']:.2f}",
+            f"{data['victim_max_latency']:.2f}",
+        ])
+
+
+def main():
+    if len(sys.argv) != 3:
+        print(
+            f"Usage: {sys.argv[0]} <input_file> <output_file>",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+
+    input_filename = Path(sys.argv[1])
+    output_filename = Path(sys.argv[2])
+
+    # Accumulated statistics.
+    write_victim_latency_summary(
+        input_filename,
+        output_filename,
+    )
+
+    # 100 ms time series.
+    timeseries_filename = Path(
+        str(output_filename).replace(
+            ".csv",
+            "_timeseries.csv",
+        )
+    )
+
+    write_victim_latency_timeseries(
+        input_filename,
+        timeseries_filename,
+    )
+
+
+if __name__ == "__main__":
+    main()

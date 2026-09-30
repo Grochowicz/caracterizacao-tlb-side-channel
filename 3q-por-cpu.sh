@@ -2,7 +2,7 @@
 
 AP=./test-tlb/test-tlb
 ATTACKS=./TLBSideChannel
-OUT=./results-3q-por-cpu
+OUT=./results-1q-cpu
 MADTLB=./tlbdr/case-studies/tlbleed/madtlb
 
 CPU=0

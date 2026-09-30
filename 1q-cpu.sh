@@ -1,9 +1,27 @@
 #!/usr/bin/env bash
 
-AP=./test-tlb/test-tlb
+APS=("./test-tlb/test-tlb -r 67108864 4096" "./resnet/resnet50.py")
+
+if [ $# -eq 0 ]; then
+	echo "No argument provided; choose AP."
+    exit
+fi
+
+if [ $1 -ge ${#APS[@]} ]; then
+    echo "Index $1 is out of bounds for APS array (size ${#APS[@]})."
+    exit
+else
+	AP=${APS[$1]}
+fi
+
+echo $AP
+
 ATTACKS=./TLBSideChannel
-OUT=./results-1q-cpu
+OUT=./results-1q-cpu-$1
 MADTLB=./tlbdr/case-studies/tlbleed/madtlb
+
+echo $OUT
+exit
 
 CPU=0
 
@@ -56,8 +74,7 @@ top_output="$OUT/baseline_top.txt"
 perf_output="$OUT/baseline_perf.txt"
 analysis_output="$OUT/baseline_analysis.csv"
 
-taskset -c "$CPU" "$AP" -r 67108864 4096 \
-    > "$OUT/baseline_victim.txt" 2>&1 &
+taskset -c "$CPU" "$AP" > "$OUT/baseline_victim.txt" 2>&1 &
 victim_pid=$!
 
 perf stat \
@@ -88,6 +105,10 @@ python3 analyze_top.py \
 python3 analyze_perf.py \
     "$perf_output" \
     "$OUT/baseline_perf_analysis.csv"
+
+python3 analyze_victim.py \
+	"$OUT/baseline_victim.txt" \
+	"$OUT/baseline_victim_analysis.csv"
 
 #save pids
 echo "Victim PID: $victim_pid" \
@@ -129,8 +150,7 @@ do
         # Victim
         # ----------------------------------------------------
 
-        taskset -c "$CPU" "$AP" -r 67108864 4096 \
-            > "$OUT/${name}_${attempt}_victim.txt" 2>&1 &
+        taskset -c "$CPU" "$AP" > "$OUT/${name}_${attempt}_victim.txt" 2>&1 &
         victim_pid=$!
 
         # ----------------------------------------------------
@@ -210,6 +230,10 @@ do
             "$perf_output" \
             "$OUT/${name}_${attempt}_perf_analysis.csv"
 
+		python3 analyze_victim.py \
+			"$OUT/${name}_${attempt}_victim.txt" \
+			"$OUT/${name}_${attempt}_victim_analysis.csv"
+
         if grep -qF '[+] success' \
             "$OUT/${name}_${attempt}_attack.txt"; then
             break
@@ -233,8 +257,7 @@ for attack in rn1 rn2 rj1 rj2; do
     # Victim
     # --------------------------------------------------------
 
-    taskset -c "$CPU" "$AP" -r 67108864 4096 \
-        > "$OUT/${name}_${attempt}_victim.txt" 2>&1 &
+    taskset -c "$CPU" "$AP" > "$OUT/${name}_${attempt}_victim.txt" 2>&1 &
     victim_pid=$!
 
     # --------------------------------------------------------
@@ -313,5 +336,9 @@ for attack in rn1 rn2 rj1 rj2; do
     python3 analyze_perf.py \
         "$perf_output" \
         "$OUT/${name}_${attempt}_perf_analysis.csv"
+
+	python3 analyze_victim.py \
+		"$OUT/${name}_${attempt}_victim.txt" \
+		"$OUT/${name}_${attempt}_victim_analysis.csv"
 
 done

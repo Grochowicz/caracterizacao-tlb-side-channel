@@ -1,0 +1,1123 @@
+===== SAMPLE 1789765033.999452157 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599220 g076430+  20   0   69232  67076   1532 R  93.8   0.1   0:00.17 test-tlb
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+     14 root      20   0       0      0      0 I   0.0   0.0   2:33.53 rcu_sched
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0  0.0 test-tlb
+
+===== SAMPLE 1789765034.470852561 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599220 g076430+  20   0  134768 132924   1828 R 100.0   0.2   0:00.64 test-tlb
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+     14 root      20   0       0      0      0 I   0.0   0.0   2:33.53 rcu_sched
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 72.0 test-tlb
+
+===== SAMPLE 1789765034.992886197 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599220 g076430+  20   0  200304 198552   1828 R  93.8   0.3   0:01.22 test-tlb
+ 194163 g470758+  20   0    7372   3592   3320 S   6.2   0.0   0:18.70 bash
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 63.5 test-tlb
+
+===== SAMPLE 1789765035.528969476 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599220 g076430+  20   0  331376 329560   1828 R  93.8   0.5   0:01.73 test-tlb
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+     14 root      20   0       0      0      0 I   0.0   0.0   2:33.53 rcu_sched
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 91.5 test-tlb
+===== SAMPLE 1789765037.319812209 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599220 g076430+  20   0  593520 591704   1828 R  60.0   0.9   0:03.50 test-tlb
+3599429 g076430+  20   0  793776 265060    756 R  33.3   0.4   0:00.07 pud_leak.elf
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 88.7 test-tlb
+3599429 3599429   0  7.5 pud_leak.elf
+
+===== SAMPLE 1789765037.988008738 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599220 g076430+  20   0  659056 657304   1828 R  50.0   1.0   0:03.81 test-tlb
+3599429 g076430+  20   0  793776 265060    756 R  43.8   0.4   0:00.37 pud_leak.elf
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 95.7 test-tlb
+3599429 3599429   0 20.0 pud_leak.elf
+
+===== SAMPLE 1789765038.421684244 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599220 g076430+  20   0  724592 722840   1828 R  53.3   1.1   0:04.03 test-tlb
+3599429 g076430+  20   0  793776 265060    756 R  46.7   0.4   0:00.57 pud_leak.elf
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 85.6 test-tlb
+3599429 3599429   0 28.6 pud_leak.elf
+
+===== SAMPLE 1789765039.330163677 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599429 g076430+  20   0  793776 265060    756 R  53.3   0.4   0:01.03 pud_leak.elf
+3599220 g076430+  20   0  855664 853912   1828 R  46.7   1.3   0:04.47 test-tlb
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 75.0 test-tlb
+3599429 3599429   0 26.7 pud_leak.elf
+
+===== SAMPLE 1789765039.779399800 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599220 g076430+  20   0  921200 919448   1828 R  53.3   1.4   0:04.73 test-tlb
+3599429 g076430+  20   0  793776 265060    756 R  46.7   0.4   0:01.28 pud_leak.elf
+   1157 root      20   0 3694356 172624  65544 S   6.7   0.3  60:08.28 dockerd
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 79.1 test-tlb
+3599429 3599429   0 33.5 pud_leak.elf
+
+===== SAMPLE 1789765040.320951081 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599220 g076430+  20   0  986736 984984   1828 R  53.3   1.5   0:04.98 test-tlb
+3599429 g076430+  20   0  793776 265060    756 R  40.0   0.4   0:01.52 pud_leak.elf
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 71.4 test-tlb
+3599429 3599429   0 31.2 pud_leak.elf
+
+===== SAMPLE 1789765040.763924732 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599429 g076430+  20   0  793776 265060    756 R  53.3   0.4   0:01.75 pud_leak.elf
+3599220 g076430+  20   0 1052272   1.0g   1828 R  46.7   1.6   0:05.20 test-tlb
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 74.5 test-tlb
+3599429 3599429   0 35.8 pud_leak.elf
+
+===== SAMPLE 1789765041.205674329 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599429 g076430+  20   0  793776 265060    756 R  53.3   0.4   0:01.98 pud_leak.elf
+3599220 g076430+  20   0 1117808   1.1g   1828 R  46.7   1.7   0:05.41 test-tlb
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 69.0 test-tlb
+3599429 3599429   0 35.3 pud_leak.elf
+
+===== SAMPLE 1789765042.013680086 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599429 g076430+  20   0  793776 265060    756 R  53.3   0.4   0:02.46 pud_leak.elf
+3599220 g076430+  20   0 1248880   1.2g   1828 R  46.7   1.9   0:05.90 test-tlb
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 65.6 test-tlb
+3599429 3599429   0 35.5 pud_leak.elf
+
+===== SAMPLE 1789765042.614575565 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599220 g076430+  20   0 1314416   1.3g   1828 R  53.3   2.0   0:06.12 test-tlb
+3599429 g076430+  20   0  793776 265060    756 R  53.3   0.4   0:02.68 pud_leak.elf
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 68.2 test-tlb
+3599429 3599429   0 38.8 pud_leak.elf
+
+===== SAMPLE 1789765043.081386953 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599220 g076430+  20   0 1379952   1.3g   1828 R  53.3   2.1   0:06.36 test-tlb
+3599429 g076430+  20   0  793776 265060    756 R  40.0   0.4   0:02.91 pud_leak.elf
+3481593 root      20   0       0      0      0 I   6.7   0.0   0:00.14 kworker/4:0-mm_percpu_wq
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 66.4 test-tlb
+3599429 3599429   0 40.3 pud_leak.elf
+
+===== SAMPLE 1789765044.362076974 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599429 g076430+  20   0  793776 265060    756 R  60.0   0.4   0:03.58 pud_leak.elf
+3599220 g076430+  20   0 1576560   1.5g   1828 R  40.0   2.4   0:07.01 test-tlb
+     14 root      20   0       0      0      0 I   6.7   0.0   2:33.55 rcu_sched
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 64.0 test-tlb
+3599429 3599429   0 40.2 pud_leak.elf
+
+===== SAMPLE 1789765044.881659899 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599220 g076430+  20   0 1642096   1.6g   1828 R  53.3   2.5   0:07.26 test-tlb
+3599429 g076430+  20   0  793776 265060    756 R  46.7   0.4   0:03.81 pud_leak.elf
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 66.2 test-tlb
+3599429 3599429   0 43.6 pud_leak.elf
+
+===== SAMPLE 1789765045.515607913 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599220 g076430+  20   0 1773168   1.7g   1828 R  53.3   2.7   0:07.57 test-tlb
+3599429 g076430+  20   0  793776 265060    756 R  53.3   0.4   0:04.13 pud_leak.elf
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 63.3 test-tlb
+3599429 3599429   0 41.7 pud_leak.elf
+
+===== SAMPLE 1789765045.989960782 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599220 g076430+  20   0 1838704   1.8g   1828 R  46.7   2.8   0:07.82 test-tlb
+3599429 g076430+  20   0  793776 265060    756 R  46.7   0.4   0:04.39 pud_leak.elf
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 60.7 test-tlb
+3599429 3599429   0 40.9 pud_leak.elf
+
+===== SAMPLE 1789765046.655500077 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599220 g076430+  20   0 1904240   1.8g   1828 R  50.0   2.9   0:08.16 test-tlb
+3599429 g076430+  20   0  793776 265060    756 R  50.0   0.4   0:04.73 pud_leak.elf
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 62.9 test-tlb
+3599429 3599429   0 43.2 pud_leak.elf
+
+===== SAMPLE 1789765047.165775835 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599429 g076430+  20   0  793776 265060    756 R  53.3   0.4   0:04.95 pud_leak.elf
+3599220 g076430+  20   0 1969776   1.9g   1828 R  46.7   3.0   0:08.40 test-tlb
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 60.7 test-tlb
+3599429 3599429   0 42.5 pud_leak.elf
+
+===== SAMPLE 1789765047.832659292 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599429 g076430+  20   0  793776 265060    756 R  53.3   0.4   0:05.29 pud_leak.elf
+3599220 g076430+  20   0 2100848   2.0g   1828 R  46.7   3.2   0:08.72 test-tlb
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 62.6 test-tlb
+3599429 3599429   0 44.6 pud_leak.elf
+
+===== SAMPLE 1789765048.373460010 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599220 g076430+  20   0 2166384   2.1g   1828 R  53.3   3.3   0:08.99 test-tlb
+3599429 g076430+  20   0  793776 265060    756 R  46.7   0.4   0:05.55 pud_leak.elf
+ 173910 g470758+  20   0    7372   3500   3232 S   6.7   0.0   0:48.63 bash
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 60.0 test-tlb
+3599429 3599429   0 42.9 pud_leak.elf
+
+===== SAMPLE 1789765048.824478981 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599220 g076430+  20   0 2231920   2.1g   1828 R  50.0   3.4   0:09.24 test-tlb
+3599429 g076430+  20   0  793776 265060    756 R  50.0   0.4   0:05.80 pud_leak.elf
+   1157 root      20   0 3694356 172624  65544 S   6.2   0.3  60:08.33 dockerd
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 61.7 test-tlb
+3599429 3599429   0 44.8 pud_leak.elf
+
+===== SAMPLE 1789765049.299821208 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599429 g076430+  20   0  793776 265060    756 R  50.0   0.4   0:06.02 pud_leak.elf
+3599220 g076430+  20   0 2297456   2.2g   1828 R  43.8   3.5   0:09.46 test-tlb
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 59.2 test-tlb
+3599429 3599429   0 43.8 pud_leak.elf
+
+===== SAMPLE 1789765049.950241391 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599429 g076430+  20   0  793776 265060    756 R  53.3   0.4   0:06.36 pud_leak.elf
+3599220 g076430+  20   0 2428528   2.3g   1828 R  40.0   3.7   0:09.78 test-tlb
+3568674 root      20   0       0      0      0 I   6.7   0.0   0:00.03 kworker/8:2-events
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 61.4 test-tlb
+3599429 3599429   0 45.8 pud_leak.elf
+
+===== SAMPLE 1789765050.457988442 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599220 g076430+  20   0 2494064   2.4g   1828 R  53.3   3.8   0:10.03 test-tlb
+3599429 g076430+  20   0  793776 265060    756 R  46.7   0.4   0:06.60 pud_leak.elf
+    976 node_ex+  20   0 1277584  22128  13864 S  13.3   0.0  16:20.75 node_exporter
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 59.2 test-tlb
+3599429 3599429   0 44.6 pud_leak.elf
+
+===== SAMPLE 1789765051.206953036 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599429 g076430+  20   0  793776 265060    756 R  53.3   0.4   0:06.97 pud_leak.elf
+3599220 g076430+  20   0 2559600   2.4g   1828 R  46.7   3.9   0:10.40 test-tlb
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 59.2 test-tlb
+3599429 3599429   0 45.3 pud_leak.elf
+
+===== SAMPLE 1789765052.167241923 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599220 g076430+  20   0 2690672   2.6g   1828 R  43.8   4.1   0:10.88 test-tlb
+3599429 g076430+  20   0  793776 265060    756 R  37.5   0.4   0:07.44 pud_leak.elf
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 57.3 test-tlb
+3599429 3599429   0 44.1 pud_leak.elf
+
+===== SAMPLE 1789765052.683883082 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599429 g076430+  20   0  793776 265060    756 R  53.3   0.4   0:07.76 pud_leak.elf
+3599220 g076430+  20   0 2821744   2.7g   1828 R  46.7   4.3   0:11.19 test-tlb
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 56.9 test-tlb
+3599429 3599429   0 44.4 pud_leak.elf
+
+===== SAMPLE 1789765053.725819121 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599429 g076430+  20   0  793776 265060    756 R  46.7   0.4   0:08.23 pud_leak.elf
+3599220 g076430+  20   0 2952816   2.8g   1828 R  40.0   4.5   0:11.66 test-tlb
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 58.4 test-tlb
+3599429 3599429   0 46.3 pud_leak.elf
+
+===== SAMPLE 1789765054.367902927 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599220 g076430+  20   0 3018352   2.9g   1828 R  46.7   4.6   0:11.98 test-tlb
+3599429 g076430+  20   0  793776 265060    756 R  40.0   0.4   0:08.54 pud_leak.elf
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 57.2 test-tlb
+3599429 3599429   0 45.3 pud_leak.elf
+
+===== SAMPLE 1789765054.926258571 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599429 g076430+  20   0  793776 265060    756 R  53.3   0.4   0:08.83 pud_leak.elf
+3599220 g076430+  20   0 3083888   2.9g   1828 R  46.7   4.7   0:12.27 test-tlb
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 58.5 test-tlb
+3599429 3599429   0 46.6 pud_leak.elf
+
+===== SAMPLE 1789765055.466218388 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599220 g076430+  20   0 3214960   3.1g   1828 R  46.7   4.9   0:12.58 test-tlb
+3599429 g076430+  20   0  793776 265060    756 R  46.7   0.4   0:09.13 pud_leak.elf
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 57.2 test-tlb
+3599429 3599429   0 45.8 pud_leak.elf
+
+===== SAMPLE 1789765056.018208408 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599220 g076430+  20   0 3280496   3.1g   1828 R  53.3   5.0   0:12.82 test-tlb
+3599429 g076430+  20   0  793776 265060    756 R  53.3   0.4   0:09.38 pud_leak.elf
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 55.8 test-tlb
+3599429 3599429   0 45.0 pud_leak.elf
+
+===== SAMPLE 1789765056.818144473 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599220 g076430+  20   0 3411568   3.3g   1828 R  53.3   5.2   0:13.23 test-tlb
+3599429 g076430+  20   0  793776 265060    756 R  53.3   0.4   0:09.79 pud_leak.elf
+3501981 root      20   0       0      0      0 I   6.7   0.0   0:00.40 kworker/u48:2-flush-253:0
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 57.6 test-tlb
+3599429 3599429   0 46.8 pud_leak.elf
+
+===== SAMPLE 1789765057.360463914 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599220 g076430+  20   0 3477104   3.3g   1828 R  53.3   5.3   0:13.56 test-tlb
+3599429 g076430+  20   0  793776 265060    756 R  53.3   0.4   0:10.12 pud_leak.elf
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 56.5 test-tlb
+3599429 3599429   0 46.3 pud_leak.elf
+
+===== SAMPLE 1789765058.119145513 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599220 g076430+  20   0 3542640   3.4g   1828 R  50.0   5.4   0:13.86 test-tlb
+3599429 g076430+  20   0  793776 265060    756 R  50.0   0.4   0:10.43 pud_leak.elf
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 55.6 test-tlb
+3599429 3599429   0 45.5 pud_leak.elf
+
+===== SAMPLE 1789765058.652708133 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599220 g076430+  20   0 3673712   3.5g   1828 R  53.3   5.6   0:14.15 test-tlb
+3599429 g076430+  20   0  793776 265060    756 R  53.3   0.4   0:10.71 pud_leak.elf
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 56.7 test-tlb
+3599429 3599429   0 46.8 pud_leak.elf
+
+===== SAMPLE 1789765059.244366261 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599220 g076430+  20   0 3739248   3.6g   1828 R  53.3   5.7   0:14.44 test-tlb
+3599429 g076430+  20   0  793776 265060    756 R  53.3   0.4   0:10.99 pud_leak.elf
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 55.6 test-tlb
+3599429 3599429   0 46.0 pud_leak.elf
+
+===== SAMPLE 1789765059.764254993 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599429 g076430+  20   0  793776 265060    756 R  50.0   0.4   0:11.25 pud_leak.elf
+3599220 g076430+  20   0 3804784   3.6g   1828 R  43.8   5.8   0:14.69 test-tlb
+    652 root      19  -1  285008 160068 158688 R   6.2   0.2   3:58.97 systemd-journal
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 55.0 test-tlb
+3599429 3599429   0 45.8 pud_leak.elf
+
+===== SAMPLE 1789765060.586052178 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599429 g076430+  20   0  793776 265060    756 R  60.0   0.4   0:11.77 pud_leak.elf
+3599220 g076430+  20   0 3935856   3.8g   1828 R  46.7   6.0   0:15.20 test-tlb
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 56.4 test-tlb
+3599429 3599429   0 47.2 pud_leak.elf
+
+===== SAMPLE 1789765061.328234237 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599429 g076430+  20   0  793776 265060    756 R  60.0   0.4   0:12.05 pud_leak.elf
+3599220 g076430+  20   0 4066928   3.9g   1828 R  46.7   6.2   0:15.48 test-tlb
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 55.3 test-tlb
+3599429 3599429   0 46.5 pud_leak.elf
+
+===== SAMPLE 1789765061.868996775 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599429 g076430+  20   0  793776 265060    756 R  60.0   0.4   0:12.31 pud_leak.elf
+3599220 g076430+  20   0 4132464   3.9g   1828 R  46.7   6.3   0:15.74 test-tlb
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 56.3 test-tlb
+3599429 3599429   0 47.6 pud_leak.elf
+
+===== SAMPLE 1789765062.441986573 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599429 g076430+  20   0  793776 265060    756 R  53.3   0.4   0:12.59 pud_leak.elf
+3599220 g076430+  20   0 4198000   4.0g   1828 R  46.7   6.4   0:16.02 test-tlb
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 56.0 test-tlb
+3599429 3599429   0 47.6 pud_leak.elf
+
+===== SAMPLE 1789765063.637266835 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599220 g076430+  20   0 4394608   4.2g   1828 R  50.0   6.7   0:16.62 test-tlb
+3599429 g076430+  20   0  793776 265060    756 R  50.0   0.4   0:13.19 pud_leak.elf
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 55.5 test-tlb
+3599429 3599429   0 47.2 pud_leak.elf
+
+===== SAMPLE 1789765064.216033147 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599429 g076430+  20   0  793776 265060    756 R  53.3   0.4   0:13.47 pud_leak.elf
+3599220 g076430+  20   0 4460144   4.3g   1828 R  46.7   6.8   0:16.91 test-tlb
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 54.7 test-tlb
+3599429 3599429   0 46.7 pud_leak.elf
+
+===== SAMPLE 1789765064.753723064 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599220 g076430+  20   0 4525680   4.3g   1828 R  53.3   6.9   0:17.19 test-tlb
+3599429 g076430+  20   0  793776 265060    756 R  53.3   0.4   0:13.77 pud_leak.elf
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 54.5 test-tlb
+3599429 3599429   0 46.8 pud_leak.elf
+
+===== SAMPLE 1789765065.837647066 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599220 g076430+  20   0 4656752   4.4g   1828 R  53.3   7.1   0:17.73 test-tlb
+3599429 g076430+  20   0  793776 265060    756 R  53.3   0.4   0:14.29 pud_leak.elf
+   1005 root      20   0 2545716  44896  31632 S   6.7   0.1   4:54.41 containerd
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 55.4 test-tlb
+3599429 3599429   0 47.8 pud_leak.elf
+
+===== SAMPLE 1789765066.429461848 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599220 g076430+  20   0 4787824   4.6g   1828 R  62.5   7.3   0:18.04 test-tlb
+3599429 g076430+  20   0  793776 265060    756 R  12.5   0.4   0:14.53 pud_leak.elf
+   1157 root      20   0 3694356 172624  65544 S   6.2   0.3  60:08.45 dockerd
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 54.7 test-tlb
+3599429 3599429   0 47.0 pud_leak.elf
+
+===== SAMPLE 1789765066.996257314 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599429 g076430+  20   0  793776 265060    756 R  60.0   0.4   0:14.81 pud_leak.elf
+3599220 g076430+  20   0 4853360   4.6g   1828 R  46.7   7.4   0:18.31 test-tlb
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 55.5 test-tlb
+3599429 3599429   0 47.9 pud_leak.elf
+
+===== SAMPLE 1789765067.615580077 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599220 g076430+  20   0 4918896   4.7g   1828 R  53.3   7.5   0:18.68 test-tlb
+3599429 g076430+  20   0  793776 265060    756 R  53.3   0.4   0:15.16 pud_leak.elf
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 55.0 test-tlb
+3599429 3599429   0 47.5 pud_leak.elf
+
+===== SAMPLE 1789765068.261592212 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599220 g076430+  20   0 5049968   4.8g   1828 R 100.0   7.7   0:19.31 test-tlb
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+     14 root      20   0       0      0      0 I   0.0   0.0   2:33.58 rcu_sched
+--- PS ---
+    PID     TID PSR %CPU COMMAND
+3599220 3599220   0 55.2 test-tlb
+
+===== SAMPLE 1789765068.963700925 =====
+--- TOP ---
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+3599220 g076430+  20   0       0      0      0 D 100.0   0.0   0:19.87 test-tlb
+      1 root      20   0  168128  13560   8332 S   0.0   0.0   0:26.14 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.12 kthreadd
+      3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 slub_flushwq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     10 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
+     11 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_rude_
+     12 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_tasks_trace
+     13 root      20   0       0      0      0 S   0.0   0.0   0:01.08 ksoftirqd/0
+     14 root      20   0       0      0      0 I   0.0   0.0   2:33.58 rcu_sched

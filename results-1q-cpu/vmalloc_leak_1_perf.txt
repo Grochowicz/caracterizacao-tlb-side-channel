@@ -1,470 +1,482 @@
 #           time             counts unit events
-     0.100175929             100.22 msec cpu-clock                 #    1.002 CPUs utilized          
-     0.100175929             100.22 msec task-clock                #    1.002 CPUs utilized          
-     0.100175929                  5      context-switches          #   49.892 /sec                   
-     0.100175929                  1      cpu-migrations            #    9.978 /sec                   
-     0.100175929                  0      page-faults               #    0.000 /sec                   
-     0.100175929          529339438      cycles                    #    5.282 GHz                    
-     0.100175929            7632422      instructions              #    0.01  insn per cycle         
-     0.100175929            1523341      branches                  #   15.200 M/sec                  
-     0.100175929               1051      branch-misses             #    0.07% of all branches        
-     0.100175929              21285      r2012                     #  212.389 K/sec                  
-     0.100175929                 67      r2011                     #  668.550 /sec                   
-     0.100175929                  0      r0e12                     #    0.000 /sec                   
-     0.200423178             100.26 msec cpu-clock                 #    1.003 CPUs utilized          
-     0.200423178             100.26 msec task-clock                #    1.003 CPUs utilized          
-     0.200423178                  6      context-switches          #   59.844 /sec                   
-     0.200423178                  1      cpu-migrations            #    9.974 /sec                   
-     0.200423178               1841      page-faults               #   18.362 K/sec                  
-     0.200423178          529940312      cycles                    #    5.286 GHz                    
-     0.200423178           32615937      instructions              #    0.06  insn per cycle         
-     0.200423178            5502188      branches                  #   54.878 M/sec                  
-     0.200423178               7389      branch-misses             #    0.13% of all branches        
-     0.200423178             332095      r2012                     #    3.312 M/sec                  
-     0.200423178                145      r2011                     #    1.446 K/sec                  
-     0.200423178                  0      r0e12                     #    0.000 /sec                   
-     0.300619626             100.17 msec cpu-clock                 #    1.002 CPUs utilized          
-     0.300619626             100.17 msec task-clock                #    1.002 CPUs utilized          
-     0.300619626                  6      context-switches          #   59.899 /sec                   
-     0.300619626                  1      cpu-migrations            #    9.983 /sec                   
-     0.300619626              14544      page-faults               #  145.195 K/sec                  
-     0.300619626          529670418      cycles                    #    5.288 GHz                    
-     0.300619626           52048288      instructions              #    0.10  insn per cycle         
-     0.300619626            9926792      branches                  #   99.101 M/sec                  
-     0.300619626               7150      branch-misses             #    0.07% of all branches        
-     0.300619626             112000      r2012                     #    1.118 M/sec                  
-     0.300619626                204      r2011                     #    2.037 K/sec                  
-     0.300619626                  0      r0e12                     #    0.000 /sec                   
-     0.400859358             100.25 msec cpu-clock                 #    1.003 CPUs utilized          
-     0.400859358             100.25 msec task-clock                #    1.003 CPUs utilized          
-     0.400859358                  2      context-switches          #   19.950 /sec                   
-     0.400859358                  1      cpu-migrations            #    9.975 /sec                   
-     0.400859358                  0      page-faults               #    0.000 /sec                   
-     0.400859358          530062416      cycles                    #    5.287 GHz                    
-     0.400859358            7669414      instructions              #    0.01  insn per cycle         
-     0.400859358            1529376      branches                  #   15.255 M/sec                  
-     0.400859358                607      branch-misses             #    0.04% of all branches        
-     0.400859358              21732      r2012                     #  216.776 K/sec                  
-     0.400859358                 79      r2011                     #  788.022 /sec                   
-     0.400859358                  0      r0e12                     #    0.000 /sec                   
-     0.501117995             100.26 msec cpu-clock                 #    1.003 CPUs utilized          
-     0.501117995             100.26 msec task-clock                #    1.003 CPUs utilized          
-     0.501117995                  2      context-switches          #   19.949 /sec                   
-     0.501117995                  1      cpu-migrations            #    9.974 /sec                   
-     0.501117995              16389      page-faults               #  163.469 K/sec                  
-     0.501117995          529941555      cycles                    #    5.286 GHz                    
-     0.501117995           57370761      instructions              #    0.11  insn per cycle         
-     0.501117995           10930158      branches                  #  109.021 M/sec                  
-     0.501117995               8059      branch-misses             #    0.07% of all branches        
-     0.501117995             113013      r2012                     #    1.127 M/sec                  
-     0.501117995                231      r2011                     #    2.304 K/sec                  
-     0.501117995                  0      r0e12                     #    0.000 /sec                   
-     0.601367079             100.25 msec cpu-clock                 #    1.003 CPUs utilized          
-     0.601367079             100.25 msec task-clock                #    1.002 CPUs utilized          
-     0.601367079                  2      context-switches          #   19.950 /sec                   
-     0.601367079                  1      cpu-migrations            #    9.975 /sec                   
-     0.601367079                  0      page-faults               #    0.000 /sec                   
-     0.601367079          530039901      cycles                    #    5.287 GHz                    
-     0.601367079            7859237      instructions              #    0.01  insn per cycle         
-     0.601367079            1567477      branches                  #   15.636 M/sec                  
-     0.601367079                470      branch-misses             #    0.03% of all branches        
-     0.601367079              11359      r2012                     #  113.307 K/sec                  
-     0.601367079                 72      r2011                     #  718.203 /sec                   
-     0.601367079                  0      r0e12                     #    0.000 /sec                   
-     0.701613417             100.25 msec cpu-clock                 #    1.002 CPUs utilized          
-     0.701613417             100.25 msec task-clock                #    1.002 CPUs utilized          
-     0.701613417                  2      context-switches          #   19.951 /sec                   
-     0.701613417                  1      cpu-migrations            #    9.975 /sec                   
-     0.701613417              16384      page-faults               #  163.438 K/sec                  
-     0.701613417          529868416      cycles                    #    5.286 GHz                    
-     0.701613417           77371274      instructions              #    0.15  insn per cycle         
-     0.701613417           13974171      branches                  #  139.399 M/sec                  
-     0.701613417              11524      branch-misses             #    0.08% of all branches        
-     0.701613417             412162      r2012                     #    4.112 M/sec                  
-     0.701613417                243      r2011                     #    2.424 K/sec                  
-     0.701613417                  0      r0e12                     #    0.000 /sec                   
-     0.801863944             100.26 msec cpu-clock                 #    1.003 CPUs utilized          
-     0.801863944             100.26 msec task-clock                #    1.003 CPUs utilized          
-     0.801863944                  6      context-switches          #   59.845 /sec                   
-     0.801863944                  1      cpu-migrations            #    9.974 /sec                   
-     0.801863944                  0      page-faults               #    0.000 /sec                   
-     0.801863944          529945686      cycles                    #    5.286 GHz                    
-     0.801863944            8118888      instructions              #    0.02  insn per cycle         
-     0.801863944            1618100      branches                  #   16.139 M/sec                  
-     0.801863944                646      branch-misses             #    0.04% of all branches        
-     0.801863944              18249      r2012                     #  182.019 K/sec                  
-     0.801863944                 83      r2011                     #  827.857 /sec                   
-     0.801863944                  0      r0e12                     #    0.000 /sec                   
-     0.902112233             100.24 msec cpu-clock                 #    1.002 CPUs utilized          
-     0.902112233             100.24 msec task-clock                #    1.002 CPUs utilized          
-     0.902112233                  8      context-switches          #   79.808 /sec                   
-     0.902112233                  1      cpu-migrations            #    9.976 /sec                   
-     0.902112233              16384      page-faults               #  163.447 K/sec                  
-     0.902112233          529541838      cycles                    #    5.283 GHz                    
-     0.902112233           57683085      instructions              #    0.11  insn per cycle         
-     0.902112233           10991366      branches                  #  109.650 M/sec                  
-     0.902112233               7552      branch-misses             #    0.07% of all branches        
-     0.902112233             123823      r2012                     #    1.235 M/sec                  
-     0.902112233                243      r2011                     #    2.424 K/sec                  
-     0.902112233                  0      r0e12                     #    0.000 /sec                   
-     1.002362683             100.25 msec cpu-clock                 #    1.002 CPUs utilized          
-     1.002362683             100.25 msec task-clock                #    1.002 CPUs utilized          
-     1.002362683                  6      context-switches          #   59.851 /sec                   
-     1.002362683                  1      cpu-migrations            #    9.975 /sec                   
-     1.002362683                  0      page-faults               #    0.000 /sec                   
-     1.002362683          530107793      cycles                    #    5.288 GHz                    
-     1.002362683            8356627      instructions              #    0.02  insn per cycle         
-     1.002362683            1665939      branches                  #   16.618 M/sec                  
-     1.002362683                370      branch-misses             #    0.02% of all branches        
-     1.002362683              13182      r2012                     #  131.493 K/sec                  
-     1.002362683                 87      r2011                     #  867.839 /sec                   
-     1.002362683                  0      r0e12                     #    0.000 /sec                   
-     1.102609542             100.25 msec cpu-clock                 #    1.002 CPUs utilized          
-     1.102609542             100.25 msec task-clock                #    1.002 CPUs utilized          
-     1.102609542                  2      context-switches          #   19.950 /sec                   
-     1.102609542                  1      cpu-migrations            #    9.975 /sec                   
-     1.102609542              16384      page-faults               #  163.432 K/sec                  
-     1.102609542          529597745      cycles                    #    5.283 GHz                    
-     1.102609542           77372389      instructions              #    0.15  insn per cycle         
-     1.102609542           13967125      branches                  #  139.323 M/sec                  
-     1.102609542              10599      branch-misses             #    0.08% of all branches        
-     1.102609542             417680      r2012                     #    4.166 M/sec                  
-     1.102609542                222      r2011                     #    2.214 K/sec                  
-     1.102609542                  0      r0e12                     #    0.000 /sec                   
-     1.202868937             100.26 msec cpu-clock                 #    1.003 CPUs utilized          
-     1.202868937             100.26 msec task-clock                #    1.003 CPUs utilized          
-     1.202868937                  6      context-switches          #   59.844 /sec                   
-     1.202868937                  1      cpu-migrations            #    9.974 /sec                   
-     1.202868937                  0      page-faults               #    0.000 /sec                   
-     1.202868937          530078425      cycles                    #    5.287 GHz                    
-     1.202868937            8303789      instructions              #    0.02  insn per cycle         
-     1.202868937            1656682      branches                  #   16.524 M/sec                  
-     1.202868937                629      branch-misses             #    0.04% of all branches        
-     1.202868937              18086      r2012                     #  180.391 K/sec                  
-     1.202868937                 88      r2011                     #  877.719 /sec                   
-     1.202868937                  0      r0e12                     #    0.000 /sec                   
-     1.303128037             100.28 msec cpu-clock                 #    1.003 CPUs utilized          
-     1.303128037             100.28 msec task-clock                #    1.003 CPUs utilized          
-     1.303128037                  2      context-switches          #   19.945 /sec                   
-     1.303128037                  1      cpu-migrations            #    9.972 /sec                   
-     1.303128037              16384      page-faults               #  163.387 K/sec                  
-     1.303128037          529597413      cycles                    #    5.281 GHz                    
-     1.303128037           57757672      instructions              #    0.11  insn per cycle         
-     1.303128037           11007776      branches                  #  109.773 M/sec                  
-     1.303128037               7350      branch-misses             #    0.07% of all branches        
-     1.303128037             119821      r2012                     #    1.195 M/sec                  
-     1.303128037                171      r2011                     #    1.705 K/sec                  
-     1.303128037                  0      r0e12                     #    0.000 /sec                   
-     1.403380858             100.25 msec cpu-clock                 #    1.003 CPUs utilized          
-     1.403380858             100.25 msec task-clock                #    1.003 CPUs utilized          
-     1.403380858                  4      context-switches          #   39.899 /sec                   
-     1.403380858                  1      cpu-migrations            #    9.975 /sec                   
-     1.403380858                  0      page-faults               #    0.000 /sec                   
-     1.403380858          530098254      cycles                    #    5.288 GHz                    
-     1.403380858            8145188      instructions              #    0.02  insn per cycle         
-     1.403380858            1624074      branches                  #   16.200 M/sec                  
-     1.403380858                427      branch-misses             #    0.03% of all branches        
-     1.403380858              12505      r2012                     #  124.734 K/sec                  
-     1.403380858                 93      r2011                     #  927.651 /sec                   
-     1.403380858                  0      r0e12                     #    0.000 /sec                   
-     1.503649129             100.25 msec cpu-clock                 #    1.003 CPUs utilized          
-     1.503649129             100.25 msec task-clock                #    1.003 CPUs utilized          
-     1.503649129                  2      context-switches          #   19.950 /sec                   
-     1.503649129                  1      cpu-migrations            #    9.975 /sec                   
-     1.503649129              12624      page-faults               #  125.925 K/sec                  
-     1.503649129          529847642      cycles                    #    5.285 GHz                    
-     1.503649129           65194412      instructions              #    0.12  insn per cycle         
-     1.503649129           11642767      branches                  #  116.137 M/sec                  
-     1.503649129               8249      branch-misses             #    0.07% of all branches        
-     1.503649129             406295      r2012                     #    4.053 M/sec                  
-     1.503649129                198      r2011                     #    1.975 K/sec                  
-     1.503649129                  0      r0e12                     #    0.000 /sec                   
-     1.603919973             100.27 msec cpu-clock                 #    1.003 CPUs utilized          
-     1.603919973             100.27 msec task-clock                #    1.003 CPUs utilized          
-     1.603919973                  2      context-switches          #   19.945 /sec                   
-     1.603919973                  1      cpu-migrations            #    9.973 /sec                   
-     1.603919973               3760      page-faults               #   37.497 K/sec                  
-     1.603919973          530061719      cycles                    #    5.286 GHz                    
-     1.603919973           20545007      instructions              #    0.04  insn per cycle         
-     1.603919973            3989895      branches                  #   39.790 M/sec                  
-     1.603919973               2350      branch-misses             #    0.06% of all branches        
-     1.603919973              46216      r2012                     #  460.893 K/sec                  
-     1.603919973                117      r2011                     #    1.167 K/sec                  
-     1.603919973                  0      r0e12                     #    0.000 /sec                   
-     1.704148537             100.21 msec cpu-clock                 #    1.002 CPUs utilized          
-     1.704148537             100.21 msec task-clock                #    1.002 CPUs utilized          
-     1.704148537                  2      context-switches          #   19.958 /sec                   
-     1.704148537                  1      cpu-migrations            #    9.979 /sec                   
-     1.704148537                  0      page-faults               #    0.000 /sec                   
-     1.704148537          529854251      cycles                    #    5.287 GHz                    
-     1.704148537            8139961      instructions              #    0.02  insn per cycle         
-     1.704148537            1623583      branches                  #   16.202 M/sec                  
-     1.704148537                377      branch-misses             #    0.02% of all branches        
-     1.704148537              23031      r2012                     #  229.828 K/sec                  
-     1.704148537                 48      r2011                     #  478.995 /sec                   
-     1.704148537                  0      r0e12                     #    0.000 /sec                   
-     1.804383741             100.26 msec cpu-clock                 #    1.003 CPUs utilized          
-     1.804383741             100.26 msec task-clock                #    1.003 CPUs utilized          
-     1.804383741                  4      context-switches          #   39.896 /sec                   
-     1.804383741                  1      cpu-migrations            #    9.974 /sec                   
-     1.804383741              16384      page-faults               #  163.412 K/sec                  
-     1.804383741          529854577      cycles                    #    5.285 GHz                    
-     1.804383741           57386011      instructions              #    0.11  insn per cycle         
-     1.804383741           10932892      branches                  #  109.043 M/sec                  
-     1.804383741               7457      branch-misses             #    0.07% of all branches        
-     1.804383741             114231      r2012                     #    1.139 M/sec                  
-     1.804383741                187      r2011                     #    1.865 K/sec                  
-     1.804383741                  0      r0e12                     #    0.000 /sec                   
-     1.904652753             100.25 msec cpu-clock                 #    1.003 CPUs utilized          
-     1.904652753             100.25 msec task-clock                #    1.003 CPUs utilized          
-     1.904652753                  4      context-switches          #   39.899 /sec                   
-     1.904652753                  1      cpu-migrations            #    9.975 /sec                   
-     1.904652753                  0      page-faults               #    0.000 /sec                   
-     1.904652753          530075187      cycles                    #    5.287 GHz                    
-     1.904652753            7911299      instructions              #    0.01  insn per cycle         
-     1.904652753            1577119      branches                  #   15.731 M/sec                  
-     1.904652753                466      branch-misses             #    0.03% of all branches        
-     1.904652753              12811      r2012                     #  127.787 K/sec                  
-     1.904652753                 48      r2011                     #  478.791 /sec                   
-     1.904652753                  0      r0e12                     #    0.000 /sec                   
-     2.004913363             100.27 msec cpu-clock                 #    1.003 CPUs utilized          
-     2.004913363             100.27 msec task-clock                #    1.003 CPUs utilized          
-     2.004913363                  9      context-switches          #   89.759 /sec                   
-     2.004913363                  2      cpu-migrations            #   19.946 /sec                   
-     2.004913363              16540      page-faults               #  164.956 K/sec                  
-     2.004913363          529370440      cycles                    #    5.280 GHz                    
-     2.004913363           81380191      instructions              #    0.15  insn per cycle         
-     2.004913363           14846631      branches                  #  148.068 M/sec                  
-     2.004913363              14995      branch-misses             #    0.10% of all branches        
-     2.004913363             420679      r2012                     #    4.196 M/sec                  
-     2.004913363                369      r2011                     #    3.680 K/sec                  
-     2.004913363                  0      r0e12                     #    0.000 /sec                   
-     2.105128950             100.23 msec cpu-clock                 #    1.002 CPUs utilized          
-     2.105128950             100.23 msec task-clock                #    1.002 CPUs utilized          
-     2.105128950                  8      context-switches          #   79.820 /sec                   
-     2.105128950                  1      cpu-migrations            #    9.977 /sec                   
-     2.105128950                  2      page-faults               #   19.955 /sec                   
-     2.105128950          528755372      cycles                    #    5.276 GHz                    
-     2.105128950         1685641375      instructions              #    3.19  insn per cycle         
-     2.105128950          281144121      branches                  #    2.805 G/sec                  
-     2.105128950               4932      branch-misses             #    0.00% of all branches        
-     2.105128950              10439      r2012                     #  104.155 K/sec                  
-     2.105128950                202      r2011                     #    2.015 K/sec                  
-     2.105128950                  0      r0e12                     #    0.000 /sec                   
-     2.205404225             100.26 msec cpu-clock                 #    1.003 CPUs utilized          
-     2.205404225             100.26 msec task-clock                #    1.003 CPUs utilized          
-     2.205404225                 12      context-switches          #  119.683 /sec                   
-     2.205404225                  1      cpu-migrations            #    9.974 /sec                   
-     2.205404225              16384      page-faults               #  163.408 K/sec                  
-     2.205404225          529016066      cycles                    #    5.276 GHz                    
-     2.205404225         1517190636      instructions              #    2.87  insn per cycle         
-     2.205404225          254126184      branches                  #    2.535 G/sec                  
-     2.205404225               8020      branch-misses             #    0.00% of all branches        
-     2.205404225              93058      r2012                     #  928.125 K/sec                  
-     2.205404225                327      r2011                     #    3.261 K/sec                  
-     2.205404225                  0      r0e12                     #    0.000 /sec                   
-     2.305668075             100.26 msec cpu-clock                 #    1.003 CPUs utilized          
-     2.305668075             100.26 msec task-clock                #    1.003 CPUs utilized          
-     2.305668075                  8      context-switches          #   79.792 /sec                   
-     2.305668075                  1      cpu-migrations            #    9.974 /sec                   
-     2.305668075                  0      page-faults               #    0.000 /sec                   
-     2.305668075          529037853      cycles                    #    5.277 GHz                    
-     2.305668075         1990685322      instructions              #    3.76  insn per cycle         
-     2.305668075          331900547      branches                  #    3.310 G/sec                  
-     2.305668075                444      branch-misses             #    0.00% of all branches        
-     2.305668075               6330      r2012                     #   63.135 K/sec                  
-     2.305668075                196      r2011                     #    1.955 K/sec                  
-     2.305668075                  0      r0e12                     #    0.000 /sec                   
-     2.405913629             100.25 msec cpu-clock                 #    1.002 CPUs utilized          
-     2.405913629             100.25 msec task-clock                #    1.002 CPUs utilized          
-     2.405913629                  9      context-switches          #   89.778 /sec                   
-     2.405913629                  1      cpu-migrations            #    9.975 /sec                   
-     2.405913629              13065      page-faults               #  130.327 K/sec                  
-     2.405913629          528942010      cycles                    #    5.276 GHz                    
-     2.405913629         1393787940      instructions              #    2.64  insn per cycle         
-     2.405913629          232592791      branches                  #    2.320 G/sec                  
-     2.405913629              13977      branch-misses             #    0.01% of all branches        
-     2.405913629             389755      r2012                     #    3.888 M/sec                  
-     2.405913629                368      r2011                     #    3.671 K/sec                  
-     2.405913629                  0      r0e12                     #    0.000 /sec                   
-     2.506182955             100.26 msec cpu-clock                 #    1.003 CPUs utilized          
-     2.506182955             100.26 msec task-clock                #    1.003 CPUs utilized          
-     2.506182955                  8      context-switches          #   79.790 /sec                   
-     2.506182955                  1      cpu-migrations            #    9.974 /sec                   
-     2.506182955               3319      page-faults               #   33.103 K/sec                  
-     2.506182955          528603645      cycles                    #    5.272 GHz                    
-     2.506182955           58108992      instructions              #    0.11  insn per cycle         
-     2.506182955            9204190      branches                  #   91.800 M/sec                  
-     2.506182955              14446      branch-misses             #    0.16% of all branches        
-     2.506182955              18542      r2012                     #  184.933 K/sec                  
-     2.506182955                232      r2011                     #    2.314 K/sec                  
-     2.506182955                  0      r0e12                     #    0.000 /sec                   
+     0.100106658             100.14 msec cpu-clock                 #    1.001 CPUs utilized          
+     0.100106658             100.14 msec task-clock                #    1.001 CPUs utilized          
+     0.100106658                  4      context-switches          #   39.943 /sec                   
+     0.100106658                  1      cpu-migrations            #    9.986 /sec                   
+     0.100106658               6484      page-faults               #   64.748 K/sec                  
+     0.100106658          525826557      cycles                    #    5.251 GHz                    
+     0.100106658           28229057      instructions              #    0.05  insn per cycle         
+     0.100106658            5427458      branches                  #   54.197 M/sec                  
+     0.100106658               4504      branch-misses             #    0.08% of all branches        
+     0.100106658              28023      r2012                     #  279.831 K/sec                  
+     0.100106658                153      r2011                     #    1.528 K/sec                  
+     0.100106658                  0      r0e12                     #    0.000 /sec                   
+     0.200365027             100.27 msec cpu-clock                 #    1.003 CPUs utilized          
+     0.200365027             100.27 msec task-clock                #    1.003 CPUs utilized          
+     0.200365027                  2      context-switches          #   19.945 /sec                   
+     0.200365027                  1      cpu-migrations            #    9.973 /sec                   
+     0.200365027                  1      page-faults               #    9.973 /sec                   
+     0.200365027          530249854      cycles                    #    5.288 GHz                    
+     0.200365027            7940537      instructions              #    0.01  insn per cycle         
+     0.200365027            1583445      branches                  #   15.791 M/sec                  
+     0.200365027               1670      branch-misses             #    0.11% of all branches        
+     0.200365027              26785      r2012                     #  267.117 K/sec                  
+     0.200365027                 98      r2011                     #  977.318 /sec                   
+     0.200365027                  0      r0e12                     #    0.000 /sec                   
+     0.300618789             100.25 msec cpu-clock                 #    1.002 CPUs utilized          
+     0.300618789             100.25 msec task-clock                #    1.002 CPUs utilized          
+     0.300618789                  2      context-switches          #   19.950 /sec                   
+     0.300618789                  1      cpu-migrations            #    9.975 /sec                   
+     0.300618789              16384      page-faults               #  163.432 K/sec                  
+     0.300618789          529923560      cycles                    #    5.286 GHz                    
+     0.300618789           78302246      instructions              #    0.15  insn per cycle         
+     0.300618789           14116517      branches                  #  140.813 M/sec                  
+     0.300618789              13024      branch-misses             #    0.09% of all branches        
+     0.300618789             181745      r2012                     #    1.813 M/sec                  
+     0.300618789                288      r2011                     #    2.873 K/sec                  
+     0.300618789                  0      r0e12                     #    0.000 /sec                   
+     0.400807871             100.17 msec cpu-clock                 #    1.002 CPUs utilized          
+     0.400807871             100.17 msec task-clock                #    1.002 CPUs utilized          
+     0.400807871                  2      context-switches          #   19.965 /sec                   
+     0.400807871                  1      cpu-migrations            #    9.983 /sec                   
+     0.400807871                  0      page-faults               #    0.000 /sec                   
+     0.400807871          529718796      cycles                    #    5.288 GHz                    
+     0.400807871            7991054      instructions              #    0.02  insn per cycle         
+     0.400807871            1593687      branches                  #   15.909 M/sec                  
+     0.400807871                650      branch-misses             #    0.04% of all branches        
+     0.400807871              23168      r2012                     #  231.280 K/sec                  
+     0.400807871                121      r2011                     #    1.208 K/sec                  
+     0.400807871                  0      r0e12                     #    0.000 /sec                   
+     0.500980368             100.17 msec cpu-clock                 #    1.002 CPUs utilized          
+     0.500980368             100.17 msec task-clock                #    1.002 CPUs utilized          
+     0.500980368                  4      context-switches          #   39.931 /sec                   
+     0.500980368                  1      cpu-migrations            #    9.983 /sec                   
+     0.500980368              16389      page-faults               #  163.609 K/sec                  
+     0.500980368          529248268      cycles                    #    5.283 GHz                    
+     0.500980368           58272866      instructions              #    0.11  insn per cycle         
+     0.500980368           11084163      branches                  #  110.651 M/sec                  
+     0.500980368               8787      branch-misses             #    0.08% of all branches        
+     0.500980368              25833      r2012                     #  257.887 K/sec                  
+     0.500980368                266      r2011                     #    2.655 K/sec                  
+     0.500980368                  0      r0e12                     #    0.000 /sec                   
+     0.601229224             100.26 msec cpu-clock                 #    1.003 CPUs utilized          
+     0.601229224             100.26 msec task-clock                #    1.003 CPUs utilized          
+     0.601229224                  6      context-switches          #   59.842 /sec                   
+     0.601229224                  1      cpu-migrations            #    9.974 /sec                   
+     0.601229224                  0      page-faults               #    0.000 /sec                   
+     0.601229224          530087275      cycles                    #    5.287 GHz                    
+     0.601229224            8141419      instructions              #    0.02  insn per cycle         
+     0.601229224            1623862      branches                  #   16.196 M/sec                  
+     0.601229224                921      branch-misses             #    0.06% of all branches        
+     0.601229224              11455      r2012                     #  114.248 K/sec                  
+     0.601229224                 96      r2011                     #  957.468 /sec                   
+     0.601229224                  0      r0e12                     #    0.000 /sec                   
+     0.701483620             100.25 msec cpu-clock                 #    1.003 CPUs utilized          
+     0.701483620             100.25 msec task-clock                #    1.003 CPUs utilized          
+     0.701483620                  2      context-switches          #   19.950 /sec                   
+     0.701483620                  1      cpu-migrations            #    9.975 /sec                   
+     0.701483620              16384      page-faults               #  163.429 K/sec                  
+     0.701483620          529818305      cycles                    #    5.285 GHz                    
+     0.701483620           78869260      instructions              #    0.15  insn per cycle         
+     0.701483620           14206879      branches                  #  141.712 M/sec                  
+     0.701483620              11256      branch-misses             #    0.08% of all branches        
+     0.701483620              81482      r2012                     #  812.774 K/sec                  
+     0.701483620                272      r2011                     #    2.713 K/sec                  
+     0.701483620                  0      r0e12                     #    0.000 /sec                   
+     0.801745318             100.26 msec cpu-clock                 #    1.003 CPUs utilized          
+     0.801745318             100.26 msec task-clock                #    1.003 CPUs utilized          
+     0.801745318                  4      context-switches          #   39.896 /sec                   
+     0.801745318                  1      cpu-migrations            #    9.974 /sec                   
+     0.801745318                  0      page-faults               #    0.000 /sec                   
+     0.801745318          530186318      cycles                    #    5.288 GHz                    
+     0.801745318            8208787      instructions              #    0.02  insn per cycle         
+     0.801745318            1636734      branches                  #   16.325 M/sec                  
+     0.801745318                632      branch-misses             #    0.04% of all branches        
+     0.801745318              15583      r2012                     #  155.425 K/sec                  
+     0.801745318                123      r2011                     #    1.227 K/sec                  
+     0.801745318                  0      r0e12                     #    0.000 /sec                   
+     0.902016618             100.28 msec cpu-clock                 #    1.003 CPUs utilized          
+     0.902016618             100.28 msec task-clock                #    1.003 CPUs utilized          
+     0.902016618                  2      context-switches          #   19.943 /sec                   
+     0.902016618                  1      cpu-migrations            #    9.972 /sec                   
+     0.902016618              16384      page-faults               #  163.376 K/sec                  
+     0.902016618          529762708      cycles                    #    5.283 GHz                    
+     0.902016618           58450846      instructions              #    0.11  insn per cycle         
+     0.902016618           11118742      branches                  #  110.873 M/sec                  
+     0.902016618               7845      branch-misses             #    0.07% of all branches        
+     0.902016618              16412      r2012                     #  163.655 K/sec                  
+     0.902016618                269      r2011                     #    2.682 K/sec                  
+     0.902016618                  0      r0e12                     #    0.000 /sec                   
+     1.002289870             100.26 msec cpu-clock                 #    1.003 CPUs utilized          
+     1.002289870             100.26 msec task-clock                #    1.003 CPUs utilized          
+     1.002289870                  2      context-switches          #   19.948 /sec                   
+     1.002289870                  1      cpu-migrations            #    9.974 /sec                   
+     1.002289870                  0      page-faults               #    0.000 /sec                   
+     1.002289870          530223056      cycles                    #    5.288 GHz                    
+     1.002289870            8049624      instructions              #    0.02  insn per cycle         
+     1.002289870            1605560      branches                  #   16.014 M/sec                  
+     1.002289870                437      branch-misses             #    0.03% of all branches        
+     1.002289870              11680      r2012                     #  116.496 K/sec                  
+     1.002289870                140      r2011                     #    1.396 K/sec                  
+     1.002289870                  0      r0e12                     #    0.000 /sec                   
+     1.102538016             100.25 msec cpu-clock                 #    1.003 CPUs utilized          
+     1.102538016             100.25 msec task-clock                #    1.003 CPUs utilized          
+     1.102538016                  2      context-switches          #   19.950 /sec                   
+     1.102538016                  1      cpu-migrations            #    9.975 /sec                   
+     1.102538016              16384      page-faults               #  163.429 K/sec                  
+     1.102538016          529802118      cycles                    #    5.285 GHz                    
+     1.102538016           78706701      instructions              #    0.15  insn per cycle         
+     1.102538016           14167552      branches                  #  141.320 M/sec                  
+     1.102538016              10743      branch-misses             #    0.08% of all branches        
+     1.102538016              25083      r2012                     #  250.200 K/sec                  
+     1.102538016                268      r2011                     #    2.673 K/sec                  
+     1.102538016                  0      r0e12                     #    0.000 /sec                   
+     1.202801572             100.26 msec cpu-clock                 #    1.003 CPUs utilized          
+     1.202801572             100.26 msec task-clock                #    1.003 CPUs utilized          
+     1.202801572                  2      context-switches          #   19.949 /sec                   
+     1.202801572                  1      cpu-migrations            #    9.974 /sec                   
+     1.202801572                  0      page-faults               #    0.000 /sec                   
+     1.202801572          530074079      cycles                    #    5.287 GHz                    
+     1.202801572            8101599      instructions              #    0.02  insn per cycle         
+     1.202801572            1615915      branches                  #   16.118 M/sec                  
+     1.202801572                373      branch-misses             #    0.02% of all branches        
+     1.202801572              22746      r2012                     #  226.880 K/sec                  
+     1.202801572                132      r2011                     #    1.317 K/sec                  
+     1.202801572                  0      r0e12                     #    0.000 /sec                   
+     1.303053610             100.26 msec cpu-clock                 #    1.003 CPUs utilized          
+     1.303053610             100.26 msec task-clock                #    1.003 CPUs utilized          
+     1.303053610                  2      context-switches          #   19.948 /sec                   
+     1.303053610                  1      cpu-migrations            #    9.974 /sec                   
+     1.303053610              16384      page-faults               #  163.417 K/sec                  
+     1.303053610          529636027      cycles                    #    5.283 GHz                    
+     1.303053610           58140782      instructions              #    0.11  insn per cycle         
+     1.303053610           11056763      branches                  #  110.282 M/sec                  
+     1.303053610               7603      branch-misses             #    0.07% of all branches        
+     1.303053610              23341      r2012                     #  232.807 K/sec                  
+     1.303053610                255      r2011                     #    2.543 K/sec                  
+     1.303053610                  0      r0e12                     #    0.000 /sec                   
+     1.403312443             100.26 msec cpu-clock                 #    1.003 CPUs utilized          
+     1.403312443             100.26 msec task-clock                #    1.003 CPUs utilized          
+     1.403312443                  4      context-switches          #   39.897 /sec                   
+     1.403312443                  1      cpu-migrations            #    9.974 /sec                   
+     1.403312443                  0      page-faults               #    0.000 /sec                   
+     1.403312443          530145389      cycles                    #    5.288 GHz                    
+     1.403312443            7245970      instructions              #    0.01  insn per cycle         
+     1.403312443            1443625      branches                  #   14.399 M/sec                  
+     1.403312443                484      branch-misses             #    0.03% of all branches        
+     1.403312443               8815      r2012                     #   87.923 K/sec                  
+     1.403312443                196      r2011                     #    1.955 K/sec                  
+     1.403312443                  0      r0e12                     #    0.000 /sec                   
+     1.503560078             100.24 msec cpu-clock                 #    1.002 CPUs utilized          
+     1.503560078             100.25 msec task-clock                #    1.002 CPUs utilized          
+     1.503560078                  4      context-switches          #   39.902 /sec                   
+     1.503560078                  1      cpu-migrations            #    9.976 /sec                   
+     1.503560078              16384      page-faults               #  163.440 K/sec                  
+     1.503560078          529718545      cycles                    #    5.284 GHz                    
+     1.503560078           77654373      instructions              #    0.15  insn per cycle         
+     1.503560078           13964483      branches                  #  139.304 M/sec                  
+     1.503560078              10571      branch-misses             #    0.08% of all branches        
+     1.503560078              26268      r2012                     #  262.039 K/sec                  
+     1.503560078                225      r2011                     #    2.245 K/sec                  
+     1.503560078                  0      r0e12                     #    0.000 /sec                   
+     1.603814071             100.25 msec cpu-clock                 #    1.003 CPUs utilized          
+     1.603814071             100.25 msec task-clock                #    1.003 CPUs utilized          
+     1.603814071                  4      context-switches          #   39.899 /sec                   
+     1.603814071                  1      cpu-migrations            #    9.975 /sec                   
+     1.603814071                  0      page-faults               #    0.000 /sec                   
+     1.603814071          530190657      cycles                    #    5.288 GHz                    
+     1.603814071            7324549      instructions              #    0.01  insn per cycle         
+     1.603814071            1452851      branches                  #   14.492 M/sec                  
+     1.603814071                647      branch-misses             #    0.04% of all branches        
+     1.603814071              19237      r2012                     #  191.883 K/sec                  
+     1.603814071                111      r2011                     #    1.107 K/sec                  
+     1.603814071                  0      r0e12                     #    0.000 /sec                   
+     1.704057529             100.25 msec cpu-clock                 #    1.002 CPUs utilized          
+     1.704057529             100.25 msec task-clock                #    1.002 CPUs utilized          
+     1.704057529                  4      context-switches          #   39.902 /sec                   
+     1.704057529                  1      cpu-migrations            #    9.976 /sec                   
+     1.704057529                  0      page-faults               #    0.000 /sec                   
+     1.704057529          529983226      cycles                    #    5.287 GHz                    
+     1.704057529            7033598      instructions              #    0.01  insn per cycle         
+     1.704057529            1401670      branches                  #   13.982 M/sec                  
+     1.704057529                478      branch-misses             #    0.03% of all branches        
+     1.704057529              19836      r2012                     #  197.874 K/sec                  
+     1.704057529                107      r2011                     #    1.067 K/sec                  
+     1.704057529                  0      r0e12                     #    0.000 /sec                   
+     1.804304228             100.25 msec cpu-clock                 #    1.002 CPUs utilized          
+     1.804304228             100.25 msec task-clock                #    1.002 CPUs utilized          
+     1.804304228                  2      context-switches          #   19.951 /sec                   
+     1.804304228                  1      cpu-migrations            #    9.975 /sec                   
+     1.804304228              16384      page-faults               #  163.439 K/sec                  
+     1.804304228          529886897      cycles                    #    5.286 GHz                    
+     1.804304228           58482474      instructions              #    0.11  insn per cycle         
+     1.804304228           11125598      branches                  #  110.983 M/sec                  
+     1.804304228               7627      branch-misses             #    0.07% of all branches        
+     1.804304228              15599      r2012                     #  155.608 K/sec                  
+     1.804304228                217      r2011                     #    2.165 K/sec                  
+     1.804304228                  0      r0e12                     #    0.000 /sec                   
+     1.904488433             100.17 msec cpu-clock                 #    1.002 CPUs utilized          
+     1.904488433             100.17 msec task-clock                #    1.002 CPUs utilized          
+     1.904488433                  4      context-switches          #   39.932 /sec                   
+     1.904488433                  1      cpu-migrations            #    9.983 /sec                   
+     1.904488433                  0      page-faults               #    0.000 /sec                   
+     1.904488433          529473180      cycles                    #    5.286 GHz                    
+     1.904488433            8149563      instructions              #    0.02  insn per cycle         
+     1.904488433            1624891      branches                  #   16.221 M/sec                  
+     1.904488433                407      branch-misses             #    0.03% of all branches        
+     1.904488433              10469      r2012                     #  104.513 K/sec                  
+     1.904488433                110      r2011                     #    1.098 K/sec                  
+     1.904488433                  0      r0e12                     #    0.000 /sec                   
+     2.004656443             100.17 msec cpu-clock                 #    1.002 CPUs utilized          
+     2.004656443             100.17 msec task-clock                #    1.002 CPUs utilized          
+     2.004656443                 10      context-switches          #   99.829 /sec                   
+     2.004656443                  2      cpu-migrations            #   19.966 /sec                   
+     2.004656443              16385      page-faults               #  163.569 K/sec                  
+     2.004656443          528860466      cycles                    #    5.280 GHz                    
+     2.004656443           79127534      instructions              #    0.15  insn per cycle         
+     2.004656443           14247831      branches                  #  142.234 M/sec                  
+     2.004656443              13535      branch-misses             #    0.09% of all branches        
+     2.004656443              43931      r2012                     #  438.558 K/sec                  
+     2.004656443                363      r2011                     #    3.624 K/sec                  
+     2.004656443                  0      r0e12                     #    0.000 /sec                   
+     2.221649828             217.02 msec cpu-clock                 #    2.170 CPUs utilized          
+     2.221649828             217.02 msec task-clock                #    2.170 CPUs utilized          
+     2.221649828                 27      context-switches          #  124.413 /sec                   
+     2.221649828                  1      cpu-migrations            #    4.608 /sec                   
+     2.221649828              16545      page-faults               #   76.237 K/sec                  
+     2.221649828         1145533480      cycles                    #    5.278 GHz                    
+     2.221649828          935677593      instructions              #    0.82  insn per cycle         
+     2.221649828          157746243      branches                  #  726.876 M/sec                  
+     2.221649828              12347      branch-misses             #    0.01% of all branches        
+     2.221649828              45717      r2012                     #  210.659 K/sec                  
+     2.221649828                602      r2011                     #    2.774 K/sec                  
+     2.221649828                  0      r0e12                     #    0.000 /sec                   
+     2.321873712             100.22 msec cpu-clock                 #    1.002 CPUs utilized          
+     2.321873712             100.22 msec task-clock                #    1.002 CPUs utilized          
+     2.321873712                  8      context-switches          #   79.821 /sec                   
+     2.321873712                  1      cpu-migrations            #    9.978 /sec                   
+     2.321873712                  0      page-faults               #    0.000 /sec                   
+     2.321873712          528589342      cycles                    #    5.274 GHz                    
+     2.321873712         1994573302      instructions              #    3.77  insn per cycle         
+     2.321873712          332543996      branches                  #    3.318 G/sec                  
+     2.321873712               1326      branch-misses             #    0.00% of all branches        
+     2.321873712               6867      r2012                     #   68.516 K/sec                  
+     2.321873712                212      r2011                     #    2.115 K/sec                  
+     2.321873712                  0      r0e12                     #    0.000 /sec                   
+     2.422128587             100.24 msec cpu-clock                 #    1.002 CPUs utilized          
+     2.422128587             100.24 msec task-clock                #    1.002 CPUs utilized          
+     2.422128587                  8      context-switches          #   79.809 /sec                   
+     2.422128587                  1      cpu-migrations            #    9.976 /sec                   
+     2.422128587              16384      page-faults               #  163.449 K/sec                  
+     2.422128587          528620766      cycles                    #    5.274 GHz                    
+     2.422128587         1773355291      instructions              #    3.35  insn per cycle         
+     2.422128587          296490007      branches                  #    2.958 G/sec                  
+     2.422128587              11665      branch-misses             #    0.00% of all branches        
+     2.422128587              52378      r2012                     #  522.531 K/sec                  
+     2.422128587                339      r2011                     #    3.382 K/sec                  
+     2.422128587                  0      r0e12                     #    0.000 /sec                   
+     2.522339268             100.22 msec cpu-clock                 #    1.002 CPUs utilized          
+     2.522339268             100.22 msec task-clock                #    1.002 CPUs utilized          
+     2.522339268                  9      context-switches          #   89.805 /sec                   
+     2.522339268                  1      cpu-migrations            #    9.978 /sec                   
+     2.522339268                  0      page-faults               #    0.000 /sec                   
+     2.522339268          528518952      cycles                    #    5.274 GHz                    
+     2.522339268         1852313357      instructions              #    3.50  insn per cycle         
+     2.522339268          308845124      branches                  #    3.082 G/sec                  
+     2.522339268                662      branch-misses             #    0.00% of all branches        
+     2.522339268               9101      r2012                     #   90.812 K/sec                  
+     2.522339268                208      r2011                     #    2.075 K/sec                  
+     2.522339268                  0      r0e12                     #    0.000 /sec                   
+     2.622590707             100.25 msec cpu-clock                 #    1.002 CPUs utilized          
+     2.622590707             100.25 msec task-clock                #    1.002 CPUs utilized          
+     2.622590707                  9      context-switches          #   89.777 /sec                   
+     2.622590707                  1      cpu-migrations            #    9.975 /sec                   
+     2.622590707              16384      page-faults               #  163.433 K/sec                  
+     2.622590707          528617646      cycles                    #    5.273 GHz                    
+     2.622590707          134175729      instructions              #    0.25  insn per cycle         
+     2.622590707           22736846      branches                  #  226.804 M/sec                  
+     2.622590707              20197      branch-misses             #    0.09% of all branches        
+     2.622590707              16933      r2012                     #  168.910 K/sec                  
+     2.622590707                362      r2011                     #    3.611 K/sec                  
+     2.622590707                  0      r0e12                     #    0.000 /sec                   
 #           time             counts unit events
-     2.606437170             100.25 msec cpu-clock                 #    1.003 CPUs utilized          
-     2.606437170             100.25 msec task-clock                #    1.003 CPUs utilized          
-     2.606437170                  8      context-switches          #   79.799 /sec                   
-     2.606437170                  1      cpu-migrations            #    9.975 /sec                   
-     2.606437170                  0      page-faults               #    0.000 /sec                   
-     2.606437170          529009460      cycles                    #    5.277 GHz                    
-     2.606437170           46960698      instructions              #    0.09  insn per cycle         
-     2.606437170            7077813      branches                  #   70.600 M/sec                  
-     2.606437170              12472      branch-misses             #    0.18% of all branches        
-     2.606437170              11662      r2012                     #  116.327 K/sec                  
-     2.606437170                208      r2011                     #    2.075 K/sec                  
-     2.606437170                  0      r0e12                     #    0.000 /sec                   
-     2.706676326             100.24 msec cpu-clock                 #    1.002 CPUs utilized          
-     2.706676326             100.24 msec task-clock                #    1.002 CPUs utilized          
-     2.706676326                 10      context-switches          #   99.758 /sec                   
-     2.706676326                  1      cpu-migrations            #    9.976 /sec                   
-     2.706676326              16384      page-faults               #  163.443 K/sec                  
-     2.706676326          528777392      cycles                    #    5.275 GHz                    
-     2.706676326           96879877      instructions              #    0.18  insn per cycle         
-     2.706676326           16503097      branches                  #  164.631 M/sec                  
-     2.706676326              19285      branch-misses             #    0.12% of all branches        
-     2.706676326              43497      r2012                     #  433.916 K/sec                  
-     2.706676326                339      r2011                     #    3.382 K/sec                  
-     2.706676326                  0      r0e12                     #    0.000 /sec                   
-     2.806927488             100.25 msec cpu-clock                 #    1.003 CPUs utilized          
-     2.806927488             100.25 msec task-clock                #    1.003 CPUs utilized          
-     2.806927488                  9      context-switches          #   89.772 /sec                   
-     2.806927488                  1      cpu-migrations            #    9.975 /sec                   
-     2.806927488                  0      page-faults               #    0.000 /sec                   
-     2.806927488          529252172      cycles                    #    5.279 GHz                    
-     2.806927488           53397284      instructions              #    0.10  insn per cycle         
-     2.806927488            7967941      branches                  #   79.478 M/sec                  
-     2.806927488              14678      branch-misses             #    0.18% of all branches        
-     2.806927488               6516      r2012                     #   64.995 K/sec                  
-     2.806927488                217      r2011                     #    2.165 K/sec                  
-     2.806927488                  0      r0e12                     #    0.000 /sec                   
-     2.907175835             100.25 msec cpu-clock                 #    1.003 CPUs utilized          
-     2.907175835             100.25 msec task-clock                #    1.003 CPUs utilized          
-     2.907175835                 11      context-switches          #  109.726 /sec                   
-     2.907175835                  1      cpu-migrations            #    9.975 /sec                   
-     2.907175835              16384      page-faults               #  163.431 K/sec                  
-     2.907175835          529000890      cycles                    #    5.277 GHz                    
-     2.907175835          110505264      instructions              #    0.21  insn per cycle         
-     2.907175835           18630003      branches                  #  185.835 M/sec                  
-     2.907175835              20987      branch-misses             #    0.11% of all branches        
-     2.907175835             217235      r2012                     #    2.167 M/sec                  
-     2.907175835                363      r2011                     #    3.621 K/sec                  
-     2.907175835                  0      r0e12                     #    0.000 /sec                   
-     3.007363921             100.19 msec cpu-clock                 #    1.002 CPUs utilized          
-     3.007363921             100.19 msec task-clock                #    1.002 CPUs utilized          
-     3.007363921                 11      context-switches          #  109.794 /sec                   
-     3.007363921                  1      cpu-migrations            #    9.981 /sec                   
-     3.007363921                  2      page-faults               #   19.962 /sec                   
-     3.007363921          528633518      cycles                    #    5.276 GHz                    
-     3.007363921           50011573      instructions              #    0.09  insn per cycle         
-     3.007363921            7687171      branches                  #   76.728 M/sec                  
-     3.007363921              14317      branch-misses             #    0.19% of all branches        
-     3.007363921              11724      r2012                     #  117.020 K/sec                  
-     3.007363921                229      r2011                     #    2.286 K/sec                  
-     3.007363921                  0      r0e12                     #    0.000 /sec                   
-     3.107616649             100.25 msec cpu-clock                 #    1.002 CPUs utilized          
-     3.107616649             100.25 msec task-clock                #    1.002 CPUs utilized          
-     3.107616649                  6      context-switches          #   59.850 /sec                   
-     3.107616649                  1      cpu-migrations            #    9.975 /sec                   
-     3.107616649              16384      page-faults               #  163.432 K/sec                  
-     3.107616649          529515524      cycles                    #    5.282 GHz                    
-     3.107616649           62320274      instructions              #    0.12  insn per cycle         
-     3.107616649           11836836      branches                  #  118.073 M/sec                  
-     3.107616649              11552      branch-misses             #    0.10% of all branches        
-     3.107616649              55264      r2012                     #  551.262 K/sec                  
-     3.107616649                188      r2011                     #    1.875 K/sec                  
-     3.107616649                  0      r0e12                     #    0.000 /sec                   
-     3.207865749             100.25 msec cpu-clock                 #    1.002 CPUs utilized          
-     3.207865749             100.25 msec task-clock                #    1.002 CPUs utilized          
-     3.207865749                  6      context-switches          #   59.853 /sec                   
-     3.207865749                  1      cpu-migrations            #    9.976 /sec                   
-     3.207865749                  0      page-faults               #    0.000 /sec                   
-     3.207865749          529754021      cycles                    #    5.285 GHz                    
-     3.207865749            8331757      instructions              #    0.02  insn per cycle         
-     3.207865749            1661929      branches                  #   16.579 M/sec                  
-     3.207865749                781      branch-misses             #    0.05% of all branches        
-     3.207865749              11712      r2012                     #  116.833 K/sec                  
-     3.207865749                113      r2011                     #    1.127 K/sec                  
-     3.207865749                  0      r0e12                     #    0.000 /sec                   
-     3.308113973             100.25 msec cpu-clock                 #    1.003 CPUs utilized          
-     3.308113973             100.25 msec task-clock                #    1.003 CPUs utilized          
-     3.308113973                  4      context-switches          #   39.900 /sec                   
-     3.308113973                  1      cpu-migrations            #    9.975 /sec                   
-     3.308113973               5288      page-faults               #   52.748 K/sec                  
-     3.308113973          529972041      cycles                    #    5.286 GHz                    
-     3.308113973           43870853      instructions              #    0.08  insn per cycle         
-     3.308113973            7605991      branches                  #   75.870 M/sec                  
-     3.308113973               5873      branch-misses             #    0.08% of all branches        
-     3.308113973             199177      r2012                     #    1.987 M/sec                  
-     3.308113973                153      r2011                     #    1.526 K/sec                  
-     3.308113973                  0      r0e12                     #    0.000 /sec                   
-     3.408333489             100.23 msec cpu-clock                 #    1.002 CPUs utilized          
-     3.408333489             100.23 msec task-clock                #    1.002 CPUs utilized          
-     3.408333489                  4      context-switches          #   39.910 /sec                   
-     3.408333489                  1      cpu-migrations            #    9.978 /sec                   
-     3.408333489              11096      page-faults               #  110.710 K/sec                  
-     3.408333489          529725250      cycles                    #    5.285 GHz                    
-     3.408333489           42278928      instructions              #    0.08  insn per cycle         
-     3.408333489            8077352      branches                  #   80.592 M/sec                  
-     3.408333489               5147      branch-misses             #    0.06% of all branches        
-     3.408333489              43344      r2012                     #  432.465 K/sec                  
-     3.408333489                197      r2011                     #    1.966 K/sec                  
-     3.408333489                  0      r0e12                     #    0.000 /sec                   
-     3.508593990             100.25 msec cpu-clock                 #    1.003 CPUs utilized          
-     3.508593990             100.25 msec task-clock                #    1.003 CPUs utilized          
-     3.508593990                  2      context-switches          #   19.950 /sec                   
-     3.508593990                  1      cpu-migrations            #    9.975 /sec                   
-     3.508593990                  0      page-faults               #    0.000 /sec                   
-     3.508593990          530169692      cycles                    #    5.288 GHz                    
-     3.508593990            7925803      instructions              #    0.01  insn per cycle         
-     3.508593990            1580757      branches                  #   15.768 M/sec                  
-     3.508593990                365      branch-misses             #    0.02% of all branches        
-     3.508593990              22932      r2012                     #  228.744 K/sec                  
-     3.508593990                 63      r2011                     #  628.417 /sec                   
-     3.508593990                  0      r0e12                     #    0.000 /sec                   
-     3.711069957             202.48 msec cpu-clock                 #    2.025 CPUs utilized          
-     3.711069957             202.48 msec task-clock                #    2.025 CPUs utilized          
-     3.711069957                  8      context-switches          #   39.510 /sec                   
-     3.711069957                  1      cpu-migrations            #    4.939 /sec                   
-     3.711069957              16384      page-faults               #   80.917 K/sec                  
-     3.711069957          847152799      cycles                    #    4.184 GHz                    
-     3.711069957           62217370      instructions              #    0.07  insn per cycle         
-     3.711069957           11880487      branches                  #   58.675 M/sec                  
-     3.711069957               9698      branch-misses             #    0.08% of all branches        
-     3.711069957              87924      r2012                     #  434.235 K/sec                  
-     3.711069957                264      r2011                     #    1.304 K/sec                  
-     3.711069957                  0      r0e12                     #    0.000 /sec                   
-     3.811365510             100.32 msec cpu-clock                 #    1.003 CPUs utilized          
-     3.811365510             100.32 msec task-clock                #    1.003 CPUs utilized          
-     3.811365510                  2      context-switches          #   19.936 /sec                   
-     3.811365510                  1      cpu-migrations            #    9.968 /sec                   
-     3.811365510              16384      page-faults               #  163.316 K/sec                  
-     3.811365510          529876963      cycles                    #    5.282 GHz                    
-     3.811365510           77807940      instructions              #    0.15  insn per cycle         
-     3.811365510           14020274      branches                  #  139.754 M/sec                  
-     3.811365510              12223      branch-misses             #    0.09% of all branches        
-     3.811365510             239858      r2012                     #    2.391 M/sec                  
-     3.811365510                312      r2011                     #    3.110 K/sec                  
-     3.811365510                  0      r0e12                     #    0.000 /sec                   
-     3.911597219             100.19 msec cpu-clock                 #    1.002 CPUs utilized          
-     3.911597219             100.19 msec task-clock                #    1.002 CPUs utilized          
-     3.911597219                  6      context-switches          #   59.884 /sec                   
-     3.911597219                  1      cpu-migrations            #    9.981 /sec                   
-     3.911597219                  0      page-faults               #    0.000 /sec                   
-     3.911597219          529820740      cycles                    #    5.288 GHz                    
-     3.911597219            7786545      instructions              #    0.01  insn per cycle         
-     3.911597219            1551684      branches                  #   15.487 M/sec                  
-     3.911597219               1026      branch-misses             #    0.07% of all branches        
-     3.911597219              26876      r2012                     #  268.239 K/sec                  
-     3.911597219                174      r2011                     #    1.737 K/sec                  
-     3.911597219                  0      r0e12                     #    0.000 /sec                   
-     4.011834451             100.25 msec cpu-clock                 #    1.003 CPUs utilized          
-     4.011834451             100.25 msec task-clock                #    1.003 CPUs utilized          
-     4.011834451                  4      context-switches          #   39.900 /sec                   
-     4.011834451                  1      cpu-migrations            #    9.975 /sec                   
-     4.011834451              16384      page-faults               #  163.431 K/sec                  
-     4.011834451          529866156      cycles                    #    5.285 GHz                    
-     4.011834451           57308426      instructions              #    0.11  insn per cycle         
-     4.011834451           10900485      branches                  #  108.733 M/sec                  
-     4.011834451               7498      branch-misses             #    0.07% of all branches        
-     4.011834451              64611      r2012                     #  644.497 K/sec                  
-     4.011834451                304      r2011                     #    3.032 K/sec                  
-     4.011834451                  0      r0e12                     #    0.000 /sec                   
+     2.722850953             100.25 msec cpu-clock                 #    1.003 CPUs utilized          
+     2.722850953             100.25 msec task-clock                #    1.002 CPUs utilized          
+     2.722850953                 10      context-switches          #   99.751 /sec                   
+     2.722850953                  1      cpu-migrations            #    9.975 /sec                   
+     2.722850953                  0      page-faults               #    0.000 /sec                   
+     2.722850953          528851507      cycles                    #    5.275 GHz                    
+     2.722850953           53133777      instructions              #    0.10  insn per cycle         
+     2.722850953            7939026      branches                  #   79.192 M/sec                  
+     2.722850953              14634      branch-misses             #    0.18% of all branches        
+     2.722850953               5433      r2012                     #   54.195 K/sec                  
+     2.722850953                242      r2011                     #    2.414 K/sec                  
+     2.722850953                  0      r0e12                     #    0.000 /sec                   
+     2.823094521             100.25 msec cpu-clock                 #    1.002 CPUs utilized          
+     2.823094521             100.25 msec task-clock                #    1.003 CPUs utilized          
+     2.823094521                  9      context-switches          #   89.776 /sec                   
+     2.823094521                  1      cpu-migrations            #    9.975 /sec                   
+     2.823094521               7814      page-faults               #   77.945 K/sec                  
+     2.823094521          528945889      cycles                    #    5.276 GHz                    
+     2.823094521           90640179      instructions              #    0.17  insn per cycle         
+     2.823094521           14535702      branches                  #  144.995 M/sec                  
+     2.823094521              19342      branch-misses             #    0.13% of all branches        
+     2.823094521              36449      r2012                     #  363.582 K/sec                  
+     2.823094521                321      r2011                     #    3.202 K/sec                  
+     2.823094521                  0      r0e12                     #    0.000 /sec                   
+     2.923379862             100.28 msec cpu-clock                 #    1.003 CPUs utilized          
+     2.923379862             100.28 msec task-clock                #    1.003 CPUs utilized          
+     2.923379862                  8      context-switches          #   79.773 /sec                   
+     2.923379862                  1      cpu-migrations            #    9.972 /sec                   
+     2.923379862               8570      page-faults               #   85.457 K/sec                  
+     2.923379862          529251287      cycles                    #    5.277 GHz                    
+     2.923379862           73900534      instructions              #    0.14  insn per cycle         
+     2.923379862           12172798      branches                  #  121.382 M/sec                  
+     2.923379862              16563      branch-misses             #    0.14% of all branches        
+     2.923379862              13590      r2012                     #  135.514 K/sec                  
+     2.923379862                334      r2011                     #    3.331 K/sec                  
+     2.923379862                  0      r0e12                     #    0.000 /sec                   
+     3.023631379             100.25 msec cpu-clock                 #    1.003 CPUs utilized          
+     3.023631379             100.25 msec task-clock                #    1.002 CPUs utilized          
+     3.023631379                  8      context-switches          #   79.800 /sec                   
+     3.023631379                  1      cpu-migrations            #    9.975 /sec                   
+     3.023631379                  0      page-faults               #    0.000 /sec                   
+     3.023631379          529296184      cycles                    #    5.280 GHz                    
+     3.023631379           46987995      instructions              #    0.09  insn per cycle         
+     3.023631379            7082010      branches                  #   70.643 M/sec                  
+     3.023631379              12495      branch-misses             #    0.18% of all branches        
+     3.023631379              12180      r2012                     #  121.496 K/sec                  
+     3.023631379                219      r2011                     #    2.185 K/sec                  
+     3.023631379                  0      r0e12                     #    0.000 /sec                   
+     3.123876610             100.25 msec cpu-clock                 #    1.002 CPUs utilized          
+     3.123876610             100.25 msec task-clock                #    1.002 CPUs utilized          
+     3.123876610                 10      context-switches          #   99.755 /sec                   
+     3.123876610                  1      cpu-migrations            #    9.975 /sec                   
+     3.123876610              16384      page-faults               #  163.438 K/sec                  
+     3.123876610          529126355      cycles                    #    5.278 GHz                    
+     3.123876610          100673691      instructions              #    0.19  insn per cycle         
+     3.123876610           17050304      branches                  #  170.085 M/sec                  
+     3.123876610              20924      branch-misses             #    0.12% of all branches        
+     3.123876610              11212      r2012                     #  111.845 K/sec                  
+     3.123876610                376      r2011                     #    3.751 K/sec                  
+     3.123876610                  0      r0e12                     #    0.000 /sec                   
+     3.224133428             100.26 msec cpu-clock                 #    1.003 CPUs utilized          
+     3.224133428             100.26 msec task-clock                #    1.003 CPUs utilized          
+     3.224133428                 10      context-switches          #   99.741 /sec                   
+     3.224133428                  1      cpu-migrations            #    9.974 /sec                   
+     3.224133428                  3      page-faults               #   29.922 /sec                   
+     3.224133428          529723895      cycles                    #    5.284 GHz                    
+     3.224133428           13280097      instructions              #    0.03  insn per cycle         
+     3.224133428            2534072      branches                  #   25.275 M/sec                  
+     3.224133428               3454      branch-misses             #    0.14% of all branches        
+     3.224133428              13741      r2012                     #  137.054 K/sec                  
+     3.224133428                168      r2011                     #    1.676 K/sec                  
+     3.224133428                  0      r0e12                     #    0.000 /sec                   
+     3.324387448             100.25 msec cpu-clock                 #    1.002 CPUs utilized          
+     3.324387448             100.25 msec task-clock                #    1.002 CPUs utilized          
+     3.324387448                  8      context-switches          #   79.802 /sec                   
+     3.324387448                  1      cpu-migrations            #    9.975 /sec                   
+     3.324387448              16384      page-faults               #  163.434 K/sec                  
+     3.324387448          529666774      cycles                    #    5.284 GHz                    
+     3.324387448           78945239      instructions              #    0.15  insn per cycle         
+     3.324387448           14215412      branches                  #  141.802 M/sec                  
+     3.324387448              11802      branch-misses             #    0.08% of all branches        
+     3.324387448              38610      r2012                     #  385.144 K/sec                  
+     3.324387448                311      r2011                     #    3.102 K/sec                  
+     3.324387448                  0      r0e12                     #    0.000 /sec                   
+     3.424643692             100.26 msec cpu-clock                 #    1.003 CPUs utilized          
+     3.424643692             100.26 msec task-clock                #    1.003 CPUs utilized          
+     3.424643692                  4      context-switches          #   39.897 /sec                   
+     3.424643692                  1      cpu-migrations            #    9.974 /sec                   
+     3.424643692                  0      page-faults               #    0.000 /sec                   
+     3.424643692          530087005      cycles                    #    5.287 GHz                    
+     3.424643692            8406409      instructions              #    0.02  insn per cycle         
+     3.424643692            1675933      branches                  #   16.716 M/sec                  
+     3.424643692                442      branch-misses             #    0.03% of all branches        
+     3.424643692              21744      r2012                     #  216.880 K/sec                  
+     3.424643692                136      r2011                     #    1.356 K/sec                  
+     3.424643692                  0      r0e12                     #    0.000 /sec                   
+     3.524892421             100.25 msec cpu-clock                 #    1.002 CPUs utilized          
+     3.524892421             100.25 msec task-clock                #    1.003 CPUs utilized          
+     3.524892421                  4      context-switches          #   39.900 /sec                   
+     3.524892421                  1      cpu-migrations            #    9.975 /sec                   
+     3.524892421              16384      page-faults               #  163.431 K/sec                  
+     3.524892421          529692043      cycles                    #    5.284 GHz                    
+     3.524892421           58234109      instructions              #    0.11  insn per cycle         
+     3.524892421           11076558      branches                  #  110.489 M/sec                  
+     3.524892421               7961      branch-misses             #    0.07% of all branches        
+     3.524892421              22473      r2012                     #  224.169 K/sec                  
+     3.524892421                218      r2011                     #    2.175 K/sec                  
+     3.524892421                  0      r0e12                     #    0.000 /sec                   
+     3.625158226             100.26 msec cpu-clock                 #    1.003 CPUs utilized          
+     3.625158226             100.26 msec task-clock                #    1.003 CPUs utilized          
+     3.625158226                  4      context-switches          #   39.895 /sec                   
+     3.625158226                  1      cpu-migrations            #    9.974 /sec                   
+     3.625158226                  0      page-faults               #    0.000 /sec                   
+     3.625158226          530081852      cycles                    #    5.287 GHz                    
+     3.625158226            7034488      instructions              #    0.01  insn per cycle         
+     3.625158226            1401812      branches                  #   13.981 M/sec                  
+     3.625158226                470      branch-misses             #    0.03% of all branches        
+     3.625158226               8496      r2012                     #   84.736 K/sec                  
+     3.625158226                135      r2011                     #    1.346 K/sec                  
+     3.625158226                  0      r0e12                     #    0.000 /sec                   
+     3.725394169             100.24 msec cpu-clock                 #    1.002 CPUs utilized          
+     3.725394169             100.24 msec task-clock                #    1.002 CPUs utilized          
+     3.725394169                  2      context-switches          #   19.952 /sec                   
+     3.725394169                  1      cpu-migrations            #    9.976 /sec                   
+     3.725394169              16384      page-faults               #  163.450 K/sec                  
+     3.725394169          529646760      cycles                    #    5.284 GHz                    
+     3.725394169           77953199      instructions              #    0.15  insn per cycle         
+     3.725394169           14015810      branches                  #  139.825 M/sec                  
+     3.725394169              10814      branch-misses             #    0.08% of all branches        
+     3.725394169              58239      r2012                     #  581.004 K/sec                  
+     3.725394169                286      r2011                     #    2.853 K/sec                  
+     3.725394169                  0      r0e12                     #    0.000 /sec                   
+     3.825650250             100.25 msec cpu-clock                 #    1.003 CPUs utilized          
+     3.825650250             100.25 msec task-clock                #    1.003 CPUs utilized          
+     3.825650250                  2      context-switches          #   19.950 /sec                   
+     3.825650250                  1      cpu-migrations            #    9.975 /sec                   
+     3.825650250                  0      page-faults               #    0.000 /sec                   
+     3.825650250          529898601      cycles                    #    5.286 GHz                    
+     3.825650250            7676210      instructions              #    0.01  insn per cycle         
+     3.825650250            1530599      branches                  #   15.267 M/sec                  
+     3.825650250                418      branch-misses             #    0.03% of all branches        
+     3.825650250              19646      r2012                     #  195.965 K/sec                  
+     3.825650250                106      r2011                     #    1.057 K/sec                  
+     3.825650250                  0      r0e12                     #    0.000 /sec                   
+     3.925896340             100.25 msec cpu-clock                 #    1.002 CPUs utilized          
+     3.925896340             100.25 msec task-clock                #    1.002 CPUs utilized          
+     3.925896340                  6      context-switches          #   59.851 /sec                   
+     3.925896340                  1      cpu-migrations            #    9.975 /sec                   
+     3.925896340              16384      page-faults               #  163.432 K/sec                  
+     3.925896340          529751468      cycles                    #    5.284 GHz                    
+     3.925896340           58122697      instructions              #    0.11  insn per cycle         
+     3.925896340           11051729      branches                  #  110.242 M/sec                  
+     3.925896340               7690      branch-misses             #    0.07% of all branches        
+     3.925896340              26262      r2012                     #  261.967 K/sec                  
+     3.925896340                267      r2011                     #    2.663 K/sec                  
+     3.925896340                  0      r0e12                     #    0.000 /sec                   
+     4.026091599             100.21 msec cpu-clock                 #    1.002 CPUs utilized          
+     4.026091599             100.21 msec task-clock                #    1.002 CPUs utilized          
+     4.026091599                  2      context-switches          #   19.959 /sec                   
+     4.026091599                  1      cpu-migrations            #    9.979 /sec                   
+     4.026091599                  0      page-faults               #    0.000 /sec                   
+     4.026091599          529823959      cycles                    #    5.287 GHz                    
+     4.026091599            6872824      instructions              #    0.01  insn per cycle         
+     4.026091599            1370326      branches                  #   13.675 M/sec                  
+     4.026091599                310      branch-misses             #    0.02% of all branches        
+     4.026091599               8337      r2012                     #   83.199 K/sec                  
+     4.026091599                104      r2011                     #    1.038 K/sec                  
+     4.026091599                  0      r0e12                     #    0.000 /sec                   
+     4.126291333             100.20 msec cpu-clock                 #    1.002 CPUs utilized          
+     4.126291333             100.20 msec task-clock                #    1.002 CPUs utilized          
+     4.126291333                  2      context-switches          #   19.960 /sec                   
+     4.126291333                  1      cpu-migrations            #    9.980 /sec                   
+     4.126291333               1233      page-faults               #   12.305 K/sec                  
+     4.126291333          529760799      cycles                    #    5.287 GHz                    
+     4.126291333           30905894      instructions              #    0.06  insn per cycle         
+     4.126291333            5130715      branches                  #   51.203 M/sec                  
+     4.126291333               3918      branch-misses             #    0.08% of all branches        
+     4.126291333              54146      r2012                     #  540.366 K/sec                  
+     4.126291333                132      r2011                     #    1.317 K/sec                  
+     4.126291333                  0      r0e12                     #    0.000 /sec                   
