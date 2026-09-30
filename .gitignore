@@ -1,7 +1,9 @@
 # vim undofile
 .*.un~
 # python venv
-.venv
+.venv/
+data-analysis/.venv/
 # old files
-OLD
+OLD/
+# temporary remote script for comparison
 remote.sh

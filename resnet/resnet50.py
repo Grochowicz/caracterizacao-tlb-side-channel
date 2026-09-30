@@ -22,10 +22,30 @@ def main():
         for _ in range(100):
             model(input_tensor)
 
+    start_time = time.perf_counter_ns()
+
     # Run continuously
     with torch.inference_mode():
         while True:
+            inference_start = time.perf_counter_ns()
+
             model(input_tensor)
+
+            inference_end = time.perf_counter_ns()
+
+            elapsed_ms = (inference_end - start_time) / 1_000_000
+            latency_ns = inference_end - inference_start
+
+            # Approximate cycles assuming a 2.40 GHz CPU.
+            # Change this if your CPU frequency is different.
+            cycles = latency_ns * 2.40
+
+            print(
+                f"elapsed time = {elapsed_ms:.0f} ms, "
+                f"measured latency = {latency_ns / 1000:.2f}us "
+                f"(~{cycles:.1f} cycles)",
+                flush=True
+            )
 
 
 if __name__ == "__main__":

@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-APS=("./test-tlb/test-tlb -r 67108864 4096" "./resnet/resnet50.py")
+AP1=(./test-tlb/test-tlb -r 67108864 4096)
+AP2=(./resnet/resnet50.py)
+
+APS=(AP1 AP2)
 
 if [ $# -eq 0 ]; then
 	echo "No argument provided; choose AP."
@@ -11,17 +14,14 @@ if [ $1 -ge ${#APS[@]} ]; then
     echo "Index $1 is out of bounds for APS array (size ${#APS[@]})."
     exit
 else
-	AP=${APS[$1]}
+	declare -n AP=${APS[$1]}
 fi
 
-echo $AP
+echo "Running $0 for AP ${AP[@]}..."
 
 ATTACKS=./TLBSideChannel
 OUT=./results-1q-cpu-$1
 MADTLB=./tlbdr/case-studies/tlbleed/madtlb
-
-echo $OUT
-exit
 
 CPU=0
 
@@ -74,7 +74,7 @@ top_output="$OUT/baseline_top.txt"
 perf_output="$OUT/baseline_perf.txt"
 analysis_output="$OUT/baseline_analysis.csv"
 
-taskset -c "$CPU" "$AP" > "$OUT/baseline_victim.txt" 2>&1 &
+taskset -c "$CPU" "${AP[@]}" > "$OUT/baseline_victim.txt" 2>&1 &
 victim_pid=$!
 
 perf stat \
@@ -150,7 +150,7 @@ do
         # Victim
         # ----------------------------------------------------
 
-        taskset -c "$CPU" "$AP" > "$OUT/${name}_${attempt}_victim.txt" 2>&1 &
+        taskset -c "$CPU" "${AP[@]}" > "$OUT/${name}_${attempt}_victim.txt" 2>&1 &
         victim_pid=$!
 
         # ----------------------------------------------------
@@ -257,7 +257,7 @@ for attack in rn1 rn2 rj1 rj2; do
     # Victim
     # --------------------------------------------------------
 
-    taskset -c "$CPU" "$AP" > "$OUT/${name}_${attempt}_victim.txt" 2>&1 &
+    taskset -c "$CPU" "${AP[@]}" > "$OUT/${name}_${attempt}_victim.txt" 2>&1 &
     victim_pid=$!
 
     # --------------------------------------------------------

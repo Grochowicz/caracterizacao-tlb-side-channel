@@ -215,7 +215,7 @@ def test_default_requests():
         __metadata_request__fit = {
             # set a different default request
             "sample_weight": True
-        }  # type: ignore[var-annotated]
+        }
 
         def fit(self, X, y=None):
             return self  # pragma: no cover
@@ -407,10 +407,9 @@ def test_nested_routing():
 
     pipeline.predict(X, sample_weight=w3)
     check_recorded_metadata(
-        pipeline.steps_[0].transformer_,
-        method="transform",
-        parent="fit",
-        sample_weight=w3,
+        pipeline.steps_[1].estimator_,
+        method="predict",
+        parent="predict",
     )
 
 

@@ -17,14 +17,14 @@ import sys
 import ctypes
 import itertools
 import textwrap
-from typing import final
+from threading import Thread
+from typing import Callable, Literal, final
 import warnings
-from ctypes.util import find_library
 from abc import ABC, abstractmethod
 from functools import lru_cache
 from contextlib import ContextDecorator
 
-__version__ = "3.6.0"
+__version__ = "3.7.0"
 __all__ = [
     "threadpool_limits",
     "threadpool_info",
@@ -47,6 +47,10 @@ __all__ = [
 # disable it while under the scope of the outer OpenMP parallel section.
 os.environ.setdefault("KMP_DUPLICATE_LIB_OK", "True")
 
+# Hard limit for Windows library paths resolved through GetModuleFileNameExW.
+# Kept below unlimited for security reasons; see CHANGES.md and PR #189.
+_WINDOWS_MAX_LIBRARY_PATH_LENGTH = 2600
+
 # Structure to cast the info on dynamically loaded library. See
 # https://linux.die.net/man/3/dl_iterate_phdr for more details.
 _SYSTEM_UINT = ctypes.c_uint64 if sys.maxsize > 2**32 else ctypes.c_uint32
@@ -67,6 +71,89 @@ try:
     _RTLD_NOLOAD = os.RTLD_NOLOAD
 except AttributeError:
     _RTLD_NOLOAD = ctypes.DEFAULT_MODE
+
+
+# What scope does the API affect?
+_ThreadLimitScope = Literal[
+    # Using the API sets a limit only on the current thread.
+    "current_thread",
+    # Using the API sets a limit for every thread in the process; whether or
+    # not it's a shared process-wide pool or per-thread limit needs to be
+    # determined some other way.
+    "process",
+    # Something else, unexpected; perhaps another variant, perhaps information
+    # can't be determined under the current configuration.
+    "unknown",
+]
+
+
+def _determine_thread_limit_scope(
+    get_n_threads: Callable[[], int], set_n_threads: Callable[[int], None]
+) -> _ThreadLimitScope:
+    """
+    Run some experiments to determine the scope of the given get/set API.
+
+    This function might not work if you only have one core available.
+
+    This function might not work if you set a limit on a library with an
+    environment variable.
+
+    The function works by changing the number of threads in loaded controllers,
+    which can be a process-wide change. As such, it is not always thread-safe.
+    An attempt will be made to restore all settings to their previous state,
+    but the result may be subtly different, e.g. if "unset" has different
+    semantics than "set to the default returned value".
+    """
+    previous = get_n_threads()
+
+    # Some plausible constraints we need to keep in mind:
+    #
+    # 1. The API might not allow setting more than the number of (available, or
+    #    physical) cores.
+    # 2. Some hard limit on number of threads.
+    try:
+        # Choose a desired number of threads that is different than the current
+        # number, and hopefully achievable under the current configuration:
+        if previous < 2:
+            expected = 2
+        else:
+            # It's 2 or more, so shrink it slightly:
+            expected = previous - 1
+
+        thread_result = []
+
+        def get_and_set() -> None:
+            set_n_threads(expected)
+            thread_result.append(get_n_threads())
+
+        thread = Thread(target=get_and_set)
+        thread.start()
+        thread.join()
+
+        # First, getting in the same thread as a set should always give same
+        # number, if it's a number in a reasonable range. A possible exception
+        # fo failing this is if the number of thread is limited by available
+        # CPU, and only one CPU is available. In that case we can't empirically
+        # determine how the API works. We try to not reach that point here, but
+        # you can imagine a thread pool implementation that is aware of
+        # cgroups, in which case a Docker container limited to one core will
+        # pass the safety check at the start of the function. Perhaps
+        # cpu_count() from loky should be moved into this package...
+        if thread_result != [expected]:
+            return "unknown"
+
+        # Now, check this thread:
+        if get_n_threads() == expected:
+            # Setting modified this thread's results too:
+            return "process"
+        elif get_n_threads() == previous:
+            # Setting modified the other thread, but not this one:
+            return "current_thread"
+        else:
+            # No idea what's going on:
+            return "unknown"
+    finally:
+        set_n_threads(previous)
 
 
 class LibController(ABC):
@@ -116,15 +203,28 @@ class LibController(ABC):
         self.version = self.get_version()
         self.set_additional_attributes()
 
-    def info(self):
-        """Return relevant info wrapped in a dict"""
+    def info(self, debugging_info: bool = False):
+        """Return relevant info wrapped in a dict.
+
+        Parameters
+        ----------
+        debugging_info : bool
+
+            Include extra fields which require more intrusive actions to
+            obtain, and which can't always reliably be determined.
+        """
         hidden_attrs = ("dynlib", "parent", "_symbol_prefix", "_symbol_suffix")
-        return {
+        result = {
             "user_api": self.user_api,
             "internal_api": self.internal_api,
             "num_threads": self.num_threads,
             **{k: v for k, v in vars(self).items() if k not in hidden_attrs},
         }
+        if debugging_info:
+            result["thread_limit_scope"] = _determine_thread_limit_scope(
+                self.get_num_threads, self.set_num_threads
+            )
+        return result
 
     def set_additional_attributes(self):
         """Set additional attributes meant to be exposed in the info dict"""
@@ -143,7 +243,11 @@ class LibController(ABC):
 
     @abstractmethod
     def set_num_threads(self, num_threads):
-        """Set the maximum number of threads to use"""
+        """Set the maximum number of threads to use
+
+        When possible, implementations of this method should choose a thread
+        limiting API that only applies to the current thread.
+        """
 
     @abstractmethod
     def get_version(self):
@@ -165,7 +269,12 @@ class OpenBLASController(LibController):
 
     user_api = "blas"
     internal_api = "openblas"
-    filename_prefixes = ("libopenblas", "libblas", "libscipy_openblas")
+    filename_prefixes = (
+        "libopenblas",
+        "libblas",  # legacy conda-forge Windows shim, see _make_controller_from_path
+        "libscipy_openblas",
+        "openblas",  # Windows conda package use openblas.dll
+    )
 
     _symbol_prefixes = ("", "scipy_")
     _symbol_suffixes = ("", "64_", "_64")
@@ -188,13 +297,35 @@ class OpenBLASController(LibController):
         self.architecture = self._get_architecture()
 
     def get_num_threads(self):
-        get_num_threads_func = self._get_symbol("openblas_get_num_threads")
+        # See discussion in set_num_threads for details:
+        if self.threading_layer == "openmp":
+            symbol = "omp_get_max_threads"
+        else:
+            symbol = "openblas_get_num_threads"
+        get_num_threads_func = self._get_symbol(symbol)
         if get_num_threads_func is not None:
             return get_num_threads_func()
         return None
 
     def set_num_threads(self, num_threads):
-        set_num_threads_func = self._get_symbol("openblas_set_num_threads")
+        # The OpenBLAS limiting API is process-wide, and we want current thread
+        # limit if possible. When OpenBLAS is backed by OpenMP, using the
+        # OpenMP API allows for current thread limiting when OpenMP has that
+        # behavior. That is the case for libgomp, libomp, and libiomp, what you
+        # would find on Linux or macOS.
+        #
+        # On Windows the Visual C++ OpenMP API is process-wide, unfortunately,
+        # though this may be fixed if the /openmp:llvm flag is used:
+        # https://github.com/joblib/threadpoolctl/issues/230
+        #
+        # Also worth knowing that before v0.3.34, the OpenBLAS limiting API is
+        # broken when using OpenMP threading:
+        # https://github.com/OpenMathLib/OpenBLAS/issues/5806
+        if self.threading_layer == "openmp":
+            symbol = "omp_set_num_threads"
+        else:
+            symbol = "openblas_set_num_threads"
+        set_num_threads_func = self._get_symbol(symbol)
         if set_num_threads_func is not None:
             return set_num_threads_func(num_threads)
         return None
@@ -237,7 +368,10 @@ class BLISController(LibController):
 
     user_api = "blas"
     internal_api = "blis"
-    filename_prefixes = ("libblis", "libblas")
+    filename_prefixes = (
+        "libblis",
+        "libblas",
+    )  # libblas: legacy conda-forge Windows shim
     check_symbols = (
         "bli_thread_get_num_threads",
         "bli_thread_set_num_threads",
@@ -318,11 +452,11 @@ class FlexiBLASController(LibController):
     def current_backend(self):
         return self._get_current_backend()
 
-    def info(self):
+    def info(self, debugging_info: bool = False):
         """Return relevant info wrapped in a dict"""
         # We override the info method because the loaded and current backends
         # are dynamic properties
-        exposed_attrs = super().info()
+        exposed_attrs = super().info(debugging_info=debugging_info)
         exposed_attrs["loaded_backends"] = self.loaded_backends
         exposed_attrs["current_backend"] = self.current_backend
 
@@ -428,10 +562,14 @@ class MKLController(LibController):
 
     user_api = "blas"
     internal_api = "mkl"
-    filename_prefixes = ("libmkl_rt", "mkl_rt", "libblas")
+    filename_prefixes = (
+        "libmkl_rt",
+        "mkl_rt",
+        "libblas",  # legacy conda-forge Windows shim, see _make_controller_from_path
+    )
     check_symbols = (
         "MKL_Get_Max_Threads",
-        "MKL_Set_Num_Threads",
+        "MKL_Set_Num_Threads_Local",
         "MKL_Get_Version_String",
         "MKL_Set_Threading_Layer",
     )
@@ -444,7 +582,9 @@ class MKLController(LibController):
         return get_func()
 
     def set_num_threads(self, num_threads):
-        set_func = getattr(self.dynlib, "MKL_Set_Num_Threads", lambda num_threads: None)
+        set_func = getattr(
+            self.dynlib, "MKL_Set_Num_Threads_Local", lambda num_threads: None
+        )
         return set_func(num_threads)
 
     def get_version(self):
@@ -549,7 +689,7 @@ def _realpath(filepath):
 
 
 @_format_docstring(USER_APIS=list(_ALL_USER_APIS), INTERNAL_APIS=_ALL_INTERNAL_APIS)
-def threadpool_info():
+def threadpool_info(debugging_info: bool = False):
     """Return the maximal number of threads for each detected library.
 
     Return a list with all the supported libraries that have been found. Each
@@ -563,8 +703,17 @@ def threadpool_info():
       - "num_threads": the current thread limit.
 
     In addition, each library may contain internal_api specific entries.
+
+    Parameters
+    ----------
+    debugging_info : bool
+        Include extra fields which require more intrusive actions to obtain,
+        and which can't always reliably be determined.
+
+        - "thread_limit_scope": When setting the number of threads, what is
+          affected. Possible values are "process", "current_thread", "unknown".
     """
-    return ThreadpoolController().info()
+    return ThreadpoolController().info(debugging_info)
 
 
 class _ThreadpoolLimiter:
@@ -638,7 +787,7 @@ class _ThreadpoolLimiter:
 
         if warning_apis:
             warnings.warn(
-                "Multiple value possible for following user apis: "
+                "Multiple values possible for following user apis: "
                 + ", ".join(warning_apis)
                 + ". Returning the minimum."
             )
@@ -824,9 +973,19 @@ class ThreadpoolController:
         new_controller.lib_controllers = lib_controllers
         return new_controller
 
-    def info(self):
-        """Return lib_controllers info as a list of dicts"""
-        return [lib_controller.info() for lib_controller in self.lib_controllers]
+    def info(self, debugging_info: bool = False):
+        """Return lib_controllers info as a list of dicts.
+
+        Parameters
+        ----------
+        debugging_info : bool
+            Include extra fields which require more intrusive actions to
+            obtain, and which can't always reliably be determined.
+        """
+        return [
+            lib_controller.info(debugging_info=debugging_info)
+            for lib_controller in self.lib_controllers
+        ]
 
     def select(self, **kwargs):
         """Return a ThreadpoolController containing a subset of its current
@@ -966,14 +1125,85 @@ class ThreadpoolController:
 
     def _load_libraries(self):
         """Loop through loaded shared libraries and store the supported ones"""
-        if sys.platform == "darwin":
+        # ctypes.util is not imported on Linux: on CPython 3.14 it allocates a
+        # process-lifetime CFUNCTYPE callback that is not fork-safe with some
+        # libffi builds (#225). dllist also uses dl_iterate_phdr internally
+        # (#239), which we already avoid on Linux via /proc/self/maps.
+        dllist = None
+        if sys.platform not in ("linux", "emscripten"):
+            try:
+                from ctypes.util import dllist
+            except ImportError:
+                # CPython before 3.14 does not provide dll inspection.
+                dllist = None
+
+        if sys.platform == "linux" and os.path.exists("/proc/self/maps"):
+            # On glibc, dl_iterate_phdr has an internal lock, and that plus
+            # calling back into Python and the need to (re)acquire the GIL
+            # results in deadlocks. To avoid that, use a Linux-specific
+            # mechanism that doesn't have these issues; since it's Linux, musl
+            # works fine too.
+            self._find_libraries_with_linux()
+        elif dllist is not None:
+            # On Python 3.14+, this functionality is built-in. Once Python 3.13
+            # is no longer supported by threadpoolctl, most of the equivalent
+            # threadpoolctl implementations can be removed.
+            self._find_libraries_with_python(dllist)
+        elif sys.platform == "darwin":
             self._find_libraries_with_dyld()
         elif sys.platform == "win32":
-            self._find_libraries_with_enum_process_module_ex()
+            self._find_libraries_on_windows()
         elif "pyodide" in sys.modules:
             self._find_libraries_pyodide()
         else:
+            # Non-Linux Unix platforms.
             self._find_libraries_with_dl_iterate_phdr()
+
+    def _find_libraries_with_linux(self):
+        """Loop through loaded libraries and return binders on supported ones
+
+        Uses a Linux-specific mechanism:
+        https://man7.org/linux/man-pages/man5/proc_pid_maps.5.html
+        """
+        with open("/proc/self/maps") as f:
+            maps = f.read()
+        filepaths = set()
+        for line in maps.splitlines():
+            start_index = line.find("/")
+            if start_index == -1 or ".so" not in line:
+                continue
+            filepath = line[start_index:]
+            if os.path.exists(filepath):
+                filepaths.add(filepath)
+
+        for filepath in filepaths:
+            self._make_controller_from_path(filepath)
+
+    def _find_libraries_with_python(self, dllist):
+        """Loop through loaded libraries and return binders on supported ones
+
+        Uses Python's built-in support for this functionality.
+        """
+        try:
+            filepaths = dllist()
+        except OSError as exc:
+            # No Toolhelp fallback: if this fires in the wild, collect a
+            # minimal reproducer and report it upstream so CPython's dllist
+            # can be hardened against concurrent module list changes.
+            warnings.warn(
+                "ctypes.util.dllist failed to list loaded libraries "
+                f"({exc!r}). Native thread pools will not be inspected for "
+                "this ThreadpoolController. Please report a minimal "
+                "reproducer at https://github.com/joblib/threadpoolctl/issues "
+                "so it can be investigated and possibly be reported upstream to "
+                "CPython.",
+                RuntimeWarning,
+            )
+            return
+        if filepaths and filepaths[0] in ("", sys.executable):
+            filepaths = filepaths[1:]
+        for filepath in filepaths:
+            self._make_controller_from_path(filepath)
 
     def _find_libraries_with_dl_iterate_phdr(self):
         """Loop through loaded libraries and return binders on supported ones
@@ -993,16 +1223,18 @@ class ThreadpoolController:
             )
             return []
 
+        filepaths = []
+
         # Callback function for `dl_iterate_phdr` which is called for every
-        # library loaded in the current process until it returns 1.
+        # library loaded in the current process until it returns 1. To minimize
+        # the potential for deadlocks (see #228), this code should not do
+        # anything that might result in reentrancy into the library, the dl
+        # system, or anything else.
         def match_library_callback(info, size, data):
             # Get the path of the current library
             filepath = info.contents.dlpi_name
             if filepath:
-                filepath = filepath.decode("utf-8")
-
-                # Store the library controller if it is supported and selected
-                self._make_controller_from_path(filepath)
+                filepaths.append(filepath)
             return 0
 
         c_func_signature = ctypes.CFUNCTYPE(
@@ -1015,6 +1247,12 @@ class ThreadpoolController:
 
         data = ctypes.c_char_p(b"")
         libc.dl_iterate_phdr(c_match_library_callback, data)
+
+        # Now that a list of filepaths is available, load the respective
+        # libraries:
+        for filepath in filepaths:
+            # Store the library controller if it is supported and selected
+            self._make_controller_from_path(filepath.decode("utf-8"))
 
     def _find_libraries_with_dyld(self):
         """Loop through loaded libraries and return binders on supported ones
@@ -1039,79 +1277,253 @@ class ThreadpoolController:
             # Store the library controller if it is supported and selected
             self._make_controller_from_path(filepath)
 
-    def _find_libraries_with_enum_process_module_ex(self):
+    def _find_libraries_on_windows(self):
         """Loop through loaded libraries and return binders on supported ones
 
         This function is expected to work on windows system only.
-        This code is adapted from code by Philipp Hagemeister @phihag available
-        at https://stackoverflow.com/questions/17474574
+
+        Used when ``ctypes.util.dllist`` is unavailable (Python < 3.14).
+        Module discovery uses a snapshot-first strategy:
+        ``CreateToolhelp32Snapshot`` provides an atomic list of loaded
+        modules, which is more robust than ``EnumProcessModulesEx`` under
+        concurrent DLL load/unload. Paths that fit in
+        ``MODULEENTRY32W.szExePath`` (shorter than ``MAX_PATH``) are used as-is.
+        Truncated or empty snapshot paths are resolved with
+        ``GetModuleFileNameW`` and, when needed, ``GetModuleFileNameExW`` with a
+        larger buffer. If snapshot creation fails, enumeration falls back to
+        ``EnumProcessModulesEx``.
         """
-        from ctypes.wintypes import DWORD, HMODULE, MAX_PATH
-
-        PROCESS_QUERY_INFORMATION = 0x0400
-        PROCESS_VM_READ = 0x0010
-
-        LIST_LIBRARIES_ALL = 0x03
+        from ctypes.wintypes import MAX_PATH
 
         ps_api = self._get_windll("Psapi")
         kernel_32 = self._get_windll("kernel32")
+        self._setup_windows_module_apis(ps_api, kernel_32)
 
-        h_process = kernel_32.OpenProcess(
-            PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, False, os.getpid()
-        )
-        if not h_process:  # pragma: no cover
-            raise OSError(f"Could not open PID {os.getpid()}")
+        h_process = kernel_32.GetCurrentProcess()
+
+        # Allocate a buffer for long path names; see _WINDOWS_MAX_LIBRARY_PATH_LENGTH.
+        max_path = _WINDOWS_MAX_LIBRARY_PATH_LENGTH
+        path_buf = ctypes.create_unicode_buffer(max_path)
 
         try:
-            buf_count = 256
-            needed = DWORD()
-            # Grow the buffer until it becomes large enough to hold all the
-            # module headers
-            while True:
-                buf = (HMODULE * buf_count)()
-                buf_size = ctypes.sizeof(buf)
-                if not ps_api.EnumProcessModulesEx(
-                    h_process,
-                    ctypes.byref(buf),
-                    buf_size,
-                    ctypes.byref(needed),
-                    LIST_LIBRARIES_ALL,
-                ):
-                    raise OSError("EnumProcessModulesEx failed")
-                if buf_size >= needed.value:
-                    break
-                buf_count = needed.value // (buf_size // buf_count)
+            modules = self._snapshot_loaded_modules(kernel_32)
+        except OSError:
+            modules = None
 
-            count = needed.value // (buf_size // buf_count)
-            h_modules = map(HMODULE, buf[:count])
-
-            # Loop through all the module headers and get the library path
-            # Allocate a buffer for the path 10 times the size of MAX_PATH to take
-            # into account long path names.
-            max_path = 10 * MAX_PATH
-            buf = ctypes.create_unicode_buffer(max_path)
-            n_size = DWORD()
-            for h_module in h_modules:
-                # Get the path of the current module
-                if not ps_api.GetModuleFileNameExW(
-                    h_process, h_module, ctypes.byref(buf), ctypes.byref(n_size)
-                ):
-                    raise OSError("GetModuleFileNameEx failed")
-                filepath = buf.value
-
-                if len(filepath) == max_path:  # pragma: no cover
-                    warnings.warn(
-                        "Could not get the full path of a dynamic library (path too "
-                        "long). This library will be ignored and threadpoolctl might "
-                        "not be able to control or display information about all "
-                        f"loaded libraries. Here's the truncated path: {filepath!r}",
-                        RuntimeWarning,
-                    )
+        if modules is not None:
+            for h_module, snapshot_path in modules:
+                if snapshot_path and len(snapshot_path) < MAX_PATH - 1:
+                    filepath = snapshot_path
                 else:
-                    # Store the library controller if it is supported and selected
+                    filepath = self._resolve_module_filepath(
+                        ps_api,
+                        kernel_32,
+                        h_process,
+                        h_module,
+                        max_path=max_path,
+                        path_buf=path_buf,
+                    )
+                if filepath is not None:
                     self._make_controller_from_path(filepath)
+        else:
+            self._find_libraries_with_enum_process_modules_ex(
+                ps_api, kernel_32, h_process, max_path, path_buf
+            )
+
+    @classmethod
+    def _setup_windows_module_apis(cls, ps_api, kernel_32):
+        """Set ctypes signatures for Windows module enumeration APIs."""
+        from ctypes.wintypes import BOOL, DWORD, HANDLE, HMODULE
+
+        if getattr(cls, "_windows_module_apis_configured", False):
+            return
+
+        kernel_32.GetCurrentProcess.restype = HANDLE
+        kernel_32.CreateToolhelp32Snapshot.argtypes = [DWORD, DWORD]
+        kernel_32.CreateToolhelp32Snapshot.restype = HANDLE
+        kernel_32.Module32FirstW.argtypes = [HANDLE, ctypes.c_void_p]
+        kernel_32.Module32FirstW.restype = BOOL
+        kernel_32.Module32NextW.argtypes = [HANDLE, ctypes.c_void_p]
+        kernel_32.Module32NextW.restype = BOOL
+        kernel_32.GetModuleFileNameW.argtypes = [HMODULE, ctypes.c_wchar_p, DWORD]
+        kernel_32.GetModuleFileNameW.restype = DWORD
+        kernel_32.CloseHandle.argtypes = [HANDLE]
+        kernel_32.CloseHandle.restype = BOOL
+
+        ps_api.EnumProcessModulesEx.argtypes = [
+            HANDLE,
+            ctypes.POINTER(HMODULE),
+            DWORD,
+            ctypes.POINTER(DWORD),
+            DWORD,
+        ]
+        ps_api.EnumProcessModulesEx.restype = BOOL
+        ps_api.GetModuleFileNameExW.argtypes = [
+            HANDLE,
+            HMODULE,
+            ctypes.c_wchar_p,
+            DWORD,
+        ]
+        ps_api.GetModuleFileNameExW.restype = DWORD
+
+        cls._windows_module_apis_configured = True
+
+    def _snapshot_loaded_modules(self, kernel_32):
+        """Return loaded modules as (hModule, snapshot_path) pairs.
+
+        Uses CreateToolhelp32Snapshot for an atomic view of loaded modules, which
+        is more robust than EnumProcessModulesEx when DLLs are loaded or unloaded
+        concurrently. ``ERROR_BAD_LENGTH`` is retried a bounded number of times
+        (the documented transient race when the module list changes mid-snapshot)
+        and then raised as ``OSError`` so the caller can fall back.
+        """
+        from ctypes.wintypes import DWORD, HANDLE, MAX_PATH
+
+        class MODULEENTRY32W(ctypes.Structure):
+            _fields_ = [
+                ("dwSize", DWORD),
+                ("th32ModuleID", DWORD),
+                ("th32ProcessID", DWORD),
+                ("GlblcntUsage", DWORD),
+                ("ProccntUsage", DWORD),
+                ("modBaseAddr", ctypes.POINTER(ctypes.c_byte)),
+                ("modBaseSize", DWORD),
+                ("hModule", HANDLE),
+                ("szModule", ctypes.c_wchar * 256),
+                ("szExePath", ctypes.c_wchar * MAX_PATH),
+            ]
+
+        TH32CS_SNAPMODULE = 0x00000008
+        TH32CS_SNAPMODULE32 = 0x00000010
+        ERROR_BAD_LENGTH = 0x0018
+        ERROR_NO_MORE_FILES = 0x0012
+        INVALID_HANDLE_VALUE = HANDLE(-1).value
+        max_snapshot_retries = 16
+
+        for _ in range(max_snapshot_retries):
+            snap_handle = kernel_32.CreateToolhelp32Snapshot(
+                TH32CS_SNAPMODULE | TH32CS_SNAPMODULE32, os.getpid()
+            )
+            if snap_handle != INVALID_HANDLE_VALUE:
+                break
+            err = ctypes.get_last_error()
+            if err == ERROR_BAD_LENGTH:
+                continue
+            msg = ctypes.FormatError(err).strip()
+            raise OSError(f"CreateToolhelp32Snapshot failed: {msg}")
+        else:
+            msg = ctypes.FormatError(ERROR_BAD_LENGTH).strip()
+            raise OSError(f"CreateToolhelp32Snapshot failed: {msg}")
+
+        modules = []
+        try:
+            lib_entry = MODULEENTRY32W()
+            lib_entry.dwSize = ctypes.sizeof(MODULEENTRY32W)
+            if not kernel_32.Module32FirstW(
+                snap_handle, ctypes.byref(lib_entry)
+            ):  # pragma: no cover
+                err = ctypes.get_last_error()
+                msg = ctypes.FormatError(err).strip()
+                raise OSError(f"Module32FirstW failed: {msg}")
+
+            while True:
+                modules.append((lib_entry.hModule, lib_entry.szExePath))
+                if not kernel_32.Module32NextW(snap_handle, ctypes.byref(lib_entry)):
+                    err = ctypes.get_last_error()
+                    if err != ERROR_NO_MORE_FILES:  # pragma: no cover
+                        msg = ctypes.FormatError(err).strip()
+                        raise OSError(f"Module32NextW failed: {msg}")
+                    break
         finally:
-            kernel_32.CloseHandle(h_process)
+            kernel_32.CloseHandle(snap_handle)
+
+        return modules
+
+    def _resolve_module_filepath(
+        self,
+        ps_api,
+        kernel_32,
+        h_process,
+        h_module,
+        max_path,
+        path_buf,
+    ):
+        """Return the full path for a module, or None if it should be skipped."""
+        from ctypes.wintypes import MAX_PATH
+
+        n_size = kernel_32.GetModuleFileNameW(h_module, path_buf, MAX_PATH)
+        if n_size and n_size < MAX_PATH - 1:
+            return path_buf.value
+
+        n_size = ps_api.GetModuleFileNameExW(h_process, h_module, path_buf, max_path)
+        if n_size and n_size < max_path - 1:
+            return path_buf.value
+        if n_size:  # pragma: no cover
+            filepath = path_buf.value
+            warnings.warn(
+                "Could not get the full path of a dynamic library (path too "
+                "long). This library will be ignored and threadpoolctl might "
+                "not be able to control or display information about all "
+                f"loaded libraries. Here's the truncated path: {filepath!r}",
+                RuntimeWarning,
+            )
+            return None
+
+        err = ctypes.get_last_error()
+        msg = ctypes.FormatError(err).strip()
+        warnings.warn(
+            "Could not get the path of a dynamic library "
+            "(GetModuleFileNameW and GetModuleFileNameExW failed). "
+            "This library will be ignored and threadpoolctl might not be "
+            "able to control or display information about all loaded "
+            f"libraries. {msg}",
+            RuntimeWarning,
+        )
+        return None
+
+    def _find_libraries_with_enum_process_modules_ex(
+        self, ps_api, kernel_32, h_process, max_path, path_buf
+    ):
+        """Fallback Windows module enumeration using EnumProcessModulesEx.
+
+        This code is adapted from code by Philipp Hagemeister @phihag available
+        at https://stackoverflow.com/questions/17474574
+        """
+        from ctypes.wintypes import DWORD, HMODULE
+
+        LIST_LIBRARIES_ALL = 0x03
+
+        buf_count = 256
+        needed = DWORD()
+        # Grow the buffer until it becomes large enough to hold all the
+        # module headers
+        while True:
+            buf = (HMODULE * buf_count)()
+            buf_size = ctypes.sizeof(buf)
+            if not ps_api.EnumProcessModulesEx(
+                h_process,
+                buf,
+                buf_size,
+                ctypes.byref(needed),
+                LIST_LIBRARIES_ALL,
+            ):
+                raise OSError("EnumProcessModulesEx failed")
+            if buf_size >= needed.value:
+                break
+            buf_count = needed.value // (buf_size // buf_count)
+
+        count = needed.value // (buf_size // buf_count)
+        for h_module in map(HMODULE, buf[:count]):
+            filepath = self._resolve_module_filepath(
+                ps_api,
+                kernel_32,
+                h_process,
+                h_module,
+                max_path=max_path,
+                path_buf=path_buf,
+            )
+            if filepath is not None:
+                self._make_controller_from_path(filepath)
 
     def _find_libraries_pyodide(self):
         """Pyodide specific implementation for finding loaded libraries.
@@ -1132,7 +1544,12 @@ class ThreadpoolController:
             )
             return
 
-        for filepath in LDSO.loadedLibsByName.as_object_map():
+        if hasattr(LDSO.loadedLibsByName, "as_py_json"):  # Pyodide >= 0.29
+            libs_iter = LDSO.loadedLibsByName.as_py_json()
+        else:
+            libs_iter = LDSO.loadedLibsByName.as_object_map()  # Pyodide < 0.29
+
+        for filepath in libs_iter:
             # Some libraries are duplicated by Pyodide and do not exist in the
             # filesystem, so we first check for the existence of the file. For
             # more details, see
@@ -1159,10 +1576,11 @@ class ThreadpoolController:
             if prefix is None:
                 continue
 
-            # workaround for BLAS libraries packaged by conda-forge on windows, which
-            # are all renamed "libblas.dll". We thus have to check to which BLAS
-            # implementation it actually corresponds looking for implementation
-            # specific symbols.
+            # Legacy workaround for BLAS libraries that conda-forge used to expose
+            # on Windows as libblas.dll, disambiguated via implementation-specific
+            # symbols. Current conda-forge stacks no longer load libblas.dll (e.g.
+            # MKL is exposed as mkl_rt.<version>.dll instead), so this path is
+            # kept for older installs but cannot be exercised in today's CI.
             if prefix == "libblas":
                 if filename.endswith(".dll"):
                     libblas = ctypes.CDLL(filepath, _RTLD_NOLOAD)
@@ -1172,11 +1590,8 @@ class ThreadpoolController:
                     ):
                         continue
                 else:
-                    # We ignore libblas on other platforms than windows because there
-                    # might be a libblas dso comming with openblas for instance that
-                    # can't be used to instantiate a pertinent LibController (many
-                    # symbols are missing) and would create confusion by making a
-                    # duplicate entry in threadpool_info.
+                    # Non-Windows libblas DSOs (e.g. from openblas) lack the symbols
+                    # needed to instantiate a controller and would duplicate entries.
                     continue
 
             # filename matches a prefix. Now we check if the library has the symbols we
@@ -1210,6 +1625,13 @@ class ThreadpoolController:
 
     def _warn_if_incompatible_openmp(self):
         """Raise a warning if llvm-OpenMP and intel-OpenMP are both loaded"""
+        if sys.platform != "linux":
+            # The incompatibility between libomp and libiomp is known to cause
+            # crashes on Linux. On other platforms, conda-forge may expose both
+            # libraries without the same runtime conflict (for instance when
+            # libiomp forwards to libomp on Windows).
+            return
+
         prefixes = [lib_controller.prefix for lib_controller in self.lib_controllers]
         msg = textwrap.dedent(
             """
@@ -1230,13 +1652,13 @@ class ThreadpoolController:
         """Load the lib-C for unix systems."""
         libc = cls._system_libraries.get("libc")
         if libc is None:
-            # Remark: If libc is statically linked or if Python is linked against an
-            # alternative implementation of libc like musl, find_library will return
-            # None and CDLL will load the main program itself which should contain the
-            # libc symbols. We still name it libc for convenience.
-            # If the main program does not contain the libc symbols, it's ok because
-            # we check their presence later anyway.
-            libc = ctypes.CDLL(find_library("c"), mode=_RTLD_NOLOAD)
+            # dlopen(NULL) rather than ctypes.util.find_library("c"). Importing
+            # ctypes.util on CPython 3.14 Linux creates a process-lifetime
+            # CFUNCTYPE callback that is not fork-safe with some libffi builds
+            # (issue #225). If libc is statically linked or Python is linked
+            # against musl, the main program still exports the libc symbols we
+            # need. If it does not, we check for those symbols later anyway.
+            libc = ctypes.CDLL(None, mode=_RTLD_NOLOAD)
             cls._system_libraries["libc"] = libc
         return libc
 
@@ -1245,7 +1667,7 @@ class ThreadpoolController:
         """Load a windows DLL"""
         dll = cls._system_libraries.get(dll_name)
         if dll is None:
-            dll = ctypes.WinDLL(f"{dll_name}.dll")
+            dll = ctypes.WinDLL(f"{dll_name}.dll", use_last_error=True)
             cls._system_libraries[dll_name] = dll
         return dll
 
@@ -1285,7 +1707,7 @@ def _main():
     if options.command:
         exec(options.command)
 
-    print(json.dumps(threadpool_info(), indent=2))
+    print(json.dumps(threadpool_info(debugging_info=True), indent=2))
 
 
 if __name__ == "__main__":

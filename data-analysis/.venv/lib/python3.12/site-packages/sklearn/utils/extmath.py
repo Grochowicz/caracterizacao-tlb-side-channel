@@ -417,7 +417,7 @@ def randomized_svd(
     (problem (1.5), p5).
 
     Refer to
-    :ref:`sphx_glr_auto_examples_applications_wikipedia_principal_eigenvector.py`
+    :ref:`sphx_glr_auto_examples_applications_plot_wikipedia_principal_eigenvector.py`
     for a typical example where the power iteration algorithm is used to rank web pages.
     This algorithm is also known to be used as a building block in Google's PageRank
     algorithm.
@@ -480,7 +480,7 @@ def randomized_svd(
         set to `True`, the sign ambiguity is resolved by making the largest
         loadings for each component in the left singular vectors positive.
 
-    random_state : int, RandomState instance or None, default='warn'
+    random_state : int, RandomState instance or None, default=None
         The seed of the pseudo random number generator to use when
         shuffling the data, i.e. getting the random vectors to initialize
         the algorithm. Pass an int for reproducible results across multiple

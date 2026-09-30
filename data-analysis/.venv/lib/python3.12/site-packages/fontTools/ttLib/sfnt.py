@@ -585,9 +585,23 @@ class WOFFDirectoryEntry(DirectoryEntry):
         if self.length == self.origLength:
             data = rawData
         else:
-            assert self.length < self.origLength
+            # These lengths come straight from the (untrusted) WOFF table
+            # directory; a bare assertion is also silently skipped under
+            # `python -O`, so a corrupt WOFF would be accepted with wrong-sized
+            # table data instead of failing.
+            tag = Tag(getattr(self, "tag", None) or "????")
+            if self.length >= self.origLength:
+                raise TTLibError(
+                    "corrupt WOFF table '%s': compressed length %d is not "
+                    "smaller than original length %d"
+                    % (tag, self.length, self.origLength)
+                )
             data = zlib.decompress(rawData)
-            assert len(data) == self.origLength
+            if len(data) != self.origLength:
+                raise TTLibError(
+                    "unexpected size for decompressed WOFF table '%s': "
+                    "expected %d but got %d" % (tag, self.origLength, len(data))
+                )
         return data
 
     def encodeData(self, data):
@@ -615,17 +629,32 @@ class WOFFFlavorData:
         if reader:
             self.majorVersion = reader.majorVersion
             self.minorVersion = reader.minorVersion
+            # The metadata/private-data offsets and lengths are read from the
+            # (untrusted) WOFF header; validate them with real checks rather
+            # than bare assertions, which are silently skipped under `python -O`.
             if reader.metaLength:
                 reader.file.seek(reader.metaOffset)
                 rawData = reader.file.read(reader.metaLength)
-                assert len(rawData) == reader.metaLength
+                if len(rawData) != reader.metaLength:
+                    raise TTLibError(
+                        "unexpected end of WOFF metadata: expected %d bytes "
+                        "but got %d" % (reader.metaLength, len(rawData))
+                    )
                 data = self._decompress(rawData)
-                assert len(data) == reader.metaOrigLength
+                if len(data) != reader.metaOrigLength:
+                    raise TTLibError(
+                        "unexpected size for decompressed WOFF metadata: "
+                        "expected %d but got %d" % (reader.metaOrigLength, len(data))
+                    )
                 self.metaData = data
             if reader.privLength:
                 reader.file.seek(reader.privOffset)
                 data = reader.file.read(reader.privLength)
-                assert len(data) == reader.privLength
+                if len(data) != reader.privLength:
+                    raise TTLibError(
+                        "unexpected end of WOFF private data: expected %d "
+                        "bytes but got %d" % (reader.privLength, len(data))
+                    )
                 self.privData = data
 
     def _decompress(self, rawData):

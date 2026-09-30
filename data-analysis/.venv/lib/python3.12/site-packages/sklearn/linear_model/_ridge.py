@@ -34,7 +34,6 @@ from sklearn.metrics import check_scoring, get_scorer, get_scorer_names
 from sklearn.model_selection import GridSearchCV
 from sklearn.preprocessing import LabelBinarizer
 from sklearn.utils import (
-    Bunch,
     check_array,
     check_consistent_length,
     check_scalar,
@@ -56,6 +55,7 @@ from sklearn.utils.fixes import _sparse_linalg_cg
 from sklearn.utils.metadata_routing import (
     MetadataRouter,
     MethodMapping,
+    _manual_routing,
     _raise_for_params,
     _routing_enabled,
     process_routing,
@@ -1352,7 +1352,7 @@ class _RidgeClassifierMixin(LinearClassifierMixin):
 
         Parameters
         ----------
-        X : {array-like, spare matrix} of shape (n_samples, n_features)
+        X : {array-like, sparse matrix} of shape (n_samples, n_features)
             The data matrix for which we want to predict the targets.
 
         Returns
@@ -1461,16 +1461,16 @@ class RidgeClassifier(_RidgeClassifierMixin, _BaseRidge):
           coefficients. It is the most stable solver, in particular more stable
           for singular matrices than 'cholesky' at the cost of being slower.
 
-        - 'cholesky' uses the standard scipy.linalg.solve function to
+        - 'cholesky' uses the standard :func:`scipy.linalg.solve` function to
           obtain a closed-form solution.
 
         - 'sparse_cg' uses the conjugate gradient solver as found in
-          scipy.sparse.linalg.cg. As an iterative algorithm, this solver is
+          :func:`scipy.sparse.linalg.cg`. As an iterative algorithm, this solver is
           more appropriate than 'cholesky' for large-scale data
           (possibility to set `tol` and `max_iter`).
 
         - 'lsqr' uses the dedicated regularized least-squares routine
-          scipy.sparse.linalg.lsqr. It is the fastest and uses an iterative
+          :func:`scipy.sparse.linalg.lsqr`. It is the fastest and uses an iterative
           procedure.
 
         - 'sag' uses a Stochastic Average Gradient descent, and 'saga' uses
@@ -1500,10 +1500,10 @@ class RidgeClassifier(_RidgeClassifierMixin, _BaseRidge):
 
     Attributes
     ----------
-    coef_ : ndarray of shape (1, n_features) or (n_classes, n_features)
+    coef_ : ndarray of shape (n_features,) or (n_classes, n_features)
         Coefficient of the features in the decision function.
 
-        ``coef_`` is of shape (1, n_features) when the given problem is binary.
+        ``coef_`` is of shape ``(n_features,)`` when the given problem is binary.
 
     intercept_ : float or ndarray of shape (n_targets,)
         Independent term in decision function. Set to 0.0 if
@@ -1536,7 +1536,7 @@ class RidgeClassifier(_RidgeClassifierMixin, _BaseRidge):
     See Also
     --------
     Ridge : Ridge regression.
-    RidgeClassifierCV :  Ridge classifier with built-in cross validation.
+    RidgeClassifierCV : Ridge classifier with built-in cross validation.
 
     Notes
     -----
@@ -2538,9 +2538,12 @@ class _BaseRidgeCV(LinearModel):
                     **params,
                 )
             else:
-                routed_params = Bunch(scorer=Bunch(score={}))
-                if sample_weight is not None:
-                    routed_params.scorer.score["sample_weight"] = sample_weight
+                sw = (
+                    {"sample_weight": sample_weight}
+                    if sample_weight is not None
+                    else {}
+                )
+                routed_params = _manual_routing({"scorer": {"score": sw}})
 
             # reset `scorer` variable to original user-intend if no scoring is passed
             if self.scoring is None:
@@ -2943,10 +2946,10 @@ class RidgeClassifierCV(_RidgeClassifierMixin, _BaseRidgeCV):
         .. versionchanged:: 1.5
             `cv_values_` changed to `cv_results_`.
 
-    coef_ : ndarray of shape (1, n_features) or (n_targets, n_features)
+    coef_ : ndarray of shape (n_features,) or (n_targets, n_features)
         Coefficient of the features in the decision function.
 
-        ``coef_`` is of shape (1, n_features) when the given problem is binary.
+        ``coef_`` is of shape ``(n_features,)`` when the given problem is binary.
 
     intercept_ : float or ndarray of shape (n_targets,)
         Independent term in decision function. Set to 0.0 if

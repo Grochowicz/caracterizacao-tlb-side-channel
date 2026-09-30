@@ -1,4 +1,4 @@
-#!/home/eric/tcc/data-analysis/.venv/bin/python3
+#!/home/eric/github/caracterizacao-tlb-side-channel/data-analysis/.venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys

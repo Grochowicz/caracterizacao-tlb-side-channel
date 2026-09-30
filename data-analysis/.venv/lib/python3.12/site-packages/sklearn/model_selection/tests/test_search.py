@@ -2727,8 +2727,8 @@ def test_multi_metric_search_forwards_metadata(SearchCV, param_search):
     for _scorer in scorer_registry:
         check_recorded_metadata(
             obj=_scorer,
-            method="score",
-            parent="_score",
+            method="consuming_metric",
+            parent="fit",
             split_params=("sample_weight", "metadata"),
             sample_weight=score_weights,
             metadata=score_metadata,
@@ -2905,7 +2905,7 @@ ordinal_encoder = OrdinalEncoder()
 
 # If we construct this directly via `MaskedArray`, the list of tuples
 # gets auto-converted to a 2D array.
-ma_with_tuples = np.ma.MaskedArray(np.empty(2), mask=True, dtype=object)  # type: ignore[var-annotated]
+ma_with_tuples = np.ma.MaskedArray(np.empty(2), mask=True, dtype=object)
 ma_with_tuples[0] = (1, 2)
 ma_with_tuples[1] = (3, 4)
 

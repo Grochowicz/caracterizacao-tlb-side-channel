@@ -502,6 +502,7 @@ def _maybe_mark(
 
     estimator_name = estimator.__class__.__name__
     if mark == "xfail":
+        assert pytest is not None, "pytest must be passed when mark='xfail'"
         # With xfail_strict=None we want the value from the pytest config to
         # take precedence and that means not passing strict to the xfail
         # mark at all.
@@ -603,7 +604,7 @@ def estimator_checks_generator(
     if mark == "xfail":
         import pytest
     else:
-        pytest = None  # type: ignore[assignment]
+        pytest = None
 
     name = type(estimator).__name__
     # First check that the estimator is cloneable which is needed for the rest
@@ -727,7 +728,7 @@ def parametrize_with_checks(
 
     return pytest.mark.parametrize(
         "estimator, check",
-        _checks_generator(estimators, legacy, expected_failed_checks),
+        list(_checks_generator(estimators, legacy, expected_failed_checks)),
         ids=_get_check_estimator_ids,
     )
 
@@ -924,20 +925,21 @@ def check_estimator(
             if on_fail == "raise" and not test_can_fail:
                 raise
 
+            if test_can_fail:
+                # This check failed, but could be expected to fail, therefore we mark it
+                # as xfail.
+                status = "xfail"
+            else:
+                status = "failed"
+
             check_result = {
                 "estimator": estimator,
                 "check_name": _check_name(check),
                 "exception": e,
+                "status": status,
                 "expected_to_fail": test_can_fail,
                 "expected_to_fail_reason": reason,
             }
-
-            if test_can_fail:
-                # This check failed, but could be expected to fail, therefore we mark it
-                # as xfail.
-                check_result["status"] = "xfail"
-            else:
-                check_result["status"] = "failed"
 
             if on_fail == "warn":
                 warning = EstimatorCheckFailedWarning(**check_result)

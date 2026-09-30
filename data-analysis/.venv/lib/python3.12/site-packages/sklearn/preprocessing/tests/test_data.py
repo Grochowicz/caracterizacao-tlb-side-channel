@@ -1191,7 +1191,7 @@ def test_scale_input_finiteness_validation():
 
 
 def test_robust_scaler_error_sparse():
-    X_sparse = sparse.rand(1000, 10)
+    X_sparse = _sparse_random_array((1000, 10))
     scaler = RobustScaler(with_centering=True)
     err_msg = "Cannot center sparse matrices"
     with pytest.raises(ValueError, match=err_msg):
@@ -1200,7 +1200,9 @@ def test_robust_scaler_error_sparse():
 
 @pytest.mark.parametrize("with_centering", [True, False])
 @pytest.mark.parametrize("with_scaling", [True, False])
-@pytest.mark.parametrize("X", [np.random.randn(10, 3), sparse.rand(10, 3, density=0.5)])
+@pytest.mark.parametrize(
+    "X", [np.random.randn(10, 3), _sparse_random_array((10, 3), density=0.5)]
+)
 def test_robust_scaler_attributes(X, with_centering, with_scaling):
     # check consistent type of attributes
     if with_centering and sparse.issparse(X):
@@ -1252,7 +1254,7 @@ def test_robust_scaler_2d_arrays():
 @pytest.mark.parametrize("strictly_signed", ["positive", "negative", "zeros", None])
 def test_robust_scaler_equivalence_dense_sparse(density, strictly_signed):
     # Check the equivalence of the fitting with dense and sparse matrices
-    X_sparse = sparse.rand(1000, 5, density=density).tocsc()
+    X_sparse = _sparse_random_array((1000, 5), density=density).tocsc()
     if strictly_signed == "positive":
         X_sparse.data = np.abs(X_sparse.data)
     elif strictly_signed == "negative":
@@ -1515,7 +1517,7 @@ def test_quantile_transform_subsampling():
 
     # sparse support
 
-    X = sparse.rand(n_samples, 1, density=0.99, format="csc", random_state=0)
+    X = _sparse_random_array((n_samples, 1), density=0.99, format="csc", random_state=0)
     inf_norm_arr = []
     for random_state in range(ROUND):
         transformer = QuantileTransformer(
@@ -1671,6 +1673,53 @@ def test_quantile_transformer_sorted_quantiles(array_type):
     quantiles = qt.quantiles_[:, 0]
     assert len(quantiles) == 100
     assert all(np.diff(quantiles) >= 0)
+
+
+def test_quantile_transformer_sparse_subsampling():
+    # Non-regression test for:
+    # https://github.com/scikit-learn/scikit-learn/issues/32585
+
+    subsample = 500
+    qt = QuantileTransformer(
+        ignore_implicit_zeros=True,
+        subsample=subsample,
+        n_quantiles=50,
+        random_state=0,
+    )
+
+    # create a very sparse X matrix with two very similar columns:
+    # (`n` bigger than `subsample ** 2`)
+    n, d = 2 * subsample**2, 2
+    # one column has size `subsample - 1`, the other one has size `subsample + 1`
+    col = np.repeat([0, 1], [subsample - 1, subsample + 1])
+    # choose some row indices (doesn't matter in this example):
+    row = np.arange(subsample * 2)
+    # uniform data:
+    data = np.concatenate(
+        (
+            np.linspace(1, 2, num=subsample - 1),
+            np.linspace(1, 2, num=subsample + 1),
+        )
+    )
+
+    X = sparse.csc_array((data, (row, col)), shape=(n, d))
+
+    qt.fit(X)
+    quantiles = qt.quantiles_.T
+    # we ignore zeros, and values are strictly positive so:
+    assert (qt.quantiles_ > 0).all()
+    # guard against the historical failure mode where one sparse column
+    # could end up with degenerate fitted quantiles under subsampling:
+    assert not np.all(quantiles[1] == quantiles[1][0])
+
+    # given that X[:, 0] and X[:, 1] are very similar,
+    # you would expect similar quantiles:
+    assert np.allclose(quantiles[0], quantiles[1], rtol=0.1)
+
+    # if we don't ignore implicit zeros, most quantiles are zeros:
+    qt = clone(qt).set_params(ignore_implicit_zeros=False)
+    quantiles = qt.fit(X).quantiles_
+    assert np.isclose(quantiles, 0).mean() > 0.9
 
 
 def test_robust_scaler_invalid_range():

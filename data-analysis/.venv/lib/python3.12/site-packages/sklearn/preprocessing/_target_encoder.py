@@ -12,10 +12,11 @@ from sklearn.preprocessing._target_encoder_fast import (
     _fit_encoding_fast,
     _fit_encoding_fast_auto_smooth,
 )
-from sklearn.utils import Bunch, indexable
+from sklearn.utils import indexable
 from sklearn.utils._metadata_requests import (
     MetadataRouter,
     MethodMapping,
+    _manual_routing,
     _raise_for_params,
     _routing_enabled,
     process_routing,
@@ -103,7 +104,7 @@ class TargetEncoder(OneToOneFeatureMixin, _BaseEncoder):
         more weight on the global target mean.
         If `"auto"`, then `smooth` is set to an empirical Bayes estimate.
 
-    cv : int, cross-validation generator or an iterable, default=None
+    cv : int, cross-validation generator or an iterable, default=5
         Determines the splitting strategy used in the internal :term:`cross fitting`
         during :meth:`fit_transform`. Splitters where each sample index doesn't appear
         in the validation fold exactly once, raise a `ValueError`.
@@ -366,7 +367,7 @@ class TargetEncoder(OneToOneFeatureMixin, _BaseEncoder):
                 X, y, params["groups"] = indexable(X, y, params["groups"])
             routed_params = process_routing(self, "fit_transform", **params)
         else:
-            routed_params = Bunch(splitter=Bunch(split={}))
+            routed_params = _manual_routing({"splitter": {}})
 
         # The internal cross-fitting is only well-defined when each sample index
         # appears in exactly one validation fold. Skip the validation check for
