@@ -2,8 +2,11 @@
 .*.un~
 # python venv
 .venv/
-data-analysis/.venv/
 # old files
 OLD/
 # temporary remote script for comparison
 remote.sh
+# bring results from remote
+bring-results.sh
+# recently brought results from remote
+justin/

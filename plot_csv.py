@@ -351,7 +351,7 @@ def make_row(filename, results_dir):
         perf_data = read_perf(perf_file)
 
         victim_data = read_victim_latency(
-            results_dir / "baseline_victim_analysis.txt"
+            results_dir / "baseline_victim_analysis.csv"
         )
 
         row = {
@@ -478,7 +478,7 @@ def make_row(filename, results_dir):
 
     victim_data = read_victim_latency(
         results_dir /
-        f"{attack}_{attempt}_victim.txt"
+        f"{attack}_{attempt}_victim_analysis.csv"
     )
 
     row = {
