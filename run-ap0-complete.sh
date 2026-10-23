@@ -11,4 +11,5 @@ python3 create_heatmap.py heatmap/attack_statistics_1q-cpu-$IDX.csv heatmap/plot
 cd data-analysis
 python3 pearson_high.py ../heatmap/attack_statistics_1q-cpu-$IDX.csv _pearson_high_1q-cpu-$IDX
 python3 kmeans.py 5 ../heatmap/attack_statistics_1q-cpu-$IDX.csv _clusters_1q-cpu-$IDX
-
+cd ../timeseries-data-analysis
+python3 kmeans.py 5 ../heatmap/attack_timeseries_1q-cpu-$IDX.csv > _clusters_1q-cpu-$IDX.txt

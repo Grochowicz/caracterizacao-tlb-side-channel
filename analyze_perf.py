@@ -4,6 +4,10 @@ import sys
 import csv
 
 
+WARMUP = 12.0
+COOLDOWN = 1.0
+
+
 if len(sys.argv) != 3:
     print(
         f"Usage: {sys.argv[0]} <perf_file> <output_csv>"
@@ -118,19 +122,8 @@ with open(filename) as f:
             continue
 
         # ----------------------------------------------------
-        # Accumulate.
-        # ----------------------------------------------------
-
-        data[event]["sum"] += count
-        data[event]["max"] = max(
-            data[event]["max"],
-            count,
-        )
-        data[event]["samples"] += 1
-        data[event]["values"].append(count)
-
-        # ----------------------------------------------------
         # Preserve the original time-series sample.
+        # Warmup/cooldown are intentionally kept here.
         # ----------------------------------------------------
 
         timeseries.append({
@@ -138,6 +131,30 @@ with open(filename) as f:
             "event": event,
             "count": count,
         })
+
+
+# ------------------------------------------------------------
+# Accumulate aggregate statistics after removing warmup/cooldown.
+# ------------------------------------------------------------
+
+if timeseries:
+    execution_start = min(point["timestamp"] for point in timeseries)
+    execution_end = max(point["timestamp"] for point in timeseries)
+
+    warmup_end = execution_start + WARMUP
+    cooldown_start = execution_end - COOLDOWN
+
+    for point in timeseries:
+        if not (warmup_end <= point["timestamp"] <= cooldown_start):
+            continue
+
+        event = point["event"]
+        count = point["count"]
+
+        data[event]["sum"] += count
+        data[event]["max"] = max(data[event]["max"], count)
+        data[event]["samples"] += 1
+        data[event]["values"].append(count)
 
 
 # ------------------------------------------------------------

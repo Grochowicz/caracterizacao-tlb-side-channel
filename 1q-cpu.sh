@@ -27,7 +27,7 @@ CPU=0
 
 EVENTS=cpu-clock,task-clock,context-switches,cpu-migrations,page-faults,cycles,instructions,branches,branch-misses,r2012,r2011,r0e12
 INTERVAL=100
-WARMUP=2
+WARMUP=12
 COOLDOWN=1
 MAX_ATTEMPTS=5
 MONITOR_INTERVAL=0.1

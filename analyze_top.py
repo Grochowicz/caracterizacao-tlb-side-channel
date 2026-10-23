@@ -4,6 +4,11 @@ import sys
 import csv
 
 
+WARMUP = 12.0
+COOLDOWN = 1.0
+INTERVAL = 0.1
+
+
 if len(sys.argv) < 3:
     print(
         f"Usage: {sys.argv[0]} <top_file> <output_csv> "
@@ -107,34 +112,9 @@ def finish_snapshot(snapshot):
         if not d["observed"]:
             continue
 
-        result = data[pid]
-
-        result["cpu_sum"] += d["cpu"]
-        result["mem_sum"] += d["mem"]
-
-        result["cpu_max"] = max(
-            result["cpu_max"],
-            d["cpu"],
-        )
-
-        result["mem_max"] = max(
-            result["mem_max"],
-            d["mem"],
-        )
-
-        result["cpu_values"].append(d["cpu"])
-        result["mem_values"].append(d["mem"])
-
-        result["samples"] += 1
-
-        # TIME+ is cumulative, so keep the largest value seen.
-        result["time"] = max(
-            result["time"],
-            d["time"],
-        )
-
         # ----------------------------------------------------
         # Preserve the values from this snapshot.
+        # Warmup/cooldown are intentionally kept in the time series.
         # ----------------------------------------------------
 
         timeseries[pid].append({
@@ -254,6 +234,42 @@ with open(filename) as f:
 # Finish final snapshot.
 if in_snapshot:
     finish_snapshot(snapshot_data)
+
+
+# ------------------------------------------------------------
+# Accumulate aggregate statistics after removing warmup/cooldown.
+# ------------------------------------------------------------
+
+all_samples = [
+    point["sample"]
+    for points in timeseries.values()
+    for point in points
+]
+
+if all_samples:
+    execution_start = min(all_samples) * INTERVAL
+    execution_end = max(all_samples) * INTERVAL
+
+    warmup_end = execution_start + WARMUP
+    cooldown_start = execution_end - COOLDOWN
+
+    for pid in pids:
+        for point in timeseries[pid]:
+            timestamp = point["sample"] * INTERVAL
+
+            if not (warmup_end <= timestamp <= cooldown_start):
+                continue
+
+            result = data[pid]
+
+            result["cpu_sum"] += point["cpu"]
+            result["mem_sum"] += point["mem"]
+            result["cpu_max"] = max(result["cpu_max"], point["cpu"])
+            result["mem_max"] = max(result["mem_max"], point["mem"])
+            result["cpu_values"].append(point["cpu"])
+            result["mem_values"].append(point["mem"])
+            result["samples"] += 1
+            result["time"] = max(result["time"], point["time"])
 
 
 # ------------------------------------------------------------

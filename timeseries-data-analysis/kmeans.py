@@ -10,7 +10,7 @@ from tslearn.preprocessing import TimeSeriesScalerMeanVariance
 from tslearn.utils import to_time_series_dataset
 
 
-WARMUP = 2.0
+WARMUP = 12.0
 COOLDOWN = 1.0
 INTERVAL = 0.1
 

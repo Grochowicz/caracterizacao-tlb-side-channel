@@ -6,8 +6,12 @@ from pathlib import Path
 import numpy as np
 
 
+WARMUP = 12.0
+COOLDOWN = 1.0
+
+
 def read_victim_latency(filename):
-    latencies = []
+    measurements = []
 
     if not filename.exists():
         print(
@@ -22,6 +26,7 @@ def read_victim_latency(filename):
         }
 
     pattern = re.compile(
+        r"elapsed time\s*=\s*([0-9.]+)\s*ms,\s*"
         r"measured latency\s*=\s*([0-9.]+)ns"
     )
 
@@ -30,16 +35,41 @@ def read_victim_latency(filename):
             match = pattern.search(line)
 
             if match:
-                latencies.append(
-                    float(match.group(1))
-                )
+                elapsed_ms = float(match.group(1))
+                latency_ns = float(match.group(2))
+                measurements.append((elapsed_ms, latency_ns))
 
-    if not latencies:
+    if not measurements:
         print(
             f"Warning: nenhuma latencia medida encontrada em {filename}",
             file=sys.stderr,
         )
 
+        return {
+            "victim_avg_latency": 0.0,
+            "victim_stddev_latency": 0.0,
+            "victim_max_latency": 0.0,
+        }
+
+    measurements.sort(key=lambda x: x[0])
+
+    execution_start = measurements[0][0] / 1000.0
+    execution_end = measurements[-1][0] / 1000.0
+
+    warmup_end = execution_start + WARMUP
+    cooldown_start = execution_end - COOLDOWN
+
+    latencies = [
+        latency_ns
+        for elapsed_ms, latency_ns in measurements
+        if warmup_end <= elapsed_ms / 1000.0 <= cooldown_start
+    ]
+
+    if not latencies:
+        print(
+            f"Warning: nenhuma latencia permanece apos warmup/cooldown em {filename}",
+            file=sys.stderr,
+        )
         return {
             "victim_avg_latency": 0.0,
             "victim_stddev_latency": 0.0,
