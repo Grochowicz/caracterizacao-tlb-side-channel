@@ -35,12 +35,14 @@ def main():
 
             elapsed_ms = (inference_end - start_time) / 1_000_000
             latency_ns = inference_end - inference_start
+            timestamp = time.time()
 
             # Approximate cycles assuming a 5.40 GHz CPU.
             # Change this if your CPU frequency is different.
             cycles = latency_ns * 5.40
 
             print(
+                f"timestamp = {timestamp:.9f}, "
                 f"elapsed time = {elapsed_ms:.0f} ms, "
                 f"measured latency = {latency_ns / 1000:.2f}us "
                 f"(~{cycles:.1f} cycles)",

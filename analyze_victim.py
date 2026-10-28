@@ -26,8 +26,9 @@ def read_victim_latency(filename):
         }
 
     pattern = re.compile(
+        r"timestamp\s*=\s*([0-9.]+)\s*,\s*"
         r"elapsed time\s*=\s*([0-9.]+)\s*ms,\s*"
-        r"measured latency\s*=\s*([0-9.]+)ns"
+        r"measured latency\s*=\s*([0-9.]+)(ns|us)"
     )
 
     with open(filename) as f:
@@ -35,9 +36,12 @@ def read_victim_latency(filename):
             match = pattern.search(line)
 
             if match:
-                elapsed_ms = float(match.group(1))
-                latency_ns = float(match.group(2))
-                measurements.append((elapsed_ms, latency_ns))
+                timestamp = float(match.group(1))
+                elapsed_ms = float(match.group(2))
+                latency_ns = float(match.group(3))
+                if match.group(4) == "us":
+                    latency_ns *= 1000.0
+                measurements.append((timestamp, elapsed_ms, latency_ns))
 
     if not measurements:
         print(
@@ -53,16 +57,16 @@ def read_victim_latency(filename):
 
     measurements.sort(key=lambda x: x[0])
 
-    execution_start = measurements[0][0] / 1000.0
-    execution_end = measurements[-1][0] / 1000.0
+    execution_start = measurements[0][0]
+    execution_end = measurements[-1][0]
 
     warmup_end = execution_start + WARMUP
     cooldown_start = execution_end - COOLDOWN
 
     latencies = [
         latency_ns
-        for elapsed_ms, latency_ns in measurements
-        if warmup_end <= elapsed_ms / 1000.0 <= cooldown_start
+        for timestamp, elapsed_ms, latency_ns in measurements
+        if warmup_end <= timestamp <= cooldown_start
     ]
 
     if not latencies:
@@ -94,8 +98,9 @@ def read_victim_latency_timeseries(filename):
         return measurements
 
     pattern = re.compile(
+        r"timestamp\s*=\s*([0-9.]+)\s*,\s*"
         r"elapsed time\s*=\s*([0-9.]+)\s*ms,\s*"
-        r"measured latency\s*=\s*([0-9.]+)ns"
+        r"measured latency\s*=\s*([0-9.]+)(ns|us)"
     )
 
     with open(filename) as f:
@@ -103,11 +108,14 @@ def read_victim_latency_timeseries(filename):
             match = pattern.search(line)
 
             if match:
-                elapsed_ms = float(match.group(1))
-                latency_ns = float(match.group(2))
+                timestamp = float(match.group(1))
+                elapsed_ms = float(match.group(2))
+                latency_ns = float(match.group(3))
+                if match.group(4) == "us":
+                    latency_ns *= 1000.0
 
                 measurements.append(
-                    (elapsed_ms, latency_ns)
+                    (timestamp, elapsed_ms, latency_ns)
                 )
 
     return measurements
@@ -126,18 +134,18 @@ def write_victim_latency_timeseries(
         )
         return
 
-    measurements.sort(key=lambda x: x[0])
+    measurements.sort(key=lambda x: x[1])
 
     interval_ms = 100.0
 
     # Round the end up to the next 100 ms interval.
     final_time_ms = (
-        np.ceil(measurements[-1][0] / interval_ms)
+        np.ceil(measurements[-1][1] / interval_ms)
         * interval_ms
     )
 
     measurement_index = 0
-    current_latency = measurements[0][1]
+    current_latency = measurements[0][2]
 
     with open(output_filename, "w", newline="") as f:
         writer = csv.writer(f)
@@ -153,11 +161,11 @@ def write_victim_latency_timeseries(
         while timestamp_ms <= final_time_ms:
             while (
                 measurement_index + 1 < len(measurements)
-                and measurements[measurement_index + 1][0]
+                and measurements[measurement_index + 1][1]
                 <= timestamp_ms
             ):
                 measurement_index += 1
-                current_latency = measurements[measurement_index][1]
+                current_latency = measurements[measurement_index][2]
 
             writer.writerow([
                 f"{timestamp_ms / 1000:.6f}",

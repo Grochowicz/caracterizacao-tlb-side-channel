@@ -28,7 +28,7 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 PLOT_OUTPUT = os.path.join(
     OUTPUT_DIR,
-    "pearson_correlation.png"
+    "pearson_correlation.csv"
 )
 
 REPORT_OUTPUT = os.path.join(

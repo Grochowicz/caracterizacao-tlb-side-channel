@@ -2,6 +2,7 @@
 
 import sys
 import csv
+import re
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -76,6 +77,54 @@ PERF_NAMES = {
     "r2012": "DTLB_LOAD_MISSES.STLB_HIT",
     "r2011": "ITLB_MISSES.STLB_HIT",
 }
+
+
+# ============================================================
+# SELECT ATTEMPTS FOR HEATMAP
+# ============================================================
+
+def select_attempts(rows):
+    """
+    For each attack, keep the first failed attempt and the last
+    successful attempt, if each exists. Always keep baseline.
+    """
+    selected = [
+        row for row in rows
+        if row.get("attack") == "baseline"
+    ]
+    grouped = {}
+
+    for row in rows:
+        attack = row.get("attack", "")
+        if attack == "baseline":
+            continue
+
+        try:
+            attempt = int(row.get("attempt", 0))
+        except (TypeError, ValueError):
+            continue
+
+        grouped.setdefault(attack, []).append((attempt, row))
+
+    for attack, attempts in sorted(grouped.items()):
+        attempts.sort(key=lambda item: item[0])
+
+        failed = [
+            row for _, row in attempts
+            if row.get("status") != "success"
+        ]
+        successful = [
+            row for _, row in attempts
+            if row.get("status") == "success"
+        ]
+
+        if failed:
+            selected.append(failed[0])
+
+        if successful:
+            selected.append(successful[-1])
+
+    return selected
 
 
 # ============================================================
@@ -329,6 +378,9 @@ def main():
     output_png = sys.argv[2]
 
     rows = read_csv(input_csv)
+
+    # Apply the attempt-selection policy used by the original script.
+    rows = select_attempts(rows)
 
     create_heatmap(
         rows,

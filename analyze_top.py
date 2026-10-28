@@ -6,7 +6,6 @@ import csv
 
 WARMUP = 12.0
 COOLDOWN = 1.0
-INTERVAL = 0.1
 
 
 if len(sys.argv) < 3:
@@ -90,6 +89,7 @@ def reset_snapshot():
 
 
 snapshot_data = reset_snapshot()
+snapshot_timestamp = None
 
 in_top = False
 in_snapshot = False
@@ -119,6 +119,7 @@ def finish_snapshot(snapshot):
 
         timeseries[pid].append({
             "sample": sample,
+            "timestamp": snapshot_timestamp,
             "cpu": d["cpu"],
             "mem": d["mem"],
             "time": d["time"],
@@ -141,6 +142,13 @@ with open(filename) as f:
 
             if in_snapshot:
                 finish_snapshot(snapshot_data)
+
+            try:
+                snapshot_timestamp = float(
+                    stripped.split("===== SAMPLE ", 1)[1]
+                )
+            except ValueError:
+                snapshot_timestamp = None
 
             snapshot_data = reset_snapshot()
 
@@ -247,29 +255,40 @@ all_samples = [
 ]
 
 if all_samples:
-    execution_start = min(all_samples) * INTERVAL
-    execution_end = max(all_samples) * INTERVAL
+    timestamps = [
+        point["timestamp"]
+        for points in timeseries.values()
+        for point in points
+        if point["timestamp"] is not None
+    ]
 
-    warmup_end = execution_start + WARMUP
-    cooldown_start = execution_end - COOLDOWN
+    if timestamps:
+        execution_start = min(timestamps)
+        execution_end = max(timestamps)
 
-    for pid in pids:
-        for point in timeseries[pid]:
-            timestamp = point["sample"] * INTERVAL
+        warmup_end = execution_start + WARMUP
+        cooldown_start = execution_end - COOLDOWN
 
-            if not (warmup_end <= timestamp <= cooldown_start):
-                continue
+        for pid in pids:
+            for point in timeseries[pid]:
+                timestamp = point["timestamp"]
 
-            result = data[pid]
+                if timestamp is None:
+                    continue
 
-            result["cpu_sum"] += point["cpu"]
-            result["mem_sum"] += point["mem"]
-            result["cpu_max"] = max(result["cpu_max"], point["cpu"])
-            result["mem_max"] = max(result["mem_max"], point["mem"])
-            result["cpu_values"].append(point["cpu"])
-            result["mem_values"].append(point["mem"])
-            result["samples"] += 1
-            result["time"] = max(result["time"], point["time"])
+                if not (warmup_end <= timestamp <= cooldown_start):
+                    continue
+
+                result = data[pid]
+
+                result["cpu_sum"] += point["cpu"]
+                result["mem_sum"] += point["mem"]
+                result["cpu_max"] = max(result["cpu_max"], point["cpu"])
+                result["mem_max"] = max(result["mem_max"], point["mem"])
+                result["cpu_values"].append(point["cpu"])
+                result["mem_values"].append(point["mem"])
+                result["samples"] += 1
+                result["time"] = max(result["time"], point["time"])
 
 
 # ------------------------------------------------------------

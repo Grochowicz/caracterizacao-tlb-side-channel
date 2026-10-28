@@ -513,84 +513,6 @@ def make_row(filename, results_dir):
 
 
 # ============================================================
-# SELECT ATTEMPTS
-# ============================================================
-
-def select_attempts(results_dir, analysis_files):
-    """
-    For each attack:
-
-      - Include one failing attempt, if one exists.
-      - Include one successful attempt, if one exists.
-      - If multiple successful attempts exist, use the last one.
-      - If multiple failing attempts exist, use the first one.
-    """
-
-    grouped = {}
-
-    for analysis_file in analysis_files:
-
-        if analysis_file.name == "baseline_analysis.csv":
-            continue
-
-        match = re.match(
-            r"(.+)_([0-9]+)_analysis\.csv$",
-            analysis_file.name,
-        )
-
-        if not match:
-            continue
-
-        attack = match.group(1)
-        attempt = int(match.group(2))
-
-        grouped.setdefault(
-            attack,
-            []
-        ).append(
-            (attempt, analysis_file)
-        )
-
-    selected = []
-
-    for attack, attempts in sorted(grouped.items()):
-
-        attempts.sort(
-            key=lambda x: x[0]
-        )
-
-        successful = []
-        failed = []
-
-        for attempt, analysis_file in attempts:
-
-            attack_file = results_dir / (
-                f"{attack}_{attempt}_attack.txt"
-            )
-
-            if attack_succeeded(attack_file):
-                successful.append(
-                    (attempt, analysis_file)
-                )
-            else:
-                failed.append(
-                    (attempt, analysis_file)
-                )
-
-        if failed:
-            selected.append(
-                ("fail", failed[0][1])
-            )
-
-        if successful:
-            selected.append(
-                ("success", successful[-1][1])
-            )
-
-    return selected
-
-
-# ============================================================
 # TIME SERIES
 # ============================================================
 
@@ -1117,12 +1039,24 @@ def main():
     # Attacks
     # --------------------------------------------------------
 
-    selected_files = select_attempts(
-        results_dir,
-        all_analysis_files,
-    )
+    # Include every attempt found in the results directory.
+    for analysis_file in all_analysis_files:
+        if analysis_file.name == "baseline_analysis.csv":
+            continue
 
-    for status, analysis_file in selected_files:
+        match = re.match(
+            r"(.+)_([0-9]+)_analysis\.csv$",
+            analysis_file.name,
+        )
+
+        if not match:
+            continue
+
+        attack = match.group(1)
+        attempt = int(match.group(2))
+        attack_file = results_dir / f"{attack}_{attempt}_attack.txt"
+
+        status = "success" if attack_succeeded(attack_file) else "fail"
 
         row = make_row(
             analysis_file,
