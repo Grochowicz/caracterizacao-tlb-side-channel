@@ -12,7 +12,7 @@ from tslearn.utils import to_time_series_dataset
 
 WARMUP = 12.0
 COOLDOWN = 1.0
-INTERVAL = 0.1
+INTERVAL = 0.01
 
 METADATA_COLUMNS = {
     "attack",

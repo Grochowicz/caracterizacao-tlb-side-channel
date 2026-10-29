@@ -48,8 +48,6 @@ def main():
                 f"(~{cycles:.1f} cycles)",
                 flush=True
             )
-            # sleep for 100ms 
-            time.sleep(0.1)
 
 
 if __name__ == "__main__":

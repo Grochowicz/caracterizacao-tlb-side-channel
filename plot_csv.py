@@ -30,6 +30,17 @@ TOP_STDDEV_METRICS = [
     "attack_stddev_mem",
 ]
 
+TOP_SHAPE_METRICS = [
+    "victim_skewness_cpu",
+    "victim_kurtosis_cpu",
+    "victim_skewness_mem",
+    "victim_kurtosis_mem",
+    "attack_skewness_cpu",
+    "attack_kurtosis_cpu",
+    "attack_skewness_mem",
+    "attack_kurtosis_mem",
+]
+
 
 PERF_EVENTS = [
     "cpu-clock",
@@ -56,6 +67,7 @@ PERF_NAMES = {
 PERF_METRICS = []
 
 PERF_STDDEV_METRICS = []
+PERF_SHAPE_METRICS = []
 
 for event in PERF_EVENTS:
     PERF_METRICS.append(
@@ -69,6 +81,10 @@ for event in PERF_EVENTS:
     PERF_STDDEV_METRICS.append(
         "perf_" + event + "_stddev"
     )
+    PERF_SHAPE_METRICS.extend([
+        "perf_" + event + "_skewness",
+        "perf_" + event + "_kurtosis",
+    ])
 
 
 VICTIM_METRICS = [
@@ -79,6 +95,11 @@ VICTIM_METRICS = [
 
 VICTIM_STDDEV_METRICS = [
     "victim_stddev_latency",
+]
+
+VICTIM_SHAPE_METRICS = [
+    "victim_skewness_latency",
+    "victim_kurtosis_latency",
 ]
 
 
@@ -105,6 +126,12 @@ STDDEV_METRICS = (
     TOP_STDDEV_METRICS
     + PERF_STDDEV_METRICS
     + VICTIM_STDDEV_METRICS
+)
+
+SHAPE_METRICS = (
+    TOP_SHAPE_METRICS
+    + PERF_SHAPE_METRICS
+    + VICTIM_SHAPE_METRICS
 )
 
 
@@ -143,10 +170,14 @@ def read_analysis(filename):
 
                 "avg_cpu": float(row["avg_cpu"]),
                 "stddev_cpu": float(row["stddev_cpu"]),
+                "skewness_cpu": float(row["skewness_cpu"]),
+                "kurtosis_cpu": float(row["kurtosis_cpu"]),
                 "max_cpu": float(row["max_cpu"]),
 
                 "avg_mem": float(row["avg_mem"]),
                 "stddev_mem": float(row["stddev_mem"]),
+                "skewness_mem": float(row["skewness_mem"]),
+                "kurtosis_mem": float(row["kurtosis_mem"]),
                 "max_mem": float(row["max_mem"]),
 
                 "time": float(row["time"]),
@@ -195,6 +226,12 @@ def read_perf(filename):
             data["perf_" + event + "_stddev"] = float(
                 row["stddev"]
             )
+            data["perf_" + event + "_skewness"] = float(
+                row["skewness"]
+            )
+            data["perf_" + event + "_kurtosis"] = float(
+                row["kurtosis"]
+            )
 
             data["perf_" + event + "_max"] = float(
                 row["max"]
@@ -219,6 +256,8 @@ def read_victim_latency(filename):
     data = {
         "victim_avg_latency": 0.0,
         "victim_stddev_latency": 0.0,
+        "victim_skewness_latency": 0.0,
+        "victim_kurtosis_latency": 0.0,
         "victim_max_latency": 0.0,
     }
 
@@ -239,6 +278,12 @@ def read_victim_latency(filename):
 
         data["victim_stddev_latency"] = float(
             row["victim_stddev_latency"]
+        )
+        data["victim_skewness_latency"] = float(
+            row["victim_skewness_latency"]
+        )
+        data["victim_kurtosis_latency"] = float(
+            row["victim_kurtosis_latency"]
         )
 
         data["victim_max_latency"] = float(
@@ -360,20 +405,28 @@ def make_row(filename, results_dir):
 
             "victim_avg_cpu": victim["avg_cpu"],
             "victim_stddev_cpu": victim["stddev_cpu"],
+            "victim_skewness_cpu": victim["skewness_cpu"],
+            "victim_kurtosis_cpu": victim["kurtosis_cpu"],
             "victim_max_cpu": victim["max_cpu"],
 
             "victim_avg_mem": victim["avg_mem"],
             "victim_stddev_mem": victim["stddev_mem"],
+            "victim_skewness_mem": victim["skewness_mem"],
+            "victim_kurtosis_mem": victim["kurtosis_mem"],
             "victim_max_mem": victim["max_mem"],
 
             "victim_time": victim["time"],
 
             "attack_avg_cpu": 0.0,
             "attack_stddev_cpu": 0.0,
+            "attack_skewness_cpu": 0.0,
+            "attack_kurtosis_cpu": 0.0,
             "attack_max_cpu": 0.0,
 
             "attack_avg_mem": 0.0,
             "attack_stddev_mem": 0.0,
+            "attack_skewness_mem": 0.0,
+            "attack_kurtosis_mem": 0.0,
             "attack_max_mem": 0.0,
 
             "attack_time": 0.0,
@@ -447,10 +500,14 @@ def make_row(filename, results_dir):
         victim = {
             "avg_cpu": 0.0,
             "stddev_cpu": 0.0,
+            "skewness_cpu": 0.0,
+            "kurtosis_cpu": 0.0,
             "max_cpu": 0.0,
 
             "avg_mem": 0.0,
             "stddev_mem": 0.0,
+            "skewness_mem": 0.0,
+            "kurtosis_mem": 0.0,
             "max_mem": 0.0,
 
             "time": 0.0,
@@ -487,20 +544,28 @@ def make_row(filename, results_dir):
 
         "victim_avg_cpu": victim["avg_cpu"],
         "victim_stddev_cpu": victim["stddev_cpu"],
+        "victim_skewness_cpu": victim["skewness_cpu"],
+        "victim_kurtosis_cpu": victim["kurtosis_cpu"],
         "victim_max_cpu": victim["max_cpu"],
 
         "victim_avg_mem": victim["avg_mem"],
         "victim_stddev_mem": victim["stddev_mem"],
+        "victim_skewness_mem": victim["skewness_mem"],
+        "victim_kurtosis_mem": victim["kurtosis_mem"],
         "victim_max_mem": victim["max_mem"],
 
         "victim_time": victim["time"],
 
         "attack_avg_cpu": attack_data["avg_cpu"],
         "attack_stddev_cpu": attack_data["stddev_cpu"],
+        "attack_skewness_cpu": attack_data["skewness_cpu"],
+        "attack_kurtosis_cpu": attack_data["kurtosis_cpu"],
         "attack_max_cpu": attack_data["max_cpu"],
 
         "attack_avg_mem": attack_data["avg_mem"],
         "attack_stddev_mem": attack_data["stddev_mem"],
+        "attack_skewness_mem": attack_data["skewness_mem"],
+        "attack_kurtosis_mem": attack_data["kurtosis_mem"],
         "attack_max_mem": attack_data["max_mem"],
 
         "attack_time": attack_data["time"],
@@ -522,7 +587,7 @@ def read_top_timeseries(filename):
 
     Expected format:
 
-        pid,sample,cpu,mem,time
+    pid,sample,timestamp,cpu,mem,time
     """
 
     if not filename.exists():
@@ -538,6 +603,7 @@ def read_top_timeseries(filename):
                 series.append({
                     "pid": row["pid"],
                     "sample": int(row["sample"]),
+                    "timestamp": float(row["timestamp"]),
                     "cpu": float(row["cpu"]),
                     "mem": float(row["mem"]),
                     "time": float(row["time"]),
@@ -587,42 +653,32 @@ def read_latency_timeseries(filename):
     """
     Read victim latency measurements.
 
-    The latency file does not contain an explicit timestamp,
-    so the measurement number is used as the time index.
+    Expected format:
 
-    Expected lines contain:
-
-        measured latency = 123.45ns
+        timestamp,event,count
     """
 
     if not filename.exists():
         return []
 
-    pattern = re.compile(
-        r"measured latency\s*=\s*([0-9.]+)ns"
-    )
-
     series = []
-    sample = 0
 
-    with open(filename) as f:
-        for line in f:
-            match = pattern.search(line)
-
-            if not match:
+    with open(filename, newline="") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            if row.get("event") != "victim-latency":
                 continue
 
             try:
-                value = float(match.group(1))
+                timestamp = float(row["timestamp"])
+                value = float(row["count"])
             except ValueError:
                 continue
 
             series.append({
-                "sample": sample,
+                "timestamp": timestamp,
                 "value": value,
             })
-
-            sample += 1
 
     return series
 
@@ -631,7 +687,7 @@ def create_timeseries(rows, results_dir, output):
     """
     Create one CSV containing synchronized multivariate time series.
 
-    All metrics are aligned to a common 100 ms time grid.
+    All metrics are aligned to a common 10 ms time grid.
 
     Format:
 
@@ -644,7 +700,7 @@ def create_timeseries(rows, results_dir, output):
     Every execution therefore has one row per 100 ms timestamp.
     """
 
-    INTERVAL = 0.1  # seconds
+    INTERVAL = 0.01  # seconds
 
     executions = []
 
@@ -675,7 +731,7 @@ def create_timeseries(rows, results_dir, output):
 
             latency_file = (
                 results_dir /
-                "baseline_victim_timeseries.csv"
+                "baseline_victim_analysis_timeseries.csv"
             )
 
             victim_pid = None
@@ -704,7 +760,7 @@ def create_timeseries(rows, results_dir, output):
 
             latency_file = (
                 results_dir /
-                f"{attack}_{attempt}_victim_timeseries.csv"
+                f"{attack}_{attempt}_victim_analysis_timeseries.csv"
             )
 
             pid_file = (
@@ -755,7 +811,7 @@ def create_timeseries(rows, results_dir, output):
                 )
                 continue
 
-            timestamp = float(point["sample"])
+            timestamp = float(point["timestamp"])
 
             add_series_point(
                 f"{series_id}_cpu",
@@ -839,7 +895,7 @@ def create_timeseries(rows, results_dir, output):
     ] + features
 
     # ------------------------------------------------
-    # Synchronize every series to the 100 ms grid.
+    # Synchronize every series to the 10 ms grid.
     # ------------------------------------------------
 
     with open(output, "w", newline="") as f:
@@ -869,13 +925,13 @@ def create_timeseries(rows, results_dir, output):
                 if points
             )
 
-            # Start at the first 100 ms grid point.
+            # Start at the first 10 ms grid point.
             start_time = (
                 np.ceil(min_time / INTERVAL)
                 * INTERVAL
             )
 
-            # End at the last 100 ms grid point.
+            # End at the last 10 ms grid point.
             end_time = (
                 np.floor(max_time / INTERVAL)
                 * INTERVAL
@@ -920,7 +976,7 @@ def create_timeseries(rows, results_dir, output):
                     "attack": execution["attack"],
                     "attempt": execution["attempt"],
                     "status": execution["status"],
-                    "time": f"{timestamp:.1f}",
+                    "time": f"{timestamp:.2f}",
                 }
 
                 # Fill every dimension at every timestamp.
@@ -963,7 +1019,7 @@ def create_csv(rows, output):
             # This includes stddev values, which are written
             # to the CSV but are not heatmap cells.
 
-            for metric in METRICS + STDDEV_METRICS:
+            for metric in METRICS + STDDEV_METRICS + SHAPE_METRICS:
                 if metric not in row:
                     row[metric] = 0.0
 

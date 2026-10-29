@@ -8,7 +8,7 @@ from collections import defaultdict
 import numpy as np
 
 
-INTERVAL = 0.1
+INTERVAL = 0.01
 TIME_TOLERANCE = 1e-6
 
 

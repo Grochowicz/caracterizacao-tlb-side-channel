@@ -8,11 +8,11 @@ MADTLB=./tlbdr/case-studies/tlbleed/madtlb
 CPU=0
 
 EVENTS=cpu-clock,task-clock,context-switches,cpu-migrations,page-faults,cycles,instructions,branches,branch-misses,r2012,r2011,r0e12
-INTERVAL=100
+INTERVAL=10
 WARMUP=12
 COOLDOWN=1
 MAX_ATTEMPTS=5
-MONITOR_INTERVAL=0.1
+MONITOR_INTERVAL=0.01
 
 mkdir -p "$OUT"
 
@@ -21,23 +21,18 @@ monitor_top() {
     local output="$1"
     local victim_pid="$2"
     local attack_pid="$3"
+    local pid_pattern="$victim_pid"
+
+    if [ -n "$attack_pid" ]; then
+        pid_pattern="$pid_pattern|$attack_pid"
+    fi
 
     while true; do
         {
             echo "===== SAMPLE $(date +%s.%N) ====="
 
             echo "--- TOP ---"
-            top -b -n 2 -d 0.2 | head -n 20 | tail -n +7
-
-            echo "--- PS ---"
-
-            if [[ -n "$attack_pid" ]]; then
-                ps -L -p "$victim_pid,$attack_pid" \
-                    -o pid,tid,psr,pcpu,comm
-            else
-                ps -L -p "$victim_pid" \
-                    -o pid,tid,psr,pcpu,comm
-            fi
+            top -b -n 2 -d 0.01 | grep -E "^[[:space:]]*($pid_pattern)[[:space:]]"
 
             echo
         } >> "$output"

@@ -8,11 +8,11 @@ MADTLB=./tlbdr/case-studies/tlbleed/madtlb
 CPU=0
 
 EVENTS=cpu-clock,task-clock,context-switches,cpu-migrations,page-faults,cycles,instructions,branches,branch-misses,r2012,r2011,r0e12
-INTERVAL=100
+INTERVAL=10
 WARMUP=2
 COOLDOWN=1
 MAX_ATTEMPTS=5
-MONITOR_INTERVAL=0.1
+MONITOR_INTERVAL=0.01
 
 mkdir -p "$OUT"
 
@@ -124,4 +124,3 @@ for attack in rn1 rn2 rj1 rj2; do
         "$OUT/${name}_${attempt}_perf_analysis.csv"
 
 done
-

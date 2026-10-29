@@ -2,6 +2,7 @@
 
 import sys
 import csv
+from statistics_utils import summarize
 
 
 WARMUP = 12.0
@@ -48,6 +49,8 @@ data = {
         "sum": 0.0,
         "max": 0.0,
         "stddev": 0.0,
+        "skewness": 0.0,
+        "kurtosis": 0.0,
         "samples": 0,
         "values": [],
     }
@@ -171,6 +174,8 @@ with open(output, "w", newline="") as f:
         "samples",
         "average",
         "stddev",
+        "skewness",
+        "kurtosis",
         "max",
     ])
 
@@ -178,16 +183,7 @@ with open(output, "w", newline="") as f:
         d = data[event]
 
         if d["samples"]:
-            average = (
-                d["sum"] / d["samples"]
-            )
-
-            variance = sum(
-                (x - average) ** 2
-                for x in d["values"]
-            ) / d["samples"]
-
-            d["stddev"] = variance ** 0.5
+            stats = summarize(d["values"])
 
         else:
             print(
@@ -195,14 +191,15 @@ with open(output, "w", newline="") as f:
                 f"'{event}' (analyze_perf.py)"
             )
 
-            average = 0.0
-            d["stddev"] = 0.0
+            stats = summarize([])
 
         writer.writerow([
             event,
             d["samples"],
-            f"{average:.2f}",
-            f"{d['stddev']:.2f}",
+            f"{stats['average']:.2f}",
+            f"{stats['stddev']:.2f}",
+            f"{stats['skewness']:.6f}",
+            f"{stats['kurtosis']:.6f}",
             f"{d['max']:.2f}",
         ])
 

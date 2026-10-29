@@ -3,7 +3,7 @@ import re
 import sys
 from pathlib import Path
 
-import numpy as np
+from statistics_utils import summarize
 
 
 WARMUP = 12.0
@@ -22,6 +22,8 @@ def read_victim_latency(filename):
         return {
             "victim_avg_latency": 0.0,
             "victim_stddev_latency": 0.0,
+            "victim_skewness_latency": 0.0,
+            "victim_kurtosis_latency": 0.0,
             "victim_max_latency": 0.0,
         }
 
@@ -52,6 +54,8 @@ def read_victim_latency(filename):
         return {
             "victim_avg_latency": 0.0,
             "victim_stddev_latency": 0.0,
+            "victim_skewness_latency": 0.0,
+            "victim_kurtosis_latency": 0.0,
             "victim_max_latency": 0.0,
         }
 
@@ -77,12 +81,18 @@ def read_victim_latency(filename):
         return {
             "victim_avg_latency": 0.0,
             "victim_stddev_latency": 0.0,
+            "victim_skewness_latency": 0.0,
+            "victim_kurtosis_latency": 0.0,
             "victim_max_latency": 0.0,
         }
 
+    stats = summarize(latencies)
+
     return {
-        "victim_avg_latency": sum(latencies) / len(latencies),
-        "victim_stddev_latency": np.std(latencies),
+        "victim_avg_latency": stats["average"],
+        "victim_stddev_latency": stats["stddev"],
+        "victim_skewness_latency": stats["skewness"],
+        "victim_kurtosis_latency": stats["kurtosis"],
         "victim_max_latency": max(latencies),
     }
 
@@ -136,17 +146,6 @@ def write_victim_latency_timeseries(
 
     measurements.sort(key=lambda x: x[1])
 
-    interval_ms = 100.0
-
-    # Round the end up to the next 100 ms interval.
-    final_time_ms = (
-        np.ceil(measurements[-1][1] / interval_ms)
-        * interval_ms
-    )
-
-    measurement_index = 0
-    current_latency = measurements[0][2]
-
     with open(output_filename, "w", newline="") as f:
         writer = csv.writer(f)
 
@@ -156,24 +155,12 @@ def write_victim_latency_timeseries(
             "count",
         ])
 
-        timestamp_ms = interval_ms
-
-        while timestamp_ms <= final_time_ms:
-            while (
-                measurement_index + 1 < len(measurements)
-                and measurements[measurement_index + 1][1]
-                <= timestamp_ms
-            ):
-                measurement_index += 1
-                current_latency = measurements[measurement_index][2]
-
+        for timestamp, elapsed_ms, latency in measurements:
             writer.writerow([
-                f"{timestamp_ms / 1000:.6f}",
+                f"{elapsed_ms / 1000:.9f}",
                 "victim-latency",
-                f"{current_latency:.2f}",
+                f"{latency:.2f}",
             ])
-
-            timestamp_ms += interval_ms
 
 
 def write_victim_latency_summary(
@@ -188,12 +175,16 @@ def write_victim_latency_summary(
         writer.writerow([
             "victim_avg_latency",
             "victim_stddev_latency",
+            "victim_skewness_latency",
+            "victim_kurtosis_latency",
             "victim_max_latency",
         ])
 
         writer.writerow([
             f"{data['victim_avg_latency']:.2f}",
             f"{data['victim_stddev_latency']:.2f}",
+            f"{data['victim_skewness_latency']:.6f}",
+            f"{data['victim_kurtosis_latency']:.6f}",
             f"{data['victim_max_latency']:.2f}",
         ])
 
@@ -215,7 +206,7 @@ def main():
         output_filename,
     )
 
-    # 100 ms time series.
+    # Preserve the victim's native measurement interval.
     timeseries_filename = Path(
         str(output_filename).replace(
             ".csv",

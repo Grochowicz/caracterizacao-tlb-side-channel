@@ -2,6 +2,7 @@
 
 import sys
 import csv
+from statistics_utils import summarize
 
 
 WARMUP = 12.0
@@ -44,10 +45,14 @@ data = {
         "cpu_sum": 0.0,
         "cpu_max": 0.0,
         "cpu_values": [],
+        "cpu_skewness": 0.0,
+        "cpu_kurtosis": 0.0,
 
         "mem_sum": 0.0,
         "mem_max": 0.0,
         "mem_values": [],
+        "mem_skewness": 0.0,
+        "mem_kurtosis": 0.0,
 
         "samples": 0,
         "time": 0.0,
@@ -144,9 +149,11 @@ with open(filename) as f:
                 finish_snapshot(snapshot_data)
 
             try:
-                snapshot_timestamp = float(
-                    stripped.split("===== SAMPLE ", 1)[1]
-                )
+                marker = "===== SAMPLE "
+                timestamp_text = stripped[
+                    len(marker):-len(" =====")
+                ]
+                snapshot_timestamp = float(timestamp_text)
             except ValueError:
                 snapshot_timestamp = None
 
@@ -306,9 +313,13 @@ with open(output, "w", newline="") as f:
         "samples",
         "avg_cpu",
         "stddev_cpu",
+        "skewness_cpu",
+        "kurtosis_cpu",
         "max_cpu",
         "avg_mem",
         "stddev_mem",
+        "skewness_mem",
+        "kurtosis_mem",
         "max_mem",
         "time",
     ])
@@ -317,27 +328,8 @@ with open(output, "w", newline="") as f:
         d = data[pid]
 
         if d["samples"]:
-            average_cpu = (
-                d["cpu_sum"] / d["samples"]
-            )
-
-            variance_cpu = sum(
-                (value - average_cpu) ** 2
-                for value in d["cpu_values"]
-            ) / d["samples"]
-
-            stddev_cpu = variance_cpu ** 0.5
-
-            average_mem = (
-                d["mem_sum"] / d["samples"]
-            )
-
-            variance_mem = sum(
-                (value - average_mem) ** 2
-                for value in d["mem_values"]
-            ) / d["samples"]
-
-            stddev_mem = variance_mem ** 0.5
+            cpu_stats = summarize(d["cpu_values"])
+            mem_stats = summarize(d["mem_values"])
 
         else:
             print(
@@ -345,20 +337,22 @@ with open(output, "w", newline="") as f:
                 f"(analyze_top.py)."
             )
 
-            average_cpu = 0.0
-            average_mem = 0.0
-            stddev_cpu = 0.0
-            stddev_mem = 0.0
+            cpu_stats = summarize([])
+            mem_stats = summarize([])
 
         writer.writerow([
             pid,
             total_samples,
             d["samples"],
-            f"{average_cpu:.2f}",
-            f"{stddev_cpu:.2f}",
+            f"{cpu_stats['average']:.2f}",
+            f"{cpu_stats['stddev']:.2f}",
+            f"{cpu_stats['skewness']:.6f}",
+            f"{cpu_stats['kurtosis']:.6f}",
             f"{d['cpu_max']:.2f}",
-            f"{average_mem:.2f}",
-            f"{stddev_mem:.2f}",
+            f"{mem_stats['average']:.2f}",
+            f"{mem_stats['stddev']:.2f}",
+            f"{mem_stats['skewness']:.6f}",
+            f"{mem_stats['kurtosis']:.6f}",
             f"{d['mem_max']:.2f}",
             f"{d['time']:.2f}",
         ])
@@ -371,6 +365,13 @@ with open(output, "w", newline="") as f:
 # ------------------------------------------------------------
 
 timeseries_output = output.rsplit(".", 1)[0] + "_timeseries.csv"
+timestamp_values = [
+    point["timestamp"]
+    for points in timeseries.values()
+    for point in points
+    if point["timestamp"] is not None
+]
+timestamp_origin = min(timestamp_values) if timestamp_values else 0.0
 
 with open(timeseries_output, "w", newline="") as f:
     writer = csv.writer(f)
@@ -378,6 +379,7 @@ with open(timeseries_output, "w", newline="") as f:
     writer.writerow([
         "pid",
         "sample",
+        "timestamp",
         "cpu",
         "mem",
         "time",
@@ -388,6 +390,7 @@ with open(timeseries_output, "w", newline="") as f:
             writer.writerow([
                 pid,
                 point["sample"],
+                f"{point['timestamp'] - timestamp_origin:.9f}",
                 f"{point['cpu']:.2f}",
                 f"{point['mem']:.2f}",
                 f"{point['time']:.2f}",
