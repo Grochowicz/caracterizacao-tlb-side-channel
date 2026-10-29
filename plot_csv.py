@@ -318,7 +318,7 @@ def attack_succeeded(attack_file):
         return False
 
     if attack_file.name.startswith("tlbleed"):
-        return True
+        return False
 
     return lines[-1] == "[+] success"
 
