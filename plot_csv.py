@@ -677,7 +677,7 @@ def read_latency_timeseries(filename):
 
             series.append({
                 "timestamp": timestamp,
-                "value": value,
+                "count": value,
             })
 
     return series
@@ -1001,7 +1001,7 @@ def create_csv(rows, output):
         "attack",
         "attempt",
         "status",
-    ] + METRICS + STDDEV_METRICS
+    ] + METRICS + STDDEV_METRICS + SHAPE_METRICS
 
     with open(output, "w", newline="") as f:
 

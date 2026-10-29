@@ -32,4 +32,4 @@ def summarize(values):
         "stddev": stddev,
         "skewness": third_moment / stddev ** 3,
         "kurtosis": fourth_moment / second_moment ** 2 - 3.0,
-    
+    }
