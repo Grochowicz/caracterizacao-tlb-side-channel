@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import time
 import torch
 from torchvision.models import resnet50, ResNet50_Weights
@@ -19,7 +21,7 @@ def main():
 
     # Warmup
     with torch.inference_mode():
-        for _ in range(100):
+        for _ in range(50):
             model(input_tensor)
 
     start_time = time.perf_counter_ns()

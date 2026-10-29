@@ -3,6 +3,7 @@
 import sys
 import csv
 from statistics_utils import summarize
+from analysis_timing import read_timing
 
 
 WARMUP = 12.0
@@ -270,10 +271,12 @@ if all_samples:
     ]
 
     if timestamps:
-        execution_start = min(timestamps)
+        # Use the collection-wide warmup marker, not the first PID sample.
+        timing = read_timing(filename)
+        warmup_start = timing["warmup_start"]
         execution_end = max(timestamps)
 
-        warmup_end = execution_start + WARMUP
+        warmup_end = warmup_start + WARMUP
         cooldown_start = execution_end - COOLDOWN
 
         for pid in pids:
@@ -365,11 +368,20 @@ with open(output, "w", newline="") as f:
 # ------------------------------------------------------------
 
 timeseries_output = output.rsplit(".", 1)[0] + "_timeseries.csv"
+warmup_end = read_timing(filename)["warmup_start"] + WARMUP
+filtered_timeseries = {
+    pid: [
+        point
+        for point in timeseries[pid]
+        if point["timestamp"] is not None
+        and point["timestamp"] >= warmup_end
+    ]
+    for pid in pids
+}
 timestamp_values = [
     point["timestamp"]
-    for points in timeseries.values()
+    for points in filtered_timeseries.values()
     for point in points
-    if point["timestamp"] is not None
 ]
 timestamp_origin = min(timestamp_values) if timestamp_values else 0.0
 
@@ -386,7 +398,7 @@ with open(timeseries_output, "w", newline="") as f:
     ])
 
     for pid in pids:
-        for point in timeseries[pid]:
+        for point in filtered_timeseries[pid]:
             writer.writerow([
                 pid,
                 point["sample"],

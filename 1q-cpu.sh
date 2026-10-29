@@ -58,6 +58,20 @@ monitor_top() {
     done
 }
 
+mark_warmup() {
+    local timing_output="$1"
+    local perf_start="$2"
+    local warmup_start
+
+    warmup_start=$(date +%s.%N)
+    {
+        echo "warmup_start=$warmup_start"
+        echo "perf_start=$perf_start"
+    } > "$timing_output"
+
+    sleep "$WARMUP"
+}
+
 
 # ============================================================
 # BASELINE
@@ -67,11 +81,13 @@ echo "baseline"
 
 top_output="$OUT/baseline_top.txt"
 perf_output="$OUT/baseline_perf.txt"
+timing_output="$OUT/baseline_timing.txt"
 analysis_output="$OUT/baseline_analysis.csv"
 
 taskset -c "$CPU" "${AP[@]}" > "$OUT/baseline_victim.txt" 2>&1 &
 victim_pid=$!
 
+perf_start=$(date +%s.%N)
 perf stat \
     -C "$CPU" \
     -I "$INTERVAL" \
@@ -82,7 +98,7 @@ perf_pid=$!
 monitor_top "$top_output" "$victim_pid" "" &
 top_pid=$!
 
-sleep "$WARMUP"
+mark_warmup "$timing_output" "$perf_start"
 
 sleep 1
 
@@ -139,6 +155,7 @@ do
     for attempt in $(seq 1 "$MAX_ATTEMPTS"); do
         top_output="$OUT/${name}_${attempt}_top.txt"
         perf_output="$OUT/${name}_${attempt}_perf.txt"
+        timing_output="$OUT/${name}_${attempt}_timing.txt"
         analysis_output="$OUT/${name}_${attempt}_analysis.csv"
 
         # ----------------------------------------------------
@@ -152,6 +169,7 @@ do
         # Perf
         # ----------------------------------------------------
 
+        perf_start=$(date +%s.%N)
         perf stat \
             -C "$CPU" \
             -I "$INTERVAL" \
@@ -166,7 +184,7 @@ do
         monitor_top "$top_output" "$victim_pid" "" &
         top_pid=$!
 
-        sleep "$WARMUP"
+        mark_warmup "$timing_output" "$perf_start"
 
         # ----------------------------------------------------
         # Attack
@@ -246,6 +264,7 @@ for attack in rn1 rn2 rj1 rj2; do
 
     top_output="$OUT/${name}_${attempt}_top.txt"
     perf_output="$OUT/${name}_${attempt}_perf.txt"
+    timing_output="$OUT/${name}_${attempt}_timing.txt"
     analysis_output="$OUT/${name}_${attempt}_analysis.csv"
 
     # --------------------------------------------------------
@@ -259,6 +278,7 @@ for attack in rn1 rn2 rj1 rj2; do
     # Perf
     # --------------------------------------------------------
 
+    perf_start=$(date +%s.%N)
     perf stat \
         -C "$CPU" \
         -I "$INTERVAL" \
@@ -273,7 +293,7 @@ for attack in rn1 rn2 rj1 rj2; do
     monitor_top "$top_output" "$victim_pid" "" &
     top_pid=$!
 
-    sleep "$WARMUP"
+    mark_warmup "$timing_output" "$perf_start"
 
     # --------------------------------------------------------
     # Attack

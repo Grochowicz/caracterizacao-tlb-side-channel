@@ -3,6 +3,7 @@
 import sys
 import csv
 from statistics_utils import summarize
+from analysis_timing import read_timing
 
 
 WARMUP = 12.0
@@ -141,14 +142,21 @@ with open(filename) as f:
 # ------------------------------------------------------------
 
 if timeseries:
-    execution_start = min(point["timestamp"] for point in timeseries)
-    execution_end = max(point["timestamp"] for point in timeseries)
+    # Perf timestamps are relative; align them with the collection marker.
+    timing = read_timing(filename)
+    warmup_start = timing["warmup_start"]
+    perf_start = timing["perf_start"]
+    execution_end = perf_start + max(
+        point["timestamp"] for point in timeseries
+    )
 
-    warmup_end = execution_start + WARMUP
+    warmup_end = warmup_start + WARMUP
     cooldown_start = execution_end - COOLDOWN
 
     for point in timeseries:
-        if not (warmup_end <= point["timestamp"] <= cooldown_start):
+        absolute_timestamp = perf_start + point["timestamp"]
+
+        if not (warmup_end <= absolute_timestamp <= cooldown_start):
             continue
 
         event = point["event"]
@@ -214,6 +222,8 @@ timeseries_output = (
     output.rsplit(".", 1)[0]
     + "_timeseries.csv"
 )
+timing = read_timing(filename)
+warmup_end = timing["warmup_start"] + WARMUP
 
 with open(timeseries_output, "w", newline="") as f:
     writer = csv.writer(f)
@@ -225,6 +235,9 @@ with open(timeseries_output, "w", newline="") as f:
     ])
 
     for point in timeseries:
+        if timing["perf_start"] + point["timestamp"] < warmup_end:
+            continue
+
         writer.writerow([
             f"{point['timestamp']:.6f}",
             point["event"],

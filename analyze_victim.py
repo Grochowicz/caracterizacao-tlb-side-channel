@@ -4,6 +4,7 @@ import sys
 from pathlib import Path
 
 from statistics_utils import summarize
+from analysis_timing import read_timing
 
 
 WARMUP = 12.0
@@ -61,10 +62,12 @@ def read_victim_latency(filename):
 
     measurements.sort(key=lambda x: x[0])
 
-    execution_start = measurements[0][0]
+    # The victim may begin printing long after collection started.
+    timing = read_timing(filename)
+    warmup_start = timing["warmup_start"]
     execution_end = measurements[-1][0]
 
-    warmup_end = execution_start + WARMUP
+    warmup_end = warmup_start + WARMUP
     cooldown_start = execution_end - COOLDOWN
 
     latencies = [
@@ -136,6 +139,12 @@ def write_victim_latency_timeseries(
     output_filename,
 ):
     measurements = read_victim_latency_timeseries(filename)
+    warmup_end = read_timing(filename)["warmup_start"] + WARMUP
+    measurements = [
+        measurement
+        for measurement in measurements
+        if measurement[0] >= warmup_end
+    ]
 
     if not measurements:
         print(
