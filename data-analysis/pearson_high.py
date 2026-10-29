@@ -41,9 +41,8 @@ HIGH_CORR_PLOT_OUTPUT = os.path.join(
     "high_pearson_correlation.png"
 )
 
-# Minimum absolute Pearson correlation for a high-correlation pair.
-# Change this value to adjust the threshold.
-THRESHOLD = 0.8
+# Minimum absolute Pearson correlation for a reported pair.
+THRESHOLD = 0
 
 
 # ------------------------------------------------------------
@@ -55,8 +54,8 @@ df = pd.read_csv(INPUT)
 # Keep only numeric variables.
 numeric_df = df.select_dtypes(include="number")
 
-# Keep average metrics only.
-# Exclude maximum metrics, standard deviations, and attempt number.
+# Keep metrics' averages only.
+# Exclude maximums, standard deviations, skewness, kurtosis, and attempts.
 numeric_df = numeric_df[
     [
         col
@@ -64,6 +63,8 @@ numeric_df = numeric_df[
         if col.endswith("_avg")
         and "_max" not in col
         and "_stddev" not in col
+        and "_skewness" not in col
+        and "_kurtosis" not in col
     ]
 ]
 

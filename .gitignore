@@ -10,5 +10,7 @@ OLD/
 remote.sh
 # bring results from remote
 bring-results.sh
+# push analysis to remote
+push-analysis.sh
 # recently brought results from remote
 justin/
