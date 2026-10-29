@@ -42,7 +42,7 @@ HIGH_CORR_PLOT_OUTPUT = os.path.join(
 )
 
 # Minimum absolute Pearson correlation for a reported pair.
-THRESHOLD = 0
+THRESHOLD = 0.7
 
 
 # ------------------------------------------------------------

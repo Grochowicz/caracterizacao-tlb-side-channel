@@ -193,10 +193,10 @@ do
             "$perf_output" \
             "$OUT/${name}_${attempt}_perf_analysis.csv"
 
-        if grep -qF '[+] success' \
-            "$OUT/${name}_${attempt}_attack.txt"; then
-            break
-        fi
+#        if grep -qF '[+] success' \
+#            "$OUT/${name}_${attempt}_attack.txt"; then
+#            break
+#        fi
     done
 done
 
