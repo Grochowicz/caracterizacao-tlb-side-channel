@@ -1,31 +1,48 @@
+
 #!/usr/bin/env python3
 
 import csv
 import sys
 from collections import defaultdict
+from pathlib import Path
 
 import numpy as np
+
 from tslearn.clustering import TimeSeriesKMeans
-from tslearn.preprocessing import TimeSeriesScalerMeanVariance
 from tslearn.utils import to_time_series_dataset
 
 
 WARMUP = 12.0
 COOLDOWN = 1.0
-INTERVAL = 0.01
 
 METADATA_COLUMNS = {
     "attack",
     "attempt",
     "status",
+    "time",
 }
 
-# These features do not exist for baseline, and may not exist
-# during the first samples of an attack execution.
 EXCLUDED_FEATURES = {
     "attack_cpu",
     "attack_mem",
     "attack_time",
+}
+
+ATTACK_LABELS = {
+    "dpm_leak": "generic",
+    "vmalloc_leak": "generic",
+    "vmemmap_leak": "generic",
+    "msg_msg_leak": "heap",
+    "file_leak": "heap",
+    "seq_file_leak": "heap",
+    "pipe_buffer_leak": "heap",
+    "pt_leak": "page-table",
+    "pmd_leak": "page-table",
+    "pud_leak": "page-table",
+    "tlbleed_rn1": "tlbleed",
+    "tlbleed_rn2": "tlbleed",
+    "tlbleed_rj1": "tlbleed",
+    "tlbleed_rj2": "tlbleed",
 }
 
 
@@ -35,14 +52,28 @@ def load_csv(filename):
     with open(filename, newline="") as f:
         reader = csv.DictReader(f)
 
+        # Normalize column names by removing surrounding whitespace.
+        original_names = reader.fieldnames
+        normalized_names = [
+            name.strip() for name in original_names
+        ]
+
         feature_names = [
             name
-            for name in reader.fieldnames
+            for name in normalized_names
             if name not in METADATA_COLUMNS
             and name not in EXCLUDED_FEATURES
         ]
 
         for row in reader:
+
+            # Map original CSV headers to normalized names.
+            row = {
+                normalized_names[i]: value
+                for i, value in enumerate(row.values())
+                if i < len(normalized_names)
+            }
+
             key = (
                 row["attack"],
                 int(row["attempt"]),
@@ -54,14 +85,21 @@ def load_csv(filename):
             for name in feature_names:
                 value = row[name]
 
-                if value == "" or value.lower() == "nan":
+                if value is None or value.strip() == "":
                     values.append(0.0)
                 else:
-                    values.append(float(value))
+                    try:
+                        values.append(float(value))
+                    except ValueError:
+                        values.append(0.0)
 
             executions[key].append(
                 (float(row["time"]), values)
             )
+
+    # Ensure chronological ordering.
+    for key in executions:
+        executions[key].sort(key=lambda x: x[0])
 
     return executions, feature_names
 
@@ -79,9 +117,51 @@ def trim_execution(samples):
         if lower <= timestamp <= upper
     ]
 
+
+def normalize_features(series, feature_names):
+    """
+    Normalize each feature independently.
+
+    Each feature is divided by its maximum absolute value
+    across all executions and retained timestamps.
+    """
+
+    # Find maximum absolute value for each feature.
+    maxima = np.zeros(len(feature_names))
+
+    for data in series:
+        maxima = np.maximum(
+            maxima,
+            np.max(np.abs(data), axis=0),
+        )
+
+    # Avoid division by zero for constant-zero features.
+    maxima[maxima == 0] = 1.0
+
+    print("Feature normalization")
+    print("---------------------")
+
+    for name, maximum in zip(feature_names, maxima):
+        print(f"{name}: max = {maximum}")
+
+    print()
+
+    # Normalize every execution using the same feature maxima.
+    normalized = [
+        data / maxima
+        for data in series
+    ]
+
+    return normalized
+
+
 def main():
-    if len(sys.argv) != 3:
-        print(f"usage: {sys.argv[0]} <n_clusters> <input_file>")
+
+    if len(sys.argv) != 4:
+        print(
+            f"usage: {sys.argv[0]} "
+            "<n_clusters> <input_file> <output_file>"
+        )
         return 1
 
     try:
@@ -95,14 +175,12 @@ def main():
         return 1
 
     input_file = sys.argv[2]
+    output_file = sys.argv[3]
 
     executions, feature_names = load_csv(input_file)
 
-    if n_clusters > len(executions):
-        print(
-            f"error: n_clusters={n_clusters} but only "
-            f"{len(executions)} executions are available"
-        )
+    if not executions:
+        print("error: no executions found")
         return 1
 
     series = []
@@ -116,11 +194,19 @@ def main():
     print(f"Features:         {len(feature_names)}")
     print()
 
+    # ------------------------------------------------------------
+    # BUILD MULTIVARIATE TIME SERIES
+    # ------------------------------------------------------------
+
     for i, (key, samples) in enumerate(executions.items()):
+
         trimmed = trim_execution(samples)
 
         if not trimmed:
-            print(f"error: execution {i} has no samples after trimming")
+            print(
+                f"error: execution {i} "
+                "has no samples after trimming"
+            )
             return 1
 
         data = np.array(
@@ -140,8 +226,13 @@ def main():
         attack, attempt, status = key
         metadata.append(key)
 
-        original_duration = samples[-1][0] - samples[0][0]
-        kept_duration = trimmed[-1][0] - trimmed[0][0]
+        original_duration = (
+            samples[-1][0] - samples[0][0]
+        )
+
+        kept_duration = (
+            trimmed[-1][0] - trimmed[0][0]
+        )
 
         print(
             f"{i}: {attack} "
@@ -154,12 +245,45 @@ def main():
 
     print()
 
+    if n_clusters > len(series):
+        print(
+            f"error: n_clusters={n_clusters} but only "
+            f"{len(series)} executions are available"
+        )
+        return 1
+
+    # ------------------------------------------------------------
+    # NORMALIZE EACH FEATURE INDEPENDENTLY
+    # ------------------------------------------------------------
+
+    series = normalize_features(
+        series,
+        feature_names,
+    )
+
+    # ------------------------------------------------------------
+    # CONVERT TO MULTIVARIATE TSLearn DATASET
+    # ------------------------------------------------------------
+
     X = to_time_series_dataset(series)
 
     print(f"tslearn dataset shape: {X.shape}")
+    print(
+        "Dimensions: "
+        f"{X.shape[0]} executions, "
+        f"{X.shape[1]} timestamps, "
+        f"{X.shape[2]} features"
+    )
     print()
 
-    X = TimeSeriesScalerMeanVariance().fit_transform(X)
+    # ------------------------------------------------------------
+    # MULTIVARIATE DTW K-MEANS
+    # ------------------------------------------------------------
+
+    print("Starting multivariate DTW K-Means")
+    print("----------------------------------")
+    print(f"Clusters: {n_clusters}")
+    print(f"Features: {len(feature_names)}")
 
     model = TimeSeriesKMeans(
         n_clusters=n_clusters,
@@ -174,8 +298,18 @@ def main():
 
     labels = model.fit_predict(X)
 
+    # ------------------------------------------------------------
+    # SAVE AND PRINT CLUSTER ASSIGNMENTS
+    # ------------------------------------------------------------
+
+    output_path = Path("out") / f"{n_clusters}{output_file}.csv"
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    output_rows = []
+
     print()
     print("Clustering results")
+    print("------------------")
 
     for i, ((attack, attempt, status), label) in enumerate(
         zip(metadata, labels)
@@ -183,21 +317,72 @@ def main():
         print(
             f"{i} {attack} "
             f"attempt={attempt} "
+            f"status={status} "
             f"cluster={label}"
         )
+        output_rows.append({
+            "attack": attack,
+            "label": ATTACK_LABELS.get(attack),
+            "attempt": attempt,
+            "status": status,
+            "cluster": int(label),
+        })
+
+    missing_labels = sorted({
+        row["attack"]
+        for row in output_rows
+        if row["label"] is None
+    })
+
+    if missing_labels:
+        print()
+        print("Warning: attacks without labels:")
+        for attack in missing_labels:
+            print(f"  {attack}")
+
+    with output_path.open("w", newline="") as f:
+        writer = csv.DictWriter(
+            f,
+            fieldnames=[
+                "attack",
+                "label",
+                "attempt",
+                "status",
+                "cluster",
+            ],
+        )
+        writer.writeheader()
+        writer.writerows(sorted(
+            output_rows,
+            key=lambda row: (
+                row["cluster"],
+                row["label"] or "",
+                row["attack"],
+                row["attempt"],
+            ),
+        ))
+
+    print()
+    print(f"Clusters written to {output_path}")
 
     print()
     print(f"Inertia: {model.inertia_}")
     print(f"Iterations: {model.n_iter_}")
 
+    # ------------------------------------------------------------
+    # PRINT CLUSTER SIZES
+    # ------------------------------------------------------------
+
     print()
     print("Cluster sizes")
+    print("-------------")
 
     for cluster in range(n_clusters):
         count = np.sum(labels == cluster)
         print(f"cluster {cluster}: {count}")
 
     return 0
+
 
 if __name__ == "__main__":
     sys.exit(main())
