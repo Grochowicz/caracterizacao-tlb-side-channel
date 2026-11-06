@@ -12,8 +12,8 @@ from tslearn.clustering import TimeSeriesKMeans
 from tslearn.utils import to_time_series_dataset
 
 
-WARMUP = 12.0
-COOLDOWN = 1.0
+SAKOE_CHIBA_RADIUS = 200
+
 
 METADATA_COLUMNS = {
     "attack",
@@ -104,20 +104,6 @@ def load_csv(filename):
     return executions, feature_names
 
 
-def trim_execution(samples):
-    start = samples[0][0]
-    end = samples[-1][0]
-
-    lower = start + WARMUP
-    upper = end - COOLDOWN
-
-    return [
-        (timestamp, values)
-        for timestamp, values in samples
-        if lower <= timestamp <= upper
-    ]
-
-
 def normalize_features(series, feature_names):
     """
     Normalize each feature independently.
@@ -186,10 +172,9 @@ def main():
     series = []
     metadata = []
 
-    print("Dataset after warmup/cooldown removal")
-    print("--------------------------------------")
-    print(f"Warmup removed:   {WARMUP}s")
-    print(f"Cooldown removed: {COOLDOWN}s")
+    print("Dataset from plot_csv.py")
+    print("------------------------")
+    print("Warmup/cooldown: already handled by input analysis series")
     print(f"Executions:       {len(executions)}")
     print(f"Features:         {len(feature_names)}")
     print()
@@ -200,7 +185,9 @@ def main():
 
     for i, (key, samples) in enumerate(executions.items()):
 
-        trimmed = trim_execution(samples)
+        # plot_csv.py builds this file from the analyzer time series,
+        # which already use the shared discrete boundary-sample window.
+        trimmed = samples
 
         if not trimmed:
             print(
@@ -268,6 +255,7 @@ def main():
     X = to_time_series_dataset(series)
 
     print(f"tslearn dataset shape: {X.shape}")
+    return 1
     print(
         "Dimensions: "
         f"{X.shape[0]} executions, "
@@ -288,6 +276,9 @@ def main():
     model = TimeSeriesKMeans(
         n_clusters=n_clusters,
         metric="dtw",
+        metric_params={
+            "sakoe_chiba_radius": SAKOE_CHIBA_RADIUS,
+        },
         max_iter=50,
         max_iter_barycenter=20,
         n_init=5,
@@ -302,7 +293,7 @@ def main():
     # SAVE AND PRINT CLUSTER ASSIGNMENTS
     # ------------------------------------------------------------
 
-    output_path = Path("out") / f"{n_clusters}{output_file}.csv"
+    output_path = Path("out-dtwkmeans") / f"{n_clusters}{output_file}.csv"
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     output_rows = []

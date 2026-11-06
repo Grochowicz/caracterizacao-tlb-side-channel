@@ -1,126 +1,90 @@
 #!/usr/bin/env bash
 
-AP=./test-tlb/test-tlb
-ATTACKS=./TLBSideChannel
-OUT=./results-1q-cpu
-MADTLB=./tlbdr/case-studies/tlbleed/madtlb
+# Re-run only the offline analysis scripts on data already collected.
+#
+# Usage:
+#   ./only_analyze.sh                       # all justin/results-* directories
+#   ./only_analyze.sh justin/results-1q-cpu-1
 
-CPU=0
+set -u
 
-EVENTS=cpu-clock,task-clock,context-switches,cpu-migrations,page-faults,cycles,instructions,branches,branch-misses,r2012,r2011,r0e12
-INTERVAL=10
-WARMUP=2
-COOLDOWN=1
-MAX_ATTEMPTS=5
-MONITOR_INTERVAL=0.01
+ROOT="./justin"
 
-mkdir -p "$OUT"
+analyze_result_directory() {
+    local out="$1"
+    local top_output stem pids_file victim_pid attack_pid
 
-# ============================================================
-# BASELINE
-# ============================================================
+    if [[ ! -d "$out" ]]; then
+        echo "Warning: results directory not found: $out" >&2
+        return 0
+    fi
 
-top_output="$OUT/baseline_top.txt"
-perf_output="$OUT/baseline_perf.txt"
-analysis_output="$OUT/baseline_analysis.csv"
+    echo "Analyzing $out"
 
-victim_pid=$(grep "Victim PID" "$OUT/baseline_pids.txt" | awk '{print $3}')
-perf_pid=$(grep "Perf PID" "$OUT/baseline_pids.txt" | awk '{print $3}')
-top_pid=$(grep "Top PID" "$OUT/baseline_pids.txt" | awk '{print $3}')
+    shopt -s nullglob
+    local top_files=("$out"/*_top.txt)
+    shopt -u nullglob
 
-python3 analyze_top.py \
-    "$top_output" \
-    "$analysis_output" \
-    "$victim_pid"
+    if (( ${#top_files[@]} == 0 )); then
+        echo "Warning: no *_top.txt files found in $out" >&2
+        return 0
+    fi
 
-python3 analyze_perf.py \
-    "$perf_output" \
-    "$OUT/baseline_perf_analysis.csv"
+    for top_output in "${top_files[@]}"; do
+        stem="${top_output%_top.txt}"
+        pids_file="${stem}_pids.txt"
 
+        if [[ ! -f "$pids_file" ]]; then
+            echo "Warning: missing PID file: $pids_file" >&2
+            continue
+        fi
 
-# ============================================================
-# LOCATION DISCLOSURE ATTACKS
-# ============================================================
+        victim_pid=$(awk -F': ' '$1 == "Victim PID" {print $2; exit}' "$pids_file")
+        attack_pid=$(awk -F': ' '$1 == "Attack PID" {print $2; exit}' "$pids_file")
 
-for attack in \
-    generic/dpm_leak.elf \
-    generic/vmalloc_leak.elf \
-    generic/vmemmap_leak.elf \
-    heap/msg_msg_leak.elf \
-    heap/file_leak.elf \
-    heap/seq_file_leak.elf \
-    heap/pipe_buffer_leak.elf \
-    page-table/pt_leak.elf \
-    page-table/pmd_leak.elf \
-    page-table/pud_leak.elf
-#   attacks/advanced_slubstick.elf \
-#   attacks/pipe_unlink.elf \
-#   attacks/dirty_page.elf \
-#   attacks/stack_attack.elf
-do
-    name=$(basename "$attack" .elf)
-
-    for attempt in $(seq 1 "$MAX_ATTEMPTS"); do
-        top_output="$OUT/${name}_${attempt}_top.txt"
-        perf_output="$OUT/${name}_${attempt}_perf.txt"
-        analysis_output="$OUT/${name}_${attempt}_analysis.csv"
-		
-		attack_pid=$(grep "Attack PID" "$OUT/${name}_${attempt}_pids.txt" | awk '{print $3}')
-		victim_pid=$(grep "Victim PID" "$OUT/${name}_${attempt}_pids.txt" | awk '{print $3}')
-		perf_pid=$(grep "Perf PID" "$OUT/${name}_${attempt}_pids.txt" | awk '{print $3}')
-		top_pid=$(grep "Top PID" "$OUT/${name}_${attempt}_pids.txt" | awk '{print $3}')
-
-        # ----------------------------------------------------
-        # Analysis
-        # ----------------------------------------------------
+        if [[ -z "$victim_pid" ]]; then
+            echo "Warning: missing victim PID in $pids_file" >&2
+            continue
+        fi
 
         python3 analyze_top.py \
             "$top_output" \
-            "$analysis_output" \
+            "${stem}_analysis.csv" \
             "$victim_pid" \
-            "$attack_pid"
+            ${attack_pid:+"$attack_pid"}
 
-        python3 analyze_perf.py \
-            "$perf_output" \
-            "$OUT/${name}_${attempt}_perf_analysis.csv"
+        if [[ -f "${stem}_perf.txt" ]]; then
+            python3 analyze_perf.py \
+                "${stem}_perf.txt" \
+                "${stem}_perf_analysis.csv"
+        else
+            echo "Warning: missing perf file: ${stem}_perf.txt" >&2
+        fi
 
-        if grep -qF '[+] success' \
-            "$OUT/${name}_${attempt}_attack.txt"; then
-            break
+        if [[ -f "${stem}_victim.txt" ]]; then
+            python3 analyze_victim.py \
+                "${stem}_victim.txt" \
+                "${stem}_victim_analysis.csv"
+        else
+            echo "Warning: missing victim file: ${stem}_victim.txt" >&2
         fi
     done
-done
+}
 
-# ============================================================
-# TLBLEED
-# ============================================================
+if (( $# > 0 )); then
+    analyze_result_directory "$1"
+    exit 0
+fi
 
-for attack in rn1 rn2 rj1 rj2; do
-    name="tlbleed_${attack}"
-    attempt=1
+shopt -s nullglob
+result_directories=("$ROOT"/results-*)
+shopt -u nullglob
 
-    top_output="$OUT/${name}_${attempt}_top.txt"
-    perf_output="$OUT/${name}_${attempt}_perf.txt"
-    analysis_output="$OUT/${name}_${attempt}_analysis.csv"
+if (( ${#result_directories[@]} == 0 )); then
+    echo "Error: no results-* directories found under $ROOT" >&2
+    exit 1
+fi
 
-
-	attack_pid=$(grep "Attack PID" "$OUT/${name}_${attempt}_pids.txt" | awk '{print $3}')
-	victim_pid=$(grep "Victim PID" "$OUT/${name}_${attempt}_pids.txt" | awk '{print $3}')
-	perf_pid=$(grep "Perf PID" "$OUT/${name}_${attempt}_pids.txt" | awk '{print $3}')
-	top_pid=$(grep "Top PID" "$OUT/${name}_${attempt}_pids.txt" | awk '{print $3}')
-
-    # --------------------------------------------------------
-    # Analysis
-    # --------------------------------------------------------
-
-    python3 analyze_top.py \
-        "$top_output" \
-        "$analysis_output" \
-        "$victim_pid" \
-        "$attack_pid"
-
-    python3 analyze_perf.py \
-        "$perf_output" \
-        "$OUT/${name}_${attempt}_perf_analysis.csv"
-
+for result_directory in "${result_directories[@]}"; do
+    analyze_result_directory "$result_directory"
 done

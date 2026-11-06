@@ -3,7 +3,7 @@
 import sys
 import csv
 from statistics_utils import summarize
-from analysis_timing import read_timing
+from analysis_timing import measurement_window, read_timing
 
 
 WARMUP = 12.0
@@ -150,13 +150,21 @@ if timeseries:
         point["timestamp"] for point in timeseries
     )
 
-    warmup_end = warmup_start + WARMUP
-    cooldown_start = execution_end - COOLDOWN
+    absolute_timestamps = [
+        perf_start + point["timestamp"]
+        for point in timeseries
+    ]
+    window_start, window_end = measurement_window(
+        absolute_timestamps,
+        warmup_start,
+        WARMUP,
+        COOLDOWN,
+    )
 
     for point in timeseries:
         absolute_timestamp = perf_start + point["timestamp"]
 
-        if not (warmup_end <= absolute_timestamp <= cooldown_start):
+        if not (window_start <= absolute_timestamp <= window_end):
             continue
 
         event = point["event"]
@@ -223,7 +231,15 @@ timeseries_output = (
     + "_timeseries.csv"
 )
 timing = read_timing(filename)
-warmup_end = timing["warmup_start"] + WARMUP
+window_start, window_end = measurement_window(
+    [
+        timing["perf_start"] + point["timestamp"]
+        for point in timeseries
+    ],
+    timing["warmup_start"],
+    WARMUP,
+    COOLDOWN,
+)
 
 with open(timeseries_output, "w", newline="") as f:
     writer = csv.writer(f)
@@ -235,7 +251,8 @@ with open(timeseries_output, "w", newline="") as f:
     ])
 
     for point in timeseries:
-        if timing["perf_start"] + point["timestamp"] < warmup_end:
+        absolute_timestamp = timing["perf_start"] + point["timestamp"]
+        if not (window_start <= absolute_timestamp <= window_end):
             continue
 
         writer.writerow([

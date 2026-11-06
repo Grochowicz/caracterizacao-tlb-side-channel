@@ -3,7 +3,7 @@
 import sys
 import csv
 from statistics_utils import summarize
-from analysis_timing import read_timing
+from analysis_timing import measurement_window, read_timing
 
 
 WARMUP = 12.0
@@ -276,8 +276,12 @@ if all_samples:
         warmup_start = timing["warmup_start"]
         execution_end = max(timestamps)
 
-        warmup_end = warmup_start + WARMUP
-        cooldown_start = execution_end - COOLDOWN
+        window_start, window_end = measurement_window(
+            timestamps,
+            warmup_start,
+            WARMUP,
+            COOLDOWN,
+        )
 
         for pid in pids:
             for point in timeseries[pid]:
@@ -286,7 +290,7 @@ if all_samples:
                 if timestamp is None:
                     continue
 
-                if not (warmup_end <= timestamp <= cooldown_start):
+                if not (window_start <= timestamp <= window_end):
                     continue
 
                 result = data[pid]
@@ -368,13 +372,23 @@ with open(output, "w", newline="") as f:
 # ------------------------------------------------------------
 
 timeseries_output = output.rsplit(".", 1)[0] + "_timeseries.csv"
-warmup_end = read_timing(filename)["warmup_start"] + WARMUP
+timing = read_timing(filename)
+window_start, window_end = measurement_window(
+    [
+        point["timestamp"]
+        for points in timeseries.values()
+        for point in points
+    ],
+    timing["warmup_start"],
+    WARMUP,
+    COOLDOWN,
+)
 filtered_timeseries = {
     pid: [
         point
         for point in timeseries[pid]
         if point["timestamp"] is not None
-        and point["timestamp"] >= warmup_end
+        and window_start <= point["timestamp"] <= window_end
     ]
     for pid in pids
 }

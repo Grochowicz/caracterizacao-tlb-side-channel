@@ -4,7 +4,7 @@ import sys
 from pathlib import Path
 
 from statistics_utils import summarize
-from analysis_timing import read_timing
+from analysis_timing import measurement_window, read_timing
 
 
 WARMUP = 12.0
@@ -67,13 +67,17 @@ def read_victim_latency(filename):
     warmup_start = timing["warmup_start"]
     execution_end = measurements[-1][0]
 
-    warmup_end = warmup_start + WARMUP
-    cooldown_start = execution_end - COOLDOWN
+    window_start, window_end = measurement_window(
+        [measurement[0] for measurement in measurements],
+        warmup_start,
+        WARMUP,
+        COOLDOWN,
+    )
 
     latencies = [
         latency_ns
         for timestamp, elapsed_ms, latency_ns in measurements
-        if warmup_end <= timestamp <= cooldown_start
+        if window_start <= timestamp <= window_end
     ]
 
     if not latencies:
@@ -139,11 +143,17 @@ def write_victim_latency_timeseries(
     output_filename,
 ):
     measurements = read_victim_latency_timeseries(filename)
-    warmup_end = read_timing(filename)["warmup_start"] + WARMUP
+    timing = read_timing(filename)
+    window_start, window_end = measurement_window(
+        [measurement[0] for measurement in measurements],
+        timing["warmup_start"],
+        WARMUP,
+        COOLDOWN,
+    )
     measurements = [
         measurement
         for measurement in measurements
-        if measurement[0] >= warmup_end
+        if window_start <= measurement[0] <= window_end
     ]
 
     if not measurements:

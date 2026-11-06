@@ -6,8 +6,12 @@ import re
 from pathlib import Path
 from statistics import mean
 
+from analysis_timing import measurement_window
+
 
 TIME_COLUMNS = ("victim_time", "attack_time")
+WARMUP = 12.0
+COOLDOWN = 1.0
 
 
 def parse_arguments():
@@ -141,9 +145,13 @@ def count_eligible_top_samples(
     if not observed_timestamps:
         return 0
 
-    lower = timing["warmup_start"] + 12.0
-    upper = max(observed_timestamps) - 1.0
-    if upper < lower:
+    lower, upper = measurement_window(
+        observed_timestamps,
+        timing["warmup_start"],
+        WARMUP,
+        COOLDOWN,
+    )
+    if lower is None or upper is None or upper < lower:
         return 0
 
     eligible = 0
