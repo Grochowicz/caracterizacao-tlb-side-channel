@@ -12,6 +12,7 @@ INTERVAL=10
 WARMUP=12
 COOLDOWN=1
 MAX_ATTEMPTS=5
+ATTACK_TIMEOUT=180
 MONITOR_INTERVAL=0.01
 
 mkdir -p "$OUT"
@@ -39,6 +40,37 @@ monitor_top() {
 
         sleep "$MONITOR_INTERVAL"
     done
+}
+
+wait_for_attack() {
+    local pid="$1"
+    local start_time
+    local elapsed
+    local state
+
+    start_time=$(date +%s)
+    while kill -0 "$pid" 2>/dev/null; do
+        state=$(ps -o stat= -p "$pid" 2>/dev/null | tr -d ' ')
+        case "$state" in
+            Z*)
+                wait "$pid" 2>/dev/null
+                return $?
+                ;;
+        esac
+
+        elapsed=$(( $(date +%s) - start_time ))
+        if [ "$elapsed" -ge "$ATTACK_TIMEOUT" ]; then
+            echo "Attack PID $pid exceeded ${ATTACK_TIMEOUT}s; retrying attempt." >&2
+            kill "$pid" 2>/dev/null || true
+            sleep 1
+            kill -KILL "$pid" 2>/dev/null || true
+            wait "$pid" 2>/dev/null || true
+            return 124
+        fi
+        sleep 1
+    done
+
+    wait "$pid" 2>/dev/null
 }
 
 mark_warmup() {
@@ -128,11 +160,13 @@ for attack in \
 do
     name=$(basename "$attack" .elf)
 
-    for attempt in $(seq 1 "$MAX_ATTEMPTS"); do
+    attempt=1
+    while [ "$attempt" -le "$MAX_ATTEMPTS" ]; do
         top_output="$OUT/${name}_${attempt}_top.txt"
         perf_output="$OUT/${name}_${attempt}_perf.txt"
         timing_output="$OUT/${name}_${attempt}_timing.txt"
         analysis_output="$OUT/${name}_${attempt}_analysis.csv"
+        : > "$top_output"
 
         # ----------------------------------------------------
         # Attack
@@ -173,7 +207,13 @@ do
         # Wait for attack
         # ----------------------------------------------------
 
-        wait "$attack_pid"
+        wait_for_attack "$attack_pid"
+        attack_status=$?
+        if [ "$attack_status" -eq 124 ]; then
+            kill "$top_pid" "$perf_pid" 2>/dev/null || true
+            wait "$top_pid" "$perf_pid" 2>/dev/null || true
+            continue
+        fi
 
         # ----------------------------------------------------
         # Cooldown
@@ -215,6 +255,7 @@ do
 #            "$OUT/${name}_${attempt}_attack.txt"; then
 #            break
 #        fi
+        attempt=$((attempt + 1))
     done
 done
 
@@ -230,11 +271,13 @@ done
 for attack in rn1 rn2 rj1 rj2; do
     name="tlbleed_${attack}"
     attempt=1
+    while true; do
 
     top_output="$OUT/${name}_${attempt}_top.txt"
     perf_output="$OUT/${name}_${attempt}_perf.txt"
     timing_output="$OUT/${name}_${attempt}_timing.txt"
     analysis_output="$OUT/${name}_${attempt}_analysis.csv"
+    : > "$top_output"
 
     # --------------------------------------------------------
     # Attack
@@ -273,7 +316,13 @@ for attack in rn1 rn2 rj1 rj2; do
     # Wait for attack
     # --------------------------------------------------------
 
-    wait "$attack_pid"
+    wait_for_attack "$attack_pid"
+    attack_status=$?
+    if [ "$attack_status" -eq 124 ]; then
+        kill "$top_pid" "$perf_pid" 2>/dev/null || true
+        wait "$top_pid" "$perf_pid" 2>/dev/null || true
+        continue
+    fi
 
     # --------------------------------------------------------
     # Cooldown
@@ -309,4 +358,6 @@ for attack in rn1 rn2 rj1 rj2; do
         "$perf_output" \
         "$OUT/${name}_${attempt}_perf_analysis.csv"
 
+    break
+    done
 done
