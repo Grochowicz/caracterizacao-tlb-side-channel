@@ -2,8 +2,11 @@
 
 AP1=(./test-tlb/test-tlb -r 67108864 4096)
 AP2=(./resnet/resnet50.py)
+AP3=(./test-tlb/test-tlb 1k 64)
+AP4=(./test-tlb/test-tlb -r 1k 64)
+AP5=(./test-tlb/test-tlb 64k 4k)
 
-APS=(AP1 AP2)
+APS=(AP1 AP2 AP3 AP4 AP5)
 
 if [ $# -eq 0 ]; then
 	echo "No argument provided; choose AP."
