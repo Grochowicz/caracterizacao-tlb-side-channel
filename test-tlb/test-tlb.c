@@ -284,8 +284,8 @@ int main(int argc, char **argv)
 	 * */
 	struct timeval start, end;
 	gettimeofday(&start, NULL);
+	map = NULL;
 	while(1) {
-		map = NULL;
 		cycles = 1e10;
 		for (int i = 0; i < 1; i++) {
 			double d;
