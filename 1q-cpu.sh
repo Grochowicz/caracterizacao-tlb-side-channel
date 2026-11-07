@@ -135,16 +135,16 @@ echo "Top PID: $top_pid" \
 # ============================================================
 
 for attack in \
-    generic/dpm_leak.elf
-#    generic/vmalloc_leak.elf \
-#    generic/vmemmap_leak.elf \
-#    heap/msg_msg_leak.elf \
-#    heap/file_leak.elf \
-#    heap/seq_file_leak.elf \
-#    heap/pipe_buffer_leak.elf \
-#    page-table/pt_leak.elf \
-#    page-table/pmd_leak.elf \
-#    page-table/pud_leak.elf \
+    generic/dpm_leak.elf \
+    generic/vmalloc_leak.elf \
+    generic/vmemmap_leak.elf \
+    heap/msg_msg_leak.elf \
+    heap/file_leak.elf \
+    heap/seq_file_leak.elf \
+    heap/pipe_buffer_leak.elf \
+    page-table/pt_leak.elf \
+    page-table/pmd_leak.elf \
+    page-table/pud_leak.elf 
 #   attacks/advanced_slubstick.elf \
 #   attacks/pipe_unlink.elf \
 #   attacks/dirty_page.elf \
