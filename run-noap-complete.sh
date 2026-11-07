@@ -1,3 +1,4 @@
+#!/bin/bash
 # coletar dados
 ./3q-por-cpu.sh
 # ataques isolados

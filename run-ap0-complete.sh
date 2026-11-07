@@ -1,3 +1,4 @@
+#!/bin/bash
 IDX=0
 # venv para resnet e análise de dados
 source data-analysis/.venv/bin/activate

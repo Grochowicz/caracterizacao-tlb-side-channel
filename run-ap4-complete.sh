@@ -1,3 +1,4 @@
+#!/bin/bash
 IDX=4
 # venv para análise de dados
 source data-analysis/.venv/bin/activate
