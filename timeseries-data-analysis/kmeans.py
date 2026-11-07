@@ -43,6 +43,10 @@ ATTACK_LABELS = {
     "tlbleed_rn2": "tlbleed",
     "tlbleed_rj1": "tlbleed",
     "tlbleed_rj2": "tlbleed",
+    "advanced_slubstick": "attacks",
+    "pipe_unlink": "attacks",
+    "dirty_page": "attacks",
+    "stack_attack": "attacks",
 }
 
 

@@ -120,11 +120,11 @@ for attack in \
     heap/pipe_buffer_leak.elf \
     page-table/pt_leak.elf \
     page-table/pmd_leak.elf \
-    page-table/pud_leak.elf 
-#    attacks/advanced_slubstick.elf \
-#    attacks/pipe_unlink.elf \
-#    attacks/dirty_page.elf \
-#    attacks/stack_attack.elf
+    page-table/pud_leak.elf \
+    attacks/advanced_slubstick.elf \
+    attacks/pipe_unlink.elf \
+    attacks/dirty_page.elf \
+    attacks/stack_attack.elf
 do
     name=$(basename "$attack" .elf)
 
