@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import csv
+import math
 import sys
 from itertools import combinations
 from pathlib import Path
@@ -73,6 +74,11 @@ def evaluate(rows):
         if precision + recall
         else 0.0
     )
+    fowlkes_mallows_index = (
+        tp / math.sqrt((tp + fp) * (tp + fn))
+        if (tp + fp) and (tp + fn)
+        else 0.0
+    )
 
     return {
         "executions": len(rows),
@@ -86,6 +92,7 @@ def evaluate(rows):
         "specificity": specificity,
         "accuracy": accuracy,
         "f1": f1,
+        "fmi": fowlkes_mallows_index,
     }
 
 

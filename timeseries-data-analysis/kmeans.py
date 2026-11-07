@@ -255,7 +255,6 @@ def main():
     X = to_time_series_dataset(series)
 
     print(f"tslearn dataset shape: {X.shape}")
-    return 1
     print(
         "Dimensions: "
         f"{X.shape[0]} executions, "
