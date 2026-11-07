@@ -52,15 +52,24 @@ PERF_EVENTS = [
     "instructions",
     "branches",
     "branch-misses",
-    "r2012",
-    "r2011",
-#    "r0e12",
+    "dtlb_load_misses.stlb_hit",
+    "itlb_misses.stlb_hit",
+    "dtlb_load_misses.walk_active",
+    "dtlb_load_misses.walk_completed",
+    "dTLB-loads",
+    "dTLB-store-misses",
+    "iTLB-loads",
 ]
 
 
 PERF_NAMES = {
-    "r2012": "DTLB_LOAD_MISSES.STLB_HIT",
-    "r2011": "ITLB_MISSES.STLB_HIT",
+    "dtlb_load_misses.stlb_hit": "DTLB_LOAD_MISSES.STLB_HIT",
+    "itlb_misses.stlb_hit": "ITLB_MISSES.STLB_HIT",
+    "dtlb_load_misses.walk_active": "DTLB_LOAD_MISSES.WALK_ACTIVE",
+    "dtlb_load_misses.walk_completed": "DTLB_LOAD_MISSES.WALK_COMPLETED",
+    "dTLB-loads": "dTLB-loads",
+    "dTLB-store-misses": "dTLB-store-misses",
+    "iTLB-loads": "iTLB-loads",
 }
 
 

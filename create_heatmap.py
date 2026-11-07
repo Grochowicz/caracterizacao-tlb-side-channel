@@ -58,11 +58,26 @@ METRICS = [
     "perf_branch-misses_avg",
     "perf_branch-misses_max",
 
-    "perf_r2012_avg",
-    "perf_r2012_max",
+    "perf_dtlb_load_misses.stlb_hit_avg",
+    "perf_dtlb_load_misses.stlb_hit_max",
 
-    "perf_r2011_avg",
-    "perf_r2011_max",
+    "perf_itlb_misses.stlb_hit_avg",
+    "perf_itlb_misses.stlb_hit_max",
+
+    "perf_dtlb_load_misses.walk_active_avg",
+    "perf_dtlb_load_misses.walk_active_max",
+
+    "perf_dtlb_load_misses.walk_completed_avg",
+    "perf_dtlb_load_misses.walk_completed_max",
+
+    "perf_dTLB-loads_avg",
+    "perf_dTLB-loads_max",
+
+    "perf_dTLB-store-misses_avg",
+    "perf_dTLB-store-misses_max",
+
+    "perf_iTLB-loads_avg",
+    "perf_iTLB-loads_max",
 
     "victim_avg_latency",
     "victim_max_latency",
@@ -74,8 +89,13 @@ METRICS = [
 # ============================================================
 
 PERF_NAMES = {
-    "r2012": "DTLB_LOAD_MISSES.STLB_HIT",
-    "r2011": "ITLB_MISSES.STLB_HIT",
+    "dtlb_load_misses.stlb_hit": "DTLB_LOAD_MISSES.STLB_HIT",
+    "itlb_misses.stlb_hit": "ITLB_MISSES.STLB_HIT",
+    "dtlb_load_misses.walk_active": "DTLB_LOAD_MISSES.WALK_ACTIVE",
+    "dtlb_load_misses.walk_completed": "DTLB_LOAD_MISSES.WALK_COMPLETED",
+    "dTLB-loads": "dTLB-loads",
+    "dTLB-store-misses": "dTLB-store-misses",
+    "iTLB-loads": "iTLB-loads",
 }
 
 

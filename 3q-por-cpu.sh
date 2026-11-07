@@ -7,7 +7,7 @@ MADTLB=./tlbdr/case-studies/tlbleed/madtlb
 
 CPU=0
 
-EVENTS=cpu-clock,task-clock,context-switches,cpu-migrations,page-faults,cycles,instructions,branches,branch-misses,r2012,r2011,r0e12
+EVENTS=cpu-clock,task-clock,context-switches,cpu-migrations,page-faults,cycles,instructions,branches,branch-misses,dtlb_load_misses.stlb_hit,itlb_misses.stlb_hit,dtlb_load_misses.walk_active,dtlb_load_misses.walk_completed,dTLB-loads,dTLB-store-misses,iTLB-loads
 INTERVAL=10
 WARMUP=12
 COOLDOWN=1

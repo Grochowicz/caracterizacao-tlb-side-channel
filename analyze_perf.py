@@ -35,9 +35,13 @@ EVENTS = [
     "instructions",
     "branches",
     "branch-misses",
-    "r2012",
-    "r2011",
-    "r0e12",
+    "dtlb_load_misses.stlb_hit",
+    "itlb_misses.stlb_hit",
+    "dtlb_load_misses.walk_active",
+    "dtlb_load_misses.walk_completed",
+    "dTLB-loads",
+    "dTLB-store-misses",
+    "iTLB-loads",
 ]
 
 
