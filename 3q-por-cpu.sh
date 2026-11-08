@@ -94,6 +94,32 @@ stop_monitor_group() {
     fi
 }
 
+handle_signal() {
+    local status="$1"
+    local pid
+
+    if [ -n "${top_pid:-}" ]; then
+        stop_monitor_group "$top_pid"
+    fi
+
+    for pid in "${perf_pid:-}" "${victim_pid:-}" "${attack_pid:-}"; do
+        if [ -n "$pid" ]; then
+            kill "$pid" 2>/dev/null || true
+        fi
+    done
+
+    for pid in "${top_pid:-}" "${perf_pid:-}" "${victim_pid:-}" "${attack_pid:-}"; do
+        if [ -n "$pid" ]; then
+            wait "$pid" 2>/dev/null || true
+        fi
+    done
+
+    exit "$status"
+}
+
+trap 'handle_signal 130' INT
+trap 'handle_signal 143' TERM
+
 mark_warmup() {
     local timing_output="$1"
     local perf_start="$2"
