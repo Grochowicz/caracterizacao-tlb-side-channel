@@ -77,7 +77,8 @@ start_monitor() {
     local monitor_function
 
     monitor_function=$(declare -f monitor_top)
-    exec setsid bash -c "$monitor_function; monitor_top \"\$@\"" \
+    exec env MONITOR_INTERVAL="$MONITOR_INTERVAL" \
+        setsid bash -c "$monitor_function; monitor_top \"\$@\"" \
         monitor_top "$@"
 }
 
