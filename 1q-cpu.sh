@@ -72,7 +72,7 @@ wait_for_attack() {
     while kill -0 "$pid" 2>/dev/null; do
         state=$(ps -o stat= -p "$pid" 2>/dev/null | tr -d ' ')
         case "$state" in
-            Z*)
+            Z*|X*)
                 wait "$pid" 2>/dev/null
                 return $?
                 ;;
