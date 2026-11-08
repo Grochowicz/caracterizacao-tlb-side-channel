@@ -93,6 +93,26 @@ wait_for_attack() {
     wait "$pid" 2>/dev/null
 }
 
+start_monitor() {
+    local monitor_function
+
+    monitor_function=$(declare -f monitor_top)
+    exec setsid bash -c "$monitor_function; monitor_top \"\$@\"" \
+        monitor_top "$@"
+}
+
+stop_monitor_group() {
+    local pid="$1"
+    local pgid
+
+    pgid=$(ps -o pgid= -p "$pid" 2>/dev/null | tr -d ' ')
+    if [ -n "$pgid" ] && [ "$pgid" != "0" ]; then
+        kill -- "-$pgid" 2>/dev/null || true
+    else
+        kill "$pid" 2>/dev/null || true
+    fi
+}
+
 mark_warmup() {
     local timing_output="$1"
     local perf_start="$2"
@@ -130,7 +150,7 @@ perf stat \
     > "$perf_output" 2>&1 &
 perf_pid=$!
 
-monitor_top "$top_output" "$victim_pid" "" &
+start_monitor "$top_output" "$victim_pid" "" &
 top_pid=$!
 
 mark_warmup "$timing_output" "$perf_start"
@@ -139,7 +159,8 @@ sleep 1
 
 sleep "$COOLDOWN"
 
-kill "$top_pid" "$perf_pid" "$victim_pid" 2>/dev/null || true
+stop_monitor_group "$top_pid"
+kill "$perf_pid" "$victim_pid" 2>/dev/null || true
 
 wait "$top_pid" "$perf_pid" "$victim_pid" 2>/dev/null || true
 
@@ -218,7 +239,7 @@ do
         # Warmup monitoring
         # ----------------------------------------------------
 
-        monitor_top "$top_output" "$victim_pid" "" &
+        start_monitor "$top_output" "$victim_pid" "" &
         top_pid=$!
 
         mark_warmup "$timing_output" "$perf_start"
@@ -232,10 +253,10 @@ do
 		attack_pid=$!
 
         # Restart monitor so it also tracks the attack.
-        kill "$top_pid" 2>/dev/null || true
+        stop_monitor_group "$top_pid"
         wait "$top_pid" 2>/dev/null || true
 
-        monitor_top "$top_output" "$victim_pid" "$attack_pid" &
+        start_monitor "$top_output" "$victim_pid" "$attack_pid" &
         top_pid=$!
 
         echo "$attack (attempt $attempt)"
@@ -243,7 +264,8 @@ do
         wait_for_attack "$attack_pid"
         attack_status=$?
         if [ "$attack_status" -eq 124 ]; then
-            kill "$top_pid" "$perf_pid" "$victim_pid" 2>/dev/null || true
+            stop_monitor_group "$top_pid"
+            kill "$perf_pid" "$victim_pid" 2>/dev/null || true
             wait "$top_pid" "$perf_pid" "$victim_pid" 2>/dev/null || true
             continue
         fi
@@ -258,7 +280,8 @@ do
         # Cleanup
         # ----------------------------------------------------
 
-        kill "$top_pid" "$perf_pid" "$victim_pid" 2>/dev/null || true
+        stop_monitor_group "$top_pid"
+        kill "$perf_pid" "$victim_pid" 2>/dev/null || true
 
         wait "$top_pid" "$perf_pid" "$victim_pid" 2>/dev/null || true
 
@@ -336,7 +359,7 @@ for attack in rn1 rn2 rj1 rj2; do
     # Warmup monitoring
     # --------------------------------------------------------
 
-    monitor_top "$top_output" "$victim_pid" "" &
+    start_monitor "$top_output" "$victim_pid" "" &
     top_pid=$!
 
     mark_warmup "$timing_output" "$perf_start"
@@ -350,10 +373,10 @@ for attack in rn1 rn2 rj1 rj2; do
     attack_pid=$!
 
     # Restart monitor so it also tracks the attack.
-    kill "$top_pid" 2>/dev/null || true
+    stop_monitor_group "$top_pid"
     wait "$top_pid" 2>/dev/null || true
 
-    monitor_top "$top_output" "$victim_pid" "$attack_pid" &
+    start_monitor "$top_output" "$victim_pid" "$attack_pid" &
     top_pid=$!
 
     echo "$attack (attempt $attempt)"
@@ -361,7 +384,8 @@ for attack in rn1 rn2 rj1 rj2; do
     wait_for_attack "$attack_pid"
     attack_status=$?
     if [ "$attack_status" -eq 124 ]; then
-        kill "$top_pid" "$perf_pid" "$victim_pid" 2>/dev/null || true
+        stop_monitor_group "$top_pid"
+        kill "$perf_pid" "$victim_pid" 2>/dev/null || true
         wait "$top_pid" "$perf_pid" "$victim_pid" 2>/dev/null || true
         continue
     fi
@@ -376,7 +400,8 @@ for attack in rn1 rn2 rj1 rj2; do
     # Cleanup
     # --------------------------------------------------------
 
-    kill "$top_pid" "$perf_pid" "$victim_pid" 2>/dev/null || true
+    stop_monitor_group "$top_pid"
+    kill "$perf_pid" "$victim_pid" 2>/dev/null || true
 
     wait "$top_pid" "$perf_pid" "$victim_pid" 2>/dev/null || true
 
