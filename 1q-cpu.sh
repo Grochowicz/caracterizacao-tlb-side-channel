@@ -115,7 +115,9 @@ wait_for_attack() {
             Z*|X*)
                 echo "wait_for_attack: attack PID $pid exited with state $state." >&2
                 wait "$pid" 2>/dev/null
-                return $?
+                local status=$?
+                echo "wait_for_attack: reaped attack PID $pid with status $status." >&2
+                return "$status"
                 ;;
         esac
 
@@ -387,14 +389,25 @@ do
 
         echo "$attack (attempt $attempt)"
 
-        wait_for_attack "$attack_pid"
-        attack_status=$?
+        if wait_for_attack "$attack_pid"; then
+            attack_status=0
+        else
+            attack_status=$?
+        fi
         if [ "$attack_status" -eq 124 ]; then
             stop_monitor_group "$top_pid"
             kill "$perf_pid" "$victim_pid" 2>/dev/null || true
             wait "$top_pid" "$perf_pid" "$victim_pid" 2>/dev/null || true
             cleanup_new_message_queues
             rm -f "$OUT/${name}_${attempt}_attack.txt"
+            continue
+        fi
+        if [ "$attack_status" -ne 0 ]; then
+            echo "attack=$attack attempt=$attempt exited with status $attack_status; skipping attempt." >&2
+            stop_monitor_group "$top_pid"
+            kill "$perf_pid" "$victim_pid" 2>/dev/null || true
+            wait "$top_pid" "$perf_pid" "$victim_pid" 2>/dev/null || true
+            cleanup_new_message_queues
             continue
         fi
 
@@ -520,14 +533,25 @@ for attack in rn1 rn2 rj1 rj2; do
 
     echo "$attack (attempt $attempt)"
 
-    wait_for_attack "$attack_pid"
-    attack_status=$?
+    if wait_for_attack "$attack_pid"; then
+        attack_status=0
+    else
+        attack_status=$?
+    fi
     if [ "$attack_status" -eq 124 ]; then
         stop_monitor_group "$top_pid"
         kill "$perf_pid" "$victim_pid" 2>/dev/null || true
         wait "$top_pid" "$perf_pid" "$victim_pid" 2>/dev/null || true
         cleanup_new_message_queues
         rm -f "$OUT/${name}_${attempt}_attack.txt"
+        continue
+    fi
+    if [ "$attack_status" -ne 0 ]; then
+        echo "attack=$attack attempt=$attempt exited with status $attack_status; skipping attempt." >&2
+        stop_monitor_group "$top_pid"
+        kill "$perf_pid" "$victim_pid" 2>/dev/null || true
+        wait "$top_pid" "$perf_pid" "$victim_pid" 2>/dev/null || true
+        cleanup_new_message_queues
         continue
     fi
 
