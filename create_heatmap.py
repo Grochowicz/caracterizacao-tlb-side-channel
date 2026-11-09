@@ -64,6 +64,9 @@ METRICS = [
     "perf_r2011_avg",
     "perf_r2011_max",
 
+    "perf_r0e12_avg",
+    "perf_r0e12_max",
+
     "victim_avg_latency",
     "victim_max_latency",
 ]
@@ -74,8 +77,9 @@ METRICS = [
 # ============================================================
 
 PERF_NAMES = {
-    "r2012": "DTLB_LOAD_MISSES.STLB_HIT",
-    "r2011": "ITLB_MISSES.STLB_HIT",
+    "r2012": "r2012",
+    "r2011": "r2011",
+    "r0e12": "r0e12",
 }
 
 

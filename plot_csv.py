@@ -54,13 +54,14 @@ PERF_EVENTS = [
     "branch-misses",
     "r2012",
     "r2011",
-#    "r0e12",
+    "r0e12",
 ]
 
 
 PERF_NAMES = {
-    "r2012": "DTLB_LOAD_MISSES.STLB_HIT",
-    "r2011": "ITLB_MISSES.STLB_HIT",
+    "r2012": "r2012",
+    "r2011": "r2011",
+    "r0e12": "r0e12",
 }
 
 

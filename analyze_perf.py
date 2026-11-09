@@ -112,7 +112,7 @@ with open(filename) as f:
         count = None
 
         try:
-            count = float(parts[1])
+            count = float(parts[1].replace(",", ""))
         except ValueError:
             continue
 

@@ -272,9 +272,6 @@ def main():
         )
 
     for statistics_file in statistics_files:
-        if "3q-por-cpu" in statistics_file.name:
-            continue
-
         rows = [
             row
             for row in load_rows(statistics_file)
