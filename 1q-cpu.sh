@@ -97,19 +97,31 @@ wait_for_attack() {
     local elapsed
     local state
 
-    start_time=$(date +%s)
-    while kill -0 "$pid" 2>/dev/null; do
+    start_time=$SECONDS
+    echo "wait_for_attack: monitoring attack PID $pid (timeout ${ATTACK_TIMEOUT}s)." >&2
+    while true; do
+        if ! kill -0 "$pid" 2>/dev/null; then
+            echo "wait_for_attack: attack PID $pid is no longer running." >&2
+            break
+        fi
+
         state=$(ps -o stat= -p "$pid" 2>/dev/null | tr -d ' ')
+        if [ -z "$state" ]; then
+            echo "wait_for_attack: attack PID $pid disappeared from process table." >&2
+            break
+        fi
+
         case "$state" in
             Z*|X*)
+                echo "wait_for_attack: attack PID $pid exited with state $state." >&2
                 wait "$pid" 2>/dev/null
                 return $?
                 ;;
         esac
 
-        elapsed=$(( $(date +%s) - start_time ))
+        elapsed=$(( SECONDS - start_time ))
         if [ "$elapsed" -ge "$ATTACK_TIMEOUT" ]; then
-            echo "Attack PID $pid exceeded ${ATTACK_TIMEOUT}s; retrying attempt." >&2
+            echo "wait_for_attack: attack PID $pid state=$state exceeded ${ATTACK_TIMEOUT}s; retrying attempt." >&2
             kill "$pid" 2>/dev/null || true
             sleep 1
             kill -KILL "$pid" 2>/dev/null || true
@@ -120,6 +132,9 @@ wait_for_attack() {
     done
 
     wait "$pid" 2>/dev/null
+    local status=$?
+    echo "wait_for_attack: reaped attack PID $pid with status $status." >&2
+    return "$status"
 }
 
 start_monitor() {
