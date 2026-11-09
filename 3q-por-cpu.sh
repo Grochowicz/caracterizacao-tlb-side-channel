@@ -94,6 +94,24 @@ stop_monitor_group() {
     fi
 }
 
+cleanup_owned_message_queues() {
+    local owner="${USER:-$(id -un)}"
+    local queue_ids
+
+    queue_ids=$(ipcs -q 2>/dev/null |
+        awk -v owner="$owner" '$2 ~ /^[0-9]+$/ && $3 == owner {print $2}')
+
+    if [ -z "$queue_ids" ]; then
+        return 0
+    fi
+
+    while IFS= read -r queue_id; do
+        if ! ipcrm -q "$queue_id"; then
+            echo "Warning: failed to remove message queue $queue_id owned by $owner." >&2
+        fi
+    done <<< "$queue_ids"
+}
+
 handle_signal() {
     local status="$1"
     local pid
@@ -222,6 +240,7 @@ do
         # No AP is running on CPU.
         # ----------------------------------------------------
 
+        cleanup_owned_message_queues
         taskset -c "$CPU" "$ATTACKS/$attack" \
             > "$OUT/${name}_${attempt}_attack.txt" 2>&1 &
         attack_pid=$!
@@ -335,6 +354,7 @@ for attack in rn1 rn2 rj1 rj2; do
     # No AP is running on CPU.
     # --------------------------------------------------------
 
+    cleanup_owned_message_queues
     taskset -c "$CPU" "$MADTLB" "-$attack" \
         > "$OUT/${name}_${attempt}_attack.txt" 2>&1 &
     attack_pid=$!

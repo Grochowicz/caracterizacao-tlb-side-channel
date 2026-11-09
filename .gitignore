@@ -14,3 +14,4 @@ bring-results.sh
 push-analysis.sh
 # recently brought results from remote
 justin/
+DATA/
