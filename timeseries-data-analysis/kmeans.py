@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python3
 
 import csv
@@ -108,6 +107,31 @@ def load_csv(filename):
     return executions, feature_names
 
 
+def filter_high_correlation_features(pearson_csv, feature_names):
+    """
+    Read pearson correlation CSV and exclude variable_2 if pearson >= 0.9.
+    Returns filtered feature names and a set of excluded features.
+    """
+    features_to_exclude = set()
+
+    with open(pearson_csv, newline="") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            try:
+                pearson_val = float(row["pearson"].strip())
+                if pearson_val >= 0.9:
+                    var2 = row["variable_2"].strip()
+                    features_to_exclude.add(var2)
+            except (ValueError, KeyError):
+                continue
+
+    filtered_feature_names = [
+        f for f in feature_names if f not in features_to_exclude
+    ]
+
+    return filtered_feature_names, features_to_exclude
+
+
 def normalize_features(series, feature_names):
     """
     Normalize each feature independently.
@@ -147,10 +171,10 @@ def normalize_features(series, feature_names):
 
 def main():
 
-    if len(sys.argv) != 4:
+    if len(sys.argv) != 5:
         print(
             f"usage: {sys.argv[0]} "
-            "<n_clusters> <input_file> <output_file>"
+            "<n_clusters> <input_file> <output_file> <pearson_csv>"
         )
         return 1
 
@@ -166,12 +190,33 @@ def main():
 
     input_file = sys.argv[2]
     output_file = sys.argv[3]
+    pearson_csv = sys.argv[4]
 
     executions, feature_names = load_csv(input_file)
 
     if not executions:
         print("error: no executions found")
         return 1
+
+    # Filter out features where variable_2 has Pearson correlation >= 0.9
+    filtered_feature_names, excluded_pearson = filter_high_correlation_features(
+        pearson_csv, feature_names
+    )
+
+    indices_to_keep = [
+        i for i, name in enumerate(feature_names) if name in set(filtered_feature_names)
+    ]
+
+    print("Pearson Correlation Filter (>= 0.9)")
+    print("-----------------------------------")
+    print(f"Original features count: {len(feature_names)}")
+    print(f"Features excluded:       {len(excluded_pearson)}")
+    if excluded_pearson:
+        print(f"Excluded: {', '.join(sorted(excluded_pearson))}")
+    print(f"Remaining features:      {len(filtered_feature_names)}")
+    print()
+
+    feature_names = filtered_feature_names
 
     series = []
     metadata = []
@@ -189,8 +234,6 @@ def main():
 
     for i, (key, samples) in enumerate(executions.items()):
 
-        # plot_csv.py builds this file from the analyzer time series,
-        # which already use the shared discrete boundary-sample window.
         trimmed = samples
 
         if not trimmed:
@@ -200,8 +243,9 @@ def main():
             )
             return 1
 
+        # Keep only the non-excluded feature columns
         data = np.array(
-            [values for _, values in trimmed],
+            [[values[idx] for idx in indices_to_keep] for _, values in trimmed],
             dtype=float,
         )
 
@@ -380,3 +424,4 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
+

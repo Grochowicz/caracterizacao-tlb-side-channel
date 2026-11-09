@@ -15,5 +15,6 @@ push-analysis.sh
 # recently brought results from remote
 justin/
 DATA/
+DATA bad/
 # test-tlb executable
 test-tlb/test-tlb

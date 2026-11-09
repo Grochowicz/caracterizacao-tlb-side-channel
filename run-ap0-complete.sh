@@ -14,10 +14,13 @@ mv heatmap/attack_timeseries.csv heatmap/attack_timeseries_1q-cpu-$IDX.csv
 python3 create_heatmap.py heatmap/attack_statistics_1q-cpu-$IDX.csv heatmap/plot_1q-cpu-$IDX.png
 cd data-analysis
 python3 pearson_high.py ../heatmap/attack_statistics_1q-cpu-$IDX.csv _pearson_high_1q-cpu-$IDX
-python3 kmeans.py 15 ../heatmap/attack_statistics_1q-cpu-$IDX.csv _clusters_1q-cpu-$IDX
-python3 evaluate_clustering.py out/15_clusters_1q-cpu-$IDX.csv out/15_clusters_1q-cpu-${IDX}_evaluation.csv
+python3 kmeans.py 18 ../heatmap/attack_statistics_1q-cpu-$IDX.csv _clusters_1q-cpu-$IDX
+python3 evaluate_clustering.py out/18_clusters_1q-cpu-$IDX.csv out/18_clusters_1q-cpu-${IDX}_evaluation.csv
 cd ../timeseries-data-analysis
-python3 kmeans.py 15 ../heatmap/attack_timeseries_1q-cpu-$IDX.csv _clusters_1q-cpu-$IDX > _clusters_1q-cpu-$IDX.txt
-python3 ../data-analysis/evaluate_clustering.py out-dtwkmeans/15_clusters_1q-cpu-$IDX.csv out-dtwkmeans/15_clusters_1q-cpu-${IDX}_evaluation.csv
+python3 kmeans.py 18 ../heatmap/attack_timeseries_1q-cpu-$IDX.csv _clusters_1q-cpu-$IDX \
+_pearson_timeseries_1q-cpu-$IDX/pearson_timeseries_high_correlation_pairs.csv \
+ timeseries-data-analysis/out-dtwkmeans/ DATA/timeseries-data-analysis-out
+> _clusters_1q-cpu-$IDX.txt
+python3 ../data-analysis/evaluate_clustering.py out-dtwkmeans/18_clusters_1q-cpu-$IDX.csv out-dtwkmeans/18_clusters_1q-cpu-${IDX}_evaluation.csv
 cd ..
 python3 get_time.py --statistics-glob "heatmap/attack_statistics_1q-cpu-$IDX.csv" --results-root . > data-analysis/get_time_1q-cpu-$IDX.txt

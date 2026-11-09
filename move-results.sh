@@ -1,3 +1,4 @@
+
 #!/usr/bin/env bash
 
 set -u
@@ -28,7 +29,8 @@ if [ -d timeseries-data-analysis/out-dtwkmeans ]; then
     mv timeseries-data-analysis/out-dtwkmeans DATA/timeseries-data-analysis-out
 fi
 
-for path in timeseries-data-analysis/_clusters_*.txt; do
+for path in timeseries-data-analysis/_clusters_*.txt \
+            timeseries-data-analysis/_pearson_timeseries_*; do
     if [ -e "$path" ]; then
         mv "$path" DATA/
     fi
@@ -37,3 +39,4 @@ done
 if [ -e log.txt ]; then
     mv log.txt DATA/
 fi
+

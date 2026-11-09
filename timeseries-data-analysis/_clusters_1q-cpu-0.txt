@@ -1,0 +1,132 @@
+Pearson Correlation Filter (>= 0.9)
+-----------------------------------
+Original features count: 20
+Features excluded:       4
+Excluded: perf_dTLB-loads, perf_instructions, perf_task-clock, victim_time
+Remaining features:      16
+
+Dataset from plot_csv.py
+------------------------
+Warmup/cooldown: already handled by input analysis series
+Executions:       91
+Features:         16
+
+0: baseline attempt=0 status=baseline original=13.1s kept=13.1s samples=1313
+1: advanced_slubstick attempt=1 status=fail original=120.3s kept=120.3s samples=12032
+2: advanced_slubstick attempt=2 status=fail original=67.7s kept=67.7s samples=6772
+3: advanced_slubstick attempt=3 status=fail original=179.2s kept=179.2s samples=17923
+4: advanced_slubstick attempt=4 status=fail original=66.8s kept=66.8s samples=6678
+5: advanced_slubstick attempt=5 status=fail original=66.7s kept=66.7s samples=6675
+6: dirty_page attempt=1 status=fail original=13.0s kept=13.0s samples=1301
+7: dirty_page attempt=2 status=fail original=13.0s kept=13.0s samples=1300
+8: dirty_page attempt=3 status=fail original=13.1s kept=13.1s samples=1312
+9: dirty_page attempt=4 status=fail original=19.5s kept=19.5s samples=1955
+10: dirty_page attempt=5 status=fail original=19.6s kept=19.6s samples=1960
+11: dpm_leak attempt=1 status=success original=16.0s kept=16.0s samples=1604
+12: dpm_leak attempt=2 status=success original=16.0s kept=16.0s samples=1605
+13: dpm_leak attempt=3 status=success original=16.0s kept=16.0s samples=1603
+14: dpm_leak attempt=4 status=success original=16.0s kept=16.0s samples=1605
+15: dpm_leak attempt=5 status=success original=16.0s kept=16.0s samples=1604
+16: file_leak attempt=1 status=fail original=28.2s kept=28.2s samples=2821
+17: file_leak attempt=2 status=success original=28.1s kept=28.1s samples=2815
+18: file_leak attempt=3 status=success original=39.3s kept=39.3s samples=3930
+19: file_leak attempt=4 status=success original=28.2s kept=28.2s samples=2818
+20: file_leak attempt=5 status=success original=28.1s kept=28.1s samples=2815
+21: msg_msg_leak attempt=1 status=success original=34.2s kept=34.2s samples=3419
+22: msg_msg_leak attempt=2 status=fail original=51.5s kept=51.5s samples=5147
+23: msg_msg_leak attempt=3 status=success original=49.4s kept=49.4s samples=4938
+24: msg_msg_leak attempt=4 status=success original=49.3s kept=49.3s samples=4932
+25: msg_msg_leak attempt=5 status=success original=51.3s kept=51.3s samples=5133
+26: pipe_buffer_leak attempt=1 status=success original=51.4s kept=51.4s samples=5140
+27: pipe_buffer_leak attempt=2 status=success original=51.4s kept=51.4s samples=5142
+28: pipe_buffer_leak attempt=3 status=success original=51.4s kept=51.4s samples=5144
+29: pipe_buffer_leak attempt=4 status=success original=51.3s kept=51.3s samples=5133
+30: pipe_buffer_leak attempt=5 status=success original=51.3s kept=51.3s samples=5134
+31: pipe_unlink attempt=1 status=fail original=13.1s kept=13.1s samples=1313
+32: pipe_unlink attempt=2 status=fail original=13.1s kept=13.1s samples=1314
+33: pipe_unlink attempt=3 status=fail original=13.1s kept=13.1s samples=1312
+34: pipe_unlink attempt=4 status=fail original=13.1s kept=13.1s samples=1314
+35: pipe_unlink attempt=5 status=fail original=13.1s kept=13.1s samples=1313
+36: pmd_leak attempt=1 status=fail original=42.4s kept=42.4s samples=4238
+37: pmd_leak attempt=2 status=success original=42.4s kept=42.4s samples=4240
+38: pmd_leak attempt=3 status=success original=57.4s kept=57.4s samples=5741
+39: pmd_leak attempt=4 status=success original=43.4s kept=43.4s samples=4336
+40: pmd_leak attempt=5 status=fail original=40.3s kept=40.3s samples=4029
+41: pt_leak attempt=1 status=success original=43.3s kept=43.3s samples=4329
+42: pt_leak attempt=2 status=fail original=56.4s kept=56.4s samples=5638
+43: pt_leak attempt=3 status=fail original=53.4s kept=53.4s samples=5336
+44: pt_leak attempt=4 status=success original=51.4s kept=51.4s samples=5145
+45: pt_leak attempt=5 status=success original=67.5s kept=67.5s samples=6751
+46: pud_leak attempt=1 status=fail original=44.3s kept=44.3s samples=4433
+47: pud_leak attempt=2 status=fail original=42.2s kept=42.2s samples=4225
+48: pud_leak attempt=3 status=fail original=44.3s kept=44.3s samples=4428
+49: pud_leak attempt=4 status=fail original=42.2s kept=42.2s samples=4225
+50: pud_leak attempt=5 status=success original=44.3s kept=44.3s samples=4433
+51: seq_file_leak attempt=1 status=success original=26.2s kept=26.2s samples=2624
+52: seq_file_leak attempt=2 status=success original=26.2s kept=26.2s samples=2625
+53: seq_file_leak attempt=3 status=success original=26.2s kept=26.2s samples=2623
+54: seq_file_leak attempt=4 status=success original=27.2s kept=27.2s samples=2717
+55: seq_file_leak attempt=5 status=fail original=26.2s kept=26.2s samples=2625
+56: stack_attack attempt=1 status=success original=13.1s kept=13.1s samples=1314
+57: stack_attack attempt=2 status=success original=13.1s kept=13.1s samples=1311
+58: stack_attack attempt=3 status=success original=13.1s kept=13.1s samples=1311
+59: stack_attack attempt=4 status=success original=13.1s kept=13.1s samples=1312
+60: stack_attack attempt=5 status=success original=13.1s kept=13.1s samples=1311
+61: tlbleed_rj1 attempt=1 status=fail original=12.0s kept=12.0s samples=1201
+62: tlbleed_rj1 attempt=2 status=fail original=12.0s kept=12.0s samples=1202
+63: tlbleed_rj1 attempt=3 status=fail original=12.0s kept=12.0s samples=1203
+64: tlbleed_rj1 attempt=4 status=fail original=12.0s kept=12.0s samples=1201
+65: tlbleed_rj1 attempt=5 status=fail original=12.0s kept=12.0s samples=1202
+66: tlbleed_rj2 attempt=1 status=fail original=12.0s kept=12.0s samples=1201
+67: tlbleed_rj2 attempt=2 status=fail original=12.0s kept=12.0s samples=1201
+68: tlbleed_rj2 attempt=3 status=fail original=12.0s kept=12.0s samples=1202
+69: tlbleed_rj2 attempt=4 status=fail original=12.1s kept=12.1s samples=1207
+70: tlbleed_rj2 attempt=5 status=fail original=12.0s kept=12.0s samples=1201
+71: tlbleed_rn1 attempt=1 status=fail original=12.0s kept=12.0s samples=1203
+72: tlbleed_rn1 attempt=2 status=fail original=12.0s kept=12.0s samples=1202
+73: tlbleed_rn1 attempt=3 status=fail original=12.0s kept=12.0s samples=1204
+74: tlbleed_rn1 attempt=4 status=fail original=12.0s kept=12.0s samples=1201
+75: tlbleed_rn1 attempt=5 status=fail original=12.0s kept=12.0s samples=1201
+76: tlbleed_rn2 attempt=1 status=fail original=12.0s kept=12.0s samples=1201
+77: tlbleed_rn2 attempt=2 status=fail original=12.0s kept=12.0s samples=1202
+78: tlbleed_rn2 attempt=3 status=fail original=12.0s kept=12.0s samples=1203
+79: tlbleed_rn2 attempt=4 status=fail original=12.0s kept=12.0s samples=1201
+80: tlbleed_rn2 attempt=5 status=fail original=12.0s kept=12.0s samples=1202
+81: vmalloc_leak attempt=1 status=success original=16.0s kept=16.0s samples=1604
+82: vmalloc_leak attempt=2 status=success original=16.0s kept=16.0s samples=1605
+83: vmalloc_leak attempt=3 status=success original=16.0s kept=16.0s samples=1604
+84: vmalloc_leak attempt=4 status=success original=16.0s kept=16.0s samples=1605
+85: vmalloc_leak attempt=5 status=success original=16.0s kept=16.0s samples=1605
+86: vmemmap_leak attempt=1 status=success original=15.1s kept=15.1s samples=1512
+87: vmemmap_leak attempt=2 status=success original=15.1s kept=15.1s samples=1510
+88: vmemmap_leak attempt=3 status=success original=15.1s kept=15.1s samples=1511
+89: vmemmap_leak attempt=4 status=success original=15.1s kept=15.1s samples=1511
+90: vmemmap_leak attempt=5 status=success original=15.1s kept=15.1s samples=1507
+
+Feature normalization
+---------------------
+perf_branch-misses: max = 868780.0
+perf_branches: max = 66402398.0
+perf_context-switches: max = 579.0
+perf_cpu-clock: max = 1186.23
+perf_cpu-migrations: max = 2.0
+perf_cycles: max = 5073270413.0
+perf_dTLB-store-misses: max = 264470.0
+perf_dtlb_load_misses.stlb_hit: max = 12004576.0
+perf_dtlb_load_misses.walk_active: max = 349338176.0
+perf_dtlb_load_misses.walk_completed: max = 1968070.0
+perf_iTLB-loads: max = 93041.0
+perf_itlb_misses.stlb_hit: max = 71467.0
+perf_page-faults: max = 91024.0
+victim_cpu: max = 100.0
+victim_latency: max = 183.87
+victim_mem: max = 0.4
+
+tslearn dataset shape: (91, 17923, 16)
+Dimensions: 91 executions, 17923 timestamps, 16 features
+
+Starting multivariate DTW K-Means
+----------------------------------
+Clusters: 18
+Features: 16
+Init 1
