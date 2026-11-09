@@ -228,6 +228,9 @@ mark_warmup() {
 # ============================================================
 
 if [ "$RUN_BASELINE" -eq 1 ]; then
+if [ -e "$OUT/baseline_analysis.csv" ]; then
+    echo "baseline already completed; skipping."
+else
 echo "baseline"
 
 top_output="$OUT/baseline_top.txt"
@@ -281,6 +284,7 @@ echo "Perf PID: $perf_pid" \
 echo "Top PID: $top_pid" \
 	>> "$OUT/baseline_pids.txt"
 fi
+fi
 
 
 # ============================================================
@@ -308,6 +312,11 @@ do
 
     attempt=1
     while [ "$attempt" -le "$MAX_ATTEMPTS" ]; do
+        if [ -e "$OUT/${name}_${attempt}_attack.txt" ]; then
+            attempt=$((attempt + 1))
+            continue
+        fi
+
         top_output="$OUT/${name}_${attempt}_top.txt"
         perf_output="$OUT/${name}_${attempt}_perf.txt"
         timing_output="$OUT/${name}_${attempt}_timing.txt"
@@ -370,6 +379,7 @@ do
             kill "$perf_pid" "$victim_pid" 2>/dev/null || true
             wait "$top_pid" "$perf_pid" "$victim_pid" 2>/dev/null || true
             cleanup_new_message_queues
+            rm -f "$OUT/${name}_${attempt}_attack.txt"
             continue
         fi
 
@@ -435,6 +445,10 @@ for attack in rn1 rn2 rj1 rj2; do
     name="tlbleed_${attack}"
     attempt=1
     while [ "$attempt" -le "$MAX_ATTEMPTS" ]; do
+    if [ -e "$OUT/${name}_${attempt}_attack.txt" ]; then
+        attempt=$((attempt + 1))
+        continue
+    fi
 
     top_output="$OUT/${name}_${attempt}_top.txt"
     perf_output="$OUT/${name}_${attempt}_perf.txt"
@@ -498,6 +512,7 @@ for attack in rn1 rn2 rj1 rj2; do
         kill "$perf_pid" "$victim_pid" 2>/dev/null || true
         wait "$top_pid" "$perf_pid" "$victim_pid" 2>/dev/null || true
         cleanup_new_message_queues
+        rm -f "$OUT/${name}_${attempt}_attack.txt"
         continue
     fi
 
@@ -547,5 +562,5 @@ for attack in rn1 rn2 rj1 rj2; do
 
     attempt=$((attempt + 1))
     done
-    fi
 done
+fi
