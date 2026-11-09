@@ -9,22 +9,29 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <stdint.h>
 #include <errno.h>
 #include <signal.h>
+#include <string.h>
 #include <math.h>
 #include <time.h>
 
 #define PAGE_SIZE 4096
+#define MAX_MAP_SIZE (512UL * 1024UL * 1024UL)
+#define MAX_RANDOM_ENTRIES (16UL * 1024UL * 1024UL)
 
 #define FREQ 5.4
 
 static int test_hugepage = 0;
 static int random_list = 0;
+static void *map_base = NULL;
+static size_t map_allocation_size = 0;
 
 static void die(const char *fmt, ...)
 {
 	va_list argp;
 	va_start(argp, fmt);
+	fprintf(stderr, "test-tlb(pid=%ld): ", (long)getpid());
 	vfprintf(stderr, fmt, argp);
 	va_end(argp);
 	fputc('\n', stderr);
@@ -32,9 +39,18 @@ static void die(const char *fmt, ...)
 }
 
 static volatile int stop = 0;
+static volatile sig_atomic_t terminate_requested = 0;
 
-void alarm_handler(int sig)
+static void alarm_handler(int sig)
 {
+	(void)sig;
+	stop = 1;
+}
+
+static void terminate_handler(int sig)
+{
+	(void)sig;
+	terminate_requested = 1;
 	stop = 1;
 }
 
@@ -99,6 +115,8 @@ static double do_test(void *map)
 	} while (!stop);
 	gettimeofday(&end, NULL);
 	usec = usec_diff(&start, &end);
+	if (count == 0)
+		return 0;
 
 	// Make sure the compiler doesn't compile away offset
 	*(volatile unsigned int *)(map + offset);
@@ -109,61 +127,73 @@ static double do_test(void *map)
 
 static unsigned long get_num(const char *str)
 {
-	char *end, c;
-	unsigned long val;
+	char *end;
+	unsigned long val, multiplier = 1;
+	int saved_errno;
 
 	if (!str)
 		return 0;
+
+	errno = 0;
 	val = strtoul(str, &end, 0);
-	if (!val || val == ULONG_MAX)
+	saved_errno = errno;
+	if (saved_errno == ERANGE || end == str || !val)
 		return 0;
-	while ((c = *end++) != 0) {
-		switch (c) {
+
+	if (*end != '\0') {
+		switch (*end++) {
 		case 'k':
-			val <<= 10;
+			multiplier = 1UL << 10;
 			break;
 		case 'M':
-			val <<= 20;
+			multiplier = 1UL << 20;
 			break;
 		case 'G':
-			val <<= 30;
+			multiplier = 1UL << 30;
 			break;
 		default:
 			return 0;
 		}
+		if (*end != '\0' || val > ULONG_MAX / multiplier)
+			return 0;
 	}
-	return val;
+
+	return val * multiplier;
 }
 
 static void randomize_map(void *map, unsigned long size, unsigned long stride)
 {
-	unsigned long off;
-	unsigned int *lastpos, *rnd;
-	int n;
+	unsigned long count = size / stride;
+	uint32_t *rnd;
 
-	rnd = calloc(size / stride + 1, sizeof(unsigned int));
+	if (count == 0 || count > MAX_RANDOM_ENTRIES ||
+	    count > UINT32_MAX / stride)
+		die("randomization requires too many entries: %lu", count);
+
+	if (count > SIZE_MAX / sizeof(*rnd))
+		die("randomization allocation size overflow");
+
+	rnd = calloc(count, sizeof(*rnd));
 	if (!rnd)
 		die("out of memory");
 
 	/* Create sorted list of offsets */
-	for (n = 0, off = 0; off < size; n++, off += stride)
-		rnd[n] = off;
+	for (unsigned long n = 0; n < count; n++)
+		rnd[n] = (uint32_t)(n * stride);
 
-	/* Randomize the offsets */
-	for (n = 0, off = 0; off < size; n++, off += stride) {
-		unsigned int m = (unsigned long)random() % (size / stride);
-		unsigned int tmp = rnd[n];
+	/* Fisher-Yates shuffle */
+	for (unsigned long n = count - 1; n > 0; n--) {
+		unsigned long m = (unsigned long)random() % (n + 1);
+		uint32_t tmp = rnd[n];
 		rnd[n] = rnd[m];
 		rnd[m] = tmp;
 	}
 
 	/* Create a circular list from the random offsets */
-	lastpos = map;
-	for (n = 0, off = 0; off < size; n++, off += stride) {
-		lastpos = map + rnd[n];
-		*lastpos = rnd[n+1];
+	for (unsigned long n = 0; n < count; n++) {
+		uint32_t *lastpos = (uint32_t *)((char *)map + rnd[n]);
+		*lastpos = rnd[(n + 1) % count];
 	}
-	*lastpos = rnd[0];
 
 	free(rnd);
 }
@@ -187,19 +217,21 @@ static void *create_map(void *map, unsigned long size, unsigned long stride)
 	 * force new page allocations. Hopefully this will then make
 	 * the virtual mapping different enough to matter for timings.
 	 */
-	if (map) {
-		if (test_hugepage)
-			return map;
-		flags |= MAP_FIXED;
-	}
+	if (map && test_hugepage)
+		return map;
+
+	if (map && munmap(map, size) != 0)
+		die("munmap failed: %s", strerror(errno));
 
 	mapsize = size;
 	if (test_hugepage)
 		mapsize += 2*HUGEPAGE;
 
-	map = mmap(map, mapsize, PROT_READ | PROT_WRITE, flags, -1, 0);
-	if (map == MAP_FAILED)
-		die("mmap failed");
+	map_base = mmap(NULL, mapsize, PROT_READ | PROT_WRITE, flags, -1, 0);
+	if (map_base == MAP_FAILED)
+		die("mmap failed for %lu bytes: %s", mapsize, strerror(errno));
+	map_allocation_size = mapsize;
+	map = map_base;
 
 	if (test_hugepage) {
 		unsigned long mapstart = (unsigned long) map;
@@ -223,7 +255,7 @@ static void *create_map(void *map, unsigned long size, unsigned long stride)
 
 	lastpos = map;
 	for (off = 0; off < size; off += stride) {
-		lastpos = map + off;
+		lastpos = (unsigned int *)((char *)map + off);
 		*lastpos = off + stride;
 	}
 	*lastpos = 0;
@@ -238,6 +270,7 @@ int main(int argc, char **argv)
 	void *map;
 	double cycles;
 
+	(void)argc;
 	srandom(time(NULL));
 
 	while ((arg = argv[1]) != NULL) {
@@ -263,29 +296,17 @@ int main(int argc, char **argv)
 
 	size = get_num(argv[1]);
 	stride = get_num(argv[2]);
-	if (stride < 4 || size < stride)
+	if (stride < sizeof(uint32_t) || size < stride ||
+	    size > MAX_MAP_SIZE || size % stride != 0 ||
+	    stride > UINT32_MAX || size > UINT32_MAX)
 		die("bad arguments: test-tlb [-H] <size> <stride>");
 
-	/*
-	gettimeofday(&start, NULL);
-	do {
-		count++;
-		offset = *(unsigned int *)(map + offset);
-	} while (!stop);
-	gettimeofday(&end, NULL);
-	usec = usec_diff(&start, &end);
-
-	// Make sure the compiler doesn't compile away offset
-	*(volatile unsigned int *)(map + offset);
-
-	// return cycle time in ns
-	return 1000 * (double) usec / count;
-
-	 * */
 	struct timeval start, end;
+	signal(SIGINT, terminate_handler);
+	signal(SIGTERM, terminate_handler);
 	gettimeofday(&start, NULL);
 	map = NULL;
-	while(1) {
+	while (!terminate_requested) {
 		cycles = 1e10;
 		for (int i = 0; i < 1; i++) {
 			double d;
@@ -293,11 +314,15 @@ int main(int argc, char **argv)
 			map = create_map(map, size, stride);
 			if (random_list)
 				randomize_map(map, size, stride);
+			if (terminate_requested)
+				break;
 
 			d = do_test(map);
-			if (d < cycles)
+			if (d > 0 && d < cycles)
 				cycles = d;
 		}
+		if (terminate_requested)
+			break;
 		gettimeofday(&end, NULL);
 		unsigned long elapsed_time = usec_diff(&start, &end);
 		double timestamp = end.tv_sec + end.tv_usec / 1000000.0;
@@ -315,6 +340,14 @@ int main(int argc, char **argv)
 		//alterna size entre 64k e 64M
 		size ^= 67174400;
 		*/
+	}
+
+	if (map && !test_hugepage) {
+		if (munmap(map_base, map_allocation_size) != 0)
+			die("munmap failed during shutdown: %s", strerror(errno));
+	} else if (map && test_hugepage) {
+		if (munmap(map_base, map_allocation_size) != 0)
+			die("munmap hugepage area failed: %s", strerror(errno));
 	}
 
 	return 0;

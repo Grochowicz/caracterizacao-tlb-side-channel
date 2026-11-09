@@ -17,15 +17,19 @@ MONITOR_INTERVAL=0.01
 
 mkdir -p "$OUT"
 
+declare -A MESSAGE_QUEUE_BASELINE=()
+MESSAGE_QUEUE_OWNER="${USER:-$(id -un)}"
+MESSAGE_QUEUE_SNAPSHOT_VALID=0
+
 
 monitor_top() {
     local output="$1"
     local victim_pid="$2"
     local attack_pid="$3"
-    local pid_pattern="$victim_pid"
+    local pid_list="$victim_pid"
 
     if [ -n "$attack_pid" ]; then
-        pid_pattern="$pid_pattern|$attack_pid"
+        pid_list="$pid_list,$attack_pid"
     fi
 
     while true; do
@@ -33,7 +37,10 @@ monitor_top() {
             echo "===== SAMPLE $(date +%s.%N) ====="
 
             echo "--- TOP ---"
-            top -b -n 2 -d 0.01 | grep -E "^[[:space:]]*($pid_pattern)[[:space:]]"
+            if ! top -b -n 1 -d "$MONITOR_INTERVAL" -w 512 -p "$pid_list"; then
+                echo "monitor_top: top failed for PIDs $pid_list" >&2
+                return 1
+            fi
 
             echo
         } >> "$output"
@@ -94,22 +101,42 @@ stop_monitor_group() {
     fi
 }
 
-cleanup_owned_message_queues() {
-    local owner="${USER:-$(id -un)}"
-    local queue_ids
+snapshot_message_queues() {
+    local queue_snapshot
 
-    queue_ids=$(ipcs -q 2>/dev/null |
-        awk -v owner="$owner" '$2 ~ /^[0-9]+$/ && $3 == owner {print $2}')
-
-    if [ -z "$queue_ids" ]; then
-        return 0
+    MESSAGE_QUEUE_BASELINE=()
+    MESSAGE_QUEUE_SNAPSHOT_VALID=0
+    if ! queue_snapshot=$(ipcs -q 2>/dev/null); then
+        echo "IPC snapshot failed (PID $$); refusing queue cleanup." >&2
+        return 1
     fi
 
     while IFS= read -r queue_id; do
-        if ! ipcrm -q "$queue_id"; then
-            echo "Warning: failed to remove message queue $queue_id owned by $owner." >&2
+        MESSAGE_QUEUE_BASELINE["$queue_id"]=1
+    done < <(printf '%s\n' "$queue_snapshot" |
+        awk -v owner="$MESSAGE_QUEUE_OWNER" '$2 ~ /^[0-9]+$/ && $3 == owner {print $2}')
+    MESSAGE_QUEUE_SNAPSHOT_VALID=1
+}
+
+cleanup_new_message_queues() {
+    local queue_id queue_snapshot
+
+    if [ "$MESSAGE_QUEUE_SNAPSHOT_VALID" -ne 1 ]; then
+        return 0
+    fi
+    if ! queue_snapshot=$(ipcs -q 2>/dev/null); then
+        echo "IPC cleanup snapshot failed (PID $$); leaving queues untouched." >&2
+        return 1
+    fi
+
+    while IFS= read -r queue_id; do
+        if [[ -z "${MESSAGE_QUEUE_BASELINE[$queue_id]+present}" ]]; then
+            if ! ipcrm -q "$queue_id"; then
+                echo "cleanup: failed to remove new message queue $queue_id (PID $$)." >&2
+            fi
         fi
-    done <<< "$queue_ids"
+    done < <(printf '%s\n' "$queue_snapshot" |
+        awk -v owner="$MESSAGE_QUEUE_OWNER" '$2 ~ /^[0-9]+$/ && $3 == owner {print $2}')
 }
 
 handle_signal() {
@@ -132,6 +159,7 @@ handle_signal() {
         fi
     done
 
+    cleanup_new_message_queues
     exit "$status"
 }
 
@@ -240,7 +268,10 @@ do
         # No AP is running on CPU.
         # ----------------------------------------------------
 
-        cleanup_owned_message_queues
+        if ! snapshot_message_queues; then
+            echo "attack=$attack attempt=$attempt stage=ipc-snapshot failed; aborting." >&2
+            exit 1
+        fi
         taskset -c "$CPU" "$ATTACKS/$attack" \
             > "$OUT/${name}_${attempt}_attack.txt" 2>&1 &
         attack_pid=$!
@@ -280,6 +311,7 @@ do
             stop_monitor_group "$top_pid"
             kill "$perf_pid" 2>/dev/null || true
             wait "$top_pid" "$perf_pid" 2>/dev/null || true
+            cleanup_new_message_queues
             continue
         fi
 
@@ -297,6 +329,7 @@ do
         kill "$perf_pid" 2>/dev/null || true
 
         wait "$top_pid" "$perf_pid" 2>/dev/null || true
+        cleanup_new_message_queues
 
         # ----------------------------------------------------
         # Save PID
@@ -340,7 +373,7 @@ done
 for attack in rn1 rn2 rj1 rj2; do
     name="tlbleed_${attack}"
     attempt=1
-    while true; do
+    while [ "$attempt" -le "$MAX_ATTEMPTS" ]; do
 
     top_output="$OUT/${name}_${attempt}_top.txt"
     perf_output="$OUT/${name}_${attempt}_perf.txt"
@@ -354,7 +387,10 @@ for attack in rn1 rn2 rj1 rj2; do
     # No AP is running on CPU.
     # --------------------------------------------------------
 
-    cleanup_owned_message_queues
+    if ! snapshot_message_queues; then
+        echo "attack=$attack attempt=$attempt stage=ipc-snapshot failed; aborting." >&2
+        exit 1
+    fi
     taskset -c "$CPU" "$MADTLB" "-$attack" \
         > "$OUT/${name}_${attempt}_attack.txt" 2>&1 &
     attack_pid=$!
@@ -392,6 +428,7 @@ for attack in rn1 rn2 rj1 rj2; do
         stop_monitor_group "$top_pid"
         kill "$perf_pid" 2>/dev/null || true
         wait "$top_pid" "$perf_pid" 2>/dev/null || true
+        cleanup_new_message_queues
         continue
     fi
 
@@ -409,6 +446,7 @@ for attack in rn1 rn2 rj1 rj2; do
     kill "$perf_pid" 2>/dev/null || true
 
     wait "$top_pid" "$perf_pid" 2>/dev/null || true
+    cleanup_new_message_queues
 
     # --------------------------------------------------------
     # Save PID
@@ -430,6 +468,6 @@ for attack in rn1 rn2 rj1 rj2; do
         "$perf_output" \
         "$OUT/${name}_${attempt}_perf_analysis.csv"
 
-    break
+    attempt=$((attempt + 1))
     done
 done
