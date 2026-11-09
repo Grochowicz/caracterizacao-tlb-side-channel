@@ -1,9 +1,12 @@
 #!/bin/bash
 IDX=3
+RUN_BASELINE="${1:-true}"
+RUN_LOCATION_DISCLOSURE="${2:-true}"
+RUN_TLBLEED="${3:-true}"
 # venv para análise de dados
 source data-analysis/.venv/bin/activate
 # coletar dados
-./1q-cpu.sh $IDX
+./1q-cpu.sh "$IDX" "$RUN_BASELINE" "$RUN_LOCATION_DISCLOSURE" "$RUN_TLBLEED"
 # análise ataque + ap
 python3 plot_csv.py results-1q-cpu-$IDX
 mv heatmap/attack_statistics.csv heatmap/attack_statistics_1q-cpu-$IDX.csv

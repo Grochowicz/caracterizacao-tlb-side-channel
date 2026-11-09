@@ -1,6 +1,9 @@
 #!/bin/bash
+RUN_BASELINE="${1:-true}"
+RUN_LOCATION_DISCLOSURE="${2:-true}"
+RUN_TLBLEED="${3:-true}"
 # coletar dados
-./3q-por-cpu.sh
+./3q-por-cpu.sh "$RUN_BASELINE" "$RUN_LOCATION_DISCLOSURE" "$RUN_TLBLEED"
 # ataques isolados
 source data-analysis/.venv/bin/activate
 python3 plot_csv.py results-3q-por-cpu

@@ -20,6 +20,28 @@ else
 	declare -n AP=${APS[$1]}
 fi
 
+parse_bool_arg() {
+    local value="$1"
+    local name="$2"
+
+    case "$value" in
+        true|1|yes|y|on)
+            printf '1'
+            ;;
+        false|0|no|n|off)
+            printf '0'
+            ;;
+        *)
+            echo "Invalid $name value '$value'; use true or false." >&2
+            return 2
+            ;;
+    esac
+}
+
+RUN_BASELINE=$(parse_bool_arg "${2:-true}" baseline) || exit $?
+RUN_LOCATION_DISCLOSURE=$(parse_bool_arg "${3:-true}" location-disclosure) || exit $?
+RUN_TLBLEED=$(parse_bool_arg "${4:-true}" tlbleed) || exit $?
+
 echo "Running $0 for AP ${AP[@]}..."
 
 ATTACKS=./TLBSideChannel
@@ -205,6 +227,7 @@ mark_warmup() {
 # BASELINE
 # ============================================================
 
+if [ "$RUN_BASELINE" -eq 1 ]; then
 echo "baseline"
 
 top_output="$OUT/baseline_top.txt"
@@ -257,12 +280,14 @@ echo "Perf PID: $perf_pid" \
 	>> "$OUT/baseline_pids.txt"
 echo "Top PID: $top_pid" \
 	>> "$OUT/baseline_pids.txt"
+fi
 
 
 # ============================================================
 # LOCATION DISCLOSURE ATTACKS
 # ============================================================
 
+if [ "$RUN_LOCATION_DISCLOSURE" -eq 1 ]; then
 for attack in \
     generic/dpm_leak.elf \
     generic/vmalloc_leak.elf \
@@ -399,11 +424,13 @@ do
         attempt=$((attempt + 1))
     done
 done
+fi
 
 # ============================================================
 # TLBLEED
 # ============================================================
 
+if [ "$RUN_TLBLEED" -eq 1 ]; then
 for attack in rn1 rn2 rj1 rj2; do
     name="tlbleed_${attack}"
     attempt=1
@@ -520,4 +547,5 @@ for attack in rn1 rn2 rj1 rj2; do
 
     attempt=$((attempt + 1))
     done
+    fi
 done

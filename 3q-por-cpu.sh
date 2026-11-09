@@ -17,6 +17,28 @@ MONITOR_INTERVAL=0.01
 
 mkdir -p "$OUT"
 
+parse_bool_arg() {
+    local value="$1"
+    local name="$2"
+
+    case "$value" in
+        true|1|yes|y|on)
+            printf '1'
+            ;;
+        false|0|no|n|off)
+            printf '0'
+            ;;
+        *)
+            echo "Invalid $name value '$value'; use true or false." >&2
+            return 2
+            ;;
+    esac
+}
+
+RUN_BASELINE=$(parse_bool_arg "${1:-true}" baseline) || exit $?
+RUN_LOCATION_DISCLOSURE=$(parse_bool_arg "${2:-true}" location-disclosure) || exit $?
+RUN_TLBLEED=$(parse_bool_arg "${3:-true}" tlbleed) || exit $?
+
 declare -A MESSAGE_QUEUE_BASELINE=()
 MESSAGE_QUEUE_OWNER="${USER:-$(id -un)}"
 MESSAGE_QUEUE_SNAPSHOT_VALID=0
@@ -185,6 +207,7 @@ mark_warmup() {
 # BASELINE
 # ============================================================
 
+if [ "$RUN_BASELINE" -eq 1 ]; then
 echo "baseline"
 
 top_output="$OUT/baseline_top.txt"
@@ -226,6 +249,7 @@ python3 analyze_top.py \
 python3 analyze_perf.py \
     "$perf_output" \
     "$OUT/baseline_perf_analysis.csv"
+fi
 
 
 # ============================================================
@@ -236,6 +260,7 @@ python3 analyze_perf.py \
 #   AP    -> NOT running
 # ============================================================
 
+if [ "$RUN_LOCATION_DISCLOSURE" -eq 1 ]; then
 for attack in \
     generic/dpm_leak.elf \
     generic/vmalloc_leak.elf \
@@ -359,6 +384,7 @@ do
 #        fi
         attempt=$((attempt + 1))
     done
+    fi
 done
 
 
@@ -370,6 +396,7 @@ done
 #   AP    -> NOT running
 # ============================================================
 
+if [ "$RUN_TLBLEED" -eq 1 ]; then
 for attack in rn1 rn2 rj1 rj2; do
     name="tlbleed_${attack}"
     attempt=1
@@ -470,4 +497,5 @@ for attack in rn1 rn2 rj1 rj2; do
 
     attempt=$((attempt + 1))
     done
+    fi
 done
